@@ -43,6 +43,10 @@ jobs:
         run: dotnet build --no-restore --configuration Release
         working-directory: backend
 
+      - name: Format check
+        run: dotnet format --verify-no-changes
+        working-directory: backend
+
       - name: Unit tests
         run: dotnet test Yaam.Tests.Unit --no-build --configuration Release
         working-directory: backend
