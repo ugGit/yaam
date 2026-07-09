@@ -1,4 +1,3 @@
-using FluentValidation;
 using Yaam.API;
 using Yaam.Application;
 using Yaam.Infrastructure;

@@ -30,7 +30,7 @@ public class GlobalExceptionHandler(IProblemDetailsService problemDetailsService
         {
             Status = statusCode,
             Title = title,
-            Type = $"https://tools.ietf.org/html/rfc9457"
+            Type = "https://tools.ietf.org/html/rfc9457"
         };
 
         if (errors is not null)
