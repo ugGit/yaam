@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Yaam.Domain.Repositories;
 using Yaam.Infrastructure.Persistence;
+using Yaam.Infrastructure.Repositories;
 
 namespace Yaam.Infrastructure;
 
@@ -12,6 +14,8 @@ public static class DependencyInjection
     {
         services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(connectionString));
+
+        services.AddScoped<IApplicationRepository, ApplicationRepository>();
 
         return services;
     }
