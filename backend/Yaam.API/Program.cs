@@ -1,28 +1,29 @@
+using System.Text.Json.Serialization;
 using Yaam.API;
 using Yaam.Application;
 using Yaam.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Application + Infrastructure
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(
     builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' is required."));
 
-// API
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "YAAM API", Version = "v1" });
+    c.EnableAnnotations();
 });
 
-// ProblemDetails (RFC 9457)
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
-// CORS for Angular dev server
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("Angular", policy =>
@@ -48,4 +49,4 @@ app.MapControllers();
 
 app.Run();
 
-public partial class Program { } // required for WebApplicationFactory in integration tests
+public partial class Program { }
