@@ -25,8 +25,8 @@ public class CreateApplicationCommandValidator : AbstractValidator<CreateApplica
         RuleFor(x => x.Role).NotEmpty().MaximumLength(200);
         RuleFor(x => x.DateApplied)
             .NotNull()
-            .When(x => x.Status != ApplicationStatus.Draft)
-            .WithMessage("Date applied is required unless status is Draft.");
+            .WithMessage("Date applied is required unless status is Draft.")
+            .When(x => x.Status != ApplicationStatus.Draft);
     }
 }
 
