@@ -133,7 +133,7 @@ The Angular HTTP service layer is **generated** from the backend's OpenAPI docum
 }
 ```
 
-Generated services emit `Observable<T>`. Handwritten code bridges to Signals via `rxResource()` and `toSignal()`. When generators natively emit Signals, the handwritten bridge layer drops away with no further changes to components.
+Generated services emit `Observable<T>`. Handwritten code bridges to Signals via `resource()` + `firstValueFrom()` and `toSignal()`. When generators natively emit Signals, the bridge layer drops away with no further changes to components.
 
 ### Feature structure
 
@@ -226,7 +226,7 @@ editingNoteId = signal<string | null>(null);
 
 - `GlobalExceptionHandler` maps `ValidationException` → 400 ProblemDetails with `errors` extension, unexpected → 500
 - Angular `HttpInterceptor` extracts `errors` from ProblemDetails and pipes them to reactive form controls
-- `rxResource` error state (`status() === 'error'`) renders `alert alert-error` in place of the content
+- `resource` error state (`status() === 'error'`) renders `alert alert-error` in place of the content
 - 404 on detail load navigates to `/applications` and shows a toast notification
 
 ---
@@ -238,7 +238,7 @@ editingNoteId = signal<string | null>(null);
 | Unit | Command validators (required fields, DateApplied conditionality) | xUnit |
 | Unit | `GetApplicationsQuery` filtering + sorting logic | xUnit, in-memory list |
 | Integration | All 9 endpoints — happy path + 400/404 responses | xUnit + `WebApplicationFactory` + real PostgreSQL |
-| Angular | Deferred — `rxResource` + generated client pattern still evolving | — |
+| Angular | Deferred — `resource()` + generated client pattern still evolving | — |
 
 ---
 
