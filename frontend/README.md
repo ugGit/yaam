@@ -1,59 +1,58 @@
-# Yaam
+# YAAM Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.6.
+Angular 22 app. Requires Node 24.
 
-## Development server
-
-To start a local development server, run:
+## Start
 
 ```bash
-ng serve
+npm install
+npm start        # http://localhost:4200
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+The app expects the backend at `https://localhost:7131`. See the [root README](../README.md) for backend setup.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Build
 
 ```bash
-ng generate component component-name
+npm run build                              # development
+npx ng build --configuration production   # production (uses environment.prod.ts)
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Output goes to `dist/`.
+
+## Formatting — Prettier
 
 ```bash
-ng generate --help
+npm run format         # fix
+npm run format:check   # check only (used in CI)
 ```
 
-## Building
+Config: `.prettierrc`. Covers `src/**/*.{ts,html,scss,json}`.
 
-To build the project run:
+## Linting — ESLint
 
 ```bash
-ng build
+npm run lint
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Config: `eslint.config.js` (flat config, angular-eslint + typescript-eslint).
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Testing
 
 ```bash
-ng test
+npm test           # unit tests via Vitest (watch mode)
+npx ng e2e         # e2e — no framework configured yet
 ```
 
-## Running end-to-end tests
+Unit tests live alongside their source files (`*.spec.ts`). No e2e framework is set up yet — add one (e.g. Playwright) when the first user-facing flow is ready.
 
-For end-to-end (e2e) testing, run:
+## Scaffolding
+
+Use Angular CLI to generate new code:
 
 ```bash
-ng e2e
+npx ng generate component features/applications/components/my-component
+npx ng generate service core/http/my-service
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Always place generated files in the right feature folder — see the [architecture guidelines](../docs/architecture/guidelines.md).
