@@ -12,6 +12,13 @@
   } @else if (isNew() || editMode()) {
     <div class="card bg-base-100 shadow p-6">
       <h1 class="text-xl font-bold mb-6">{{ isNew() ? 'New application' : 'Edit application' }}</h1>
+      @if (serverErrors() | keyvalue; as errs) {
+        @if (errs.length > 0) {
+          <div class="alert alert-error mb-4">
+            <span>Could not save. Please check the errors below.</span>
+          </div>
+        }
+      }
       <app-application-form
         [existing]="applicationResource.value() ?? null"
         (saved)="onSave($event)"

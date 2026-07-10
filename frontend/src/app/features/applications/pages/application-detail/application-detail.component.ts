@@ -82,10 +82,6 @@ export class ApplicationDetailComponent {
   }
 
   protected async onDelete(): Promise<void> {
-    if (!window.confirm('Delete this application and all its notes? This cannot be undone.')) {
-      this.deleteModalOpen.set(false);
-      return;
-    }
     await firstValueFrom(this.api.deleteApplication(this.applicationId()!));
     await this.router.navigate(['/applications']);
   }
