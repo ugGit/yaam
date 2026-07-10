@@ -44,7 +44,6 @@ public class ApplicationRepository(AppDbContext db) : IApplicationRepository
 
     public async Task UpdateAsync(DomainApplication application, CancellationToken ct)
     {
-        db.Applications.Update(application);
         await db.SaveChangesAsync(ct);
     }
 
@@ -71,7 +70,6 @@ public class ApplicationRepository(AppDbContext db) : IApplicationRepository
 
     public async Task UpdateNoteAsync(DomainApplicationNote note, CancellationToken ct)
     {
-        db.ApplicationNotes.Update(note);
         await db.SaveChangesAsync(ct);
     }
 
