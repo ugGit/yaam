@@ -1,0 +1,56 @@
+<form [formGroup]="form" (ngSubmit)="submit()" class="space-y-4">
+  <div class="form-control">
+    <label class="label"><span class="label-text">Company name *</span></label>
+    <input formControlName="companyName" type="text" class="input input-bordered" />
+    @if (fieldError('companyName')) {
+      <label class="label"><span class="label-text-alt text-error">{{ fieldError('companyName') }}</span></label>
+    }
+  </div>
+
+  <div class="form-control">
+    <label class="label"><span class="label-text">Role *</span></label>
+    <input formControlName="role" type="text" class="input input-bordered" />
+    @if (fieldError('role')) {
+      <label class="label"><span class="label-text-alt text-error">{{ fieldError('role') }}</span></label>
+    }
+  </div>
+
+  <div class="form-control">
+    <label class="label"><span class="label-text">Status *</span></label>
+    <select formControlName="status" class="select select-bordered">
+      @for (s of ALL_STATUSES; track s) {
+        <option [value]="s">{{ STATUS_LABELS[s] }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="form-control">
+    <label class="label"><span class="label-text">Date applied</span></label>
+    <input formControlName="dateApplied" type="date" class="input input-bordered" />
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="form-control">
+      <label class="label"><span class="label-text">Contact name</span></label>
+      <input formControlName="contactName" type="text" class="input input-bordered" />
+    </div>
+    <div class="form-control">
+      <label class="label"><span class="label-text">Contact email</span></label>
+      <input formControlName="contactEmail" type="email" class="input input-bordered" />
+    </div>
+    <div class="form-control">
+      <label class="label"><span class="label-text">Contact phone</span></label>
+      <input formControlName="contactPhone" type="text" class="input input-bordered" />
+    </div>
+  </div>
+
+  <div class="form-control">
+    <label class="label"><span class="label-text">Job posting</span></label>
+    <textarea formControlName="jobPosting" rows="6" class="textarea textarea-bordered"></textarea>
+  </div>
+
+  <div class="flex gap-2 justify-end">
+    <button type="button" class="btn btn-ghost" (click)="cancel()">Cancel</button>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </div>
+</form>
