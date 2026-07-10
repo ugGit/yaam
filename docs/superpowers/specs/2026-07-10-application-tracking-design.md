@@ -169,36 +169,38 @@ frontend/src/app/features/applications/
 
 ### State (Signals)
 
+`resource()` (not `rxResource`) is used throughout. The generated client emits Observables; `firstValueFrom()` converts them to Promises inside each loader. `toSignal()` is used to convert route params and other Observables into Signals that drive resource requests.
+
 **`ApplicationListComponent`**
 ```typescript
 filterState = signal({ status: '', sort: 'dateApplied', order: 'desc' });
 
-applications = rxResource({
+applications = resource({
   request: () => this.filterState(),
-  loader: ({ request }) => this.applicationsService.getApplications(request)
+  loader: ({ request }) => firstValueFrom(
+    this.apiService.getApplications(request)
+  )
 });
 ```
-Filter/sort state change → automatic re-fetch. No `effect()` needed.
 
 **`ApplicationDetailComponent`**
 ```typescript
-// toSignal() keeps the resource reactive across in-app navigations between detail pages
 readonly applicationId = toSignal(this.route.paramMap.pipe(map(p => p.get('id'))));
 
-application = rxResource({
+application = resource({
   request: () => this.applicationId(),
-  loader: ({ request }) => this.applicationsService.getApplication(request!)
+  loader: ({ request }) => firstValueFrom(
+    this.apiService.getApplication(request!)
+  )
 });
 editMode = signal(false);
 ```
 
 **`ApplicationNotesComponent`** (receives `applicationId` as input)
 ```typescript
-notes = signal<ApplicationNoteDto[]>([]);   // loaded with application
+notes = signal<ApplicationNoteDto[]>([]);
 editingNoteId = signal<string | null>(null);
 ```
-
-`toSignal()` used for one-off Observable conversions (e.g. route params, form value changes).
 
 ### UI (daisyUI + Tailwind)
 
@@ -237,6 +239,12 @@ editingNoteId = signal<string | null>(null);
 | Unit | `GetApplicationsQuery` filtering + sorting logic | xUnit, in-memory list |
 | Integration | All 9 endpoints — happy path + 400/404 responses | xUnit + `WebApplicationFactory` + real PostgreSQL |
 | Angular | Deferred — `rxResource` + generated client pattern still evolving | — |
+
+---
+
+## Future notes
+
+- **`DateApplied` auto-set:** when a user changes status from Draft to Applied, `DateApplied` should be automatically set to today's date. The user should be prompted to confirm or override the suggested date before saving. Not in scope for this plan — requires a UX decision on the confirmation flow.
 
 ---
 
