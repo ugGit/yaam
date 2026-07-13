@@ -1,5 +1,5 @@
-using Scalar.AspNetCore;
 using System.Text.Json.Serialization;
+using Scalar.AspNetCore;
 using Yaam.API;
 using Yaam.Application;
 using Yaam.Infrastructure;

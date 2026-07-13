@@ -19,12 +19,12 @@ public class ApplicationRepository(AppDbContext db) : IApplicationRepository
 
         query = (sort.ToLower(), order.ToLower()) switch
         {
-            ("companyname", "asc")  => query.OrderBy(a => a.CompanyName),
-            ("companyname", _)      => query.OrderByDescending(a => a.CompanyName),
-            ("status", "asc")       => query.OrderBy(a => a.Status),
-            ("status", _)           => query.OrderByDescending(a => a.Status),
-            (_, "asc")              => query.OrderBy(a => a.DateApplied),
-            _                       => query.OrderByDescending(a => a.DateApplied),
+            ("companyname", "asc") => query.OrderBy(a => a.CompanyName),
+            ("companyname", _) => query.OrderByDescending(a => a.CompanyName),
+            ("status", "asc") => query.OrderBy(a => a.Status),
+            ("status", _) => query.OrderByDescending(a => a.Status),
+            (_, "asc") => query.OrderBy(a => a.DateApplied),
+            _ => query.OrderByDescending(a => a.DateApplied),
         };
 
         return await query.ToListAsync(ct);
