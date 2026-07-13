@@ -1,6 +1,5 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
 using Yaam.Application.Applications.Commands.Notes;
 
 namespace Yaam.API.Controllers;
@@ -10,7 +9,7 @@ namespace Yaam.API.Controllers;
 public class ApplicationNotesController(IMediator mediator) : ControllerBase
 {
     [HttpPost]
-    [SwaggerOperation(OperationId = "AddApplicationNote")]
+    [EndpointName("AddApplicationNote")]
     public async Task<IActionResult> Add(
         Guid applicationId, [FromBody] NoteBodyRequest request, CancellationToken ct = default)
     {
@@ -19,7 +18,7 @@ public class ApplicationNotesController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{noteId:guid}")]
-    [SwaggerOperation(OperationId = "UpdateApplicationNote")]
+    [EndpointName("UpdateApplicationNote")]
     public async Task<IActionResult> Update(
         Guid applicationId, Guid noteId, [FromBody] NoteBodyRequest request, CancellationToken ct = default)
     {
@@ -29,7 +28,7 @@ public class ApplicationNotesController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("{noteId:guid}")]
-    [SwaggerOperation(OperationId = "DeleteApplicationNote")]
+    [EndpointName("DeleteApplicationNote")]
     public async Task<IActionResult> Delete(
         Guid applicationId, Guid noteId, CancellationToken ct = default)
     {

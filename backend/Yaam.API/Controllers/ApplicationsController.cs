@@ -1,6 +1,5 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
 using Yaam.Application.Applications.Commands;
 using Yaam.Application.Applications.Queries;
 using Yaam.Domain.Enums;
@@ -12,7 +11,7 @@ namespace Yaam.API.Controllers;
 public class ApplicationsController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    [SwaggerOperation(OperationId = "ListApplications")]
+    [EndpointName("ListApplications")]
     public async Task<IActionResult> GetAll(
         [FromQuery] ApplicationStatus? status,
         [FromQuery] string sort = "dateApplied",
@@ -24,7 +23,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
-    [SwaggerOperation(OperationId = "GetApplication")]
+    [EndpointName("GetApplication")]
     public async Task<IActionResult> GetById(Guid id, CancellationToken ct = default)
     {
         var result = await mediator.Send(new GetApplicationByIdQuery(id), ct);
@@ -32,7 +31,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
-    [SwaggerOperation(OperationId = "CreateApplication")]
+    [EndpointName("CreateApplication")]
     public async Task<IActionResult> Create(
         [FromBody] CreateApplicationCommand command, CancellationToken ct = default)
     {
@@ -41,7 +40,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
-    [SwaggerOperation(OperationId = "UpdateApplication")]
+    [EndpointName("UpdateApplication")]
     public async Task<IActionResult> Update(
         Guid id, [FromBody] UpdateApplicationRequest request, CancellationToken ct = default)
     {
@@ -53,7 +52,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPatch("{id:guid}/status")]
-    [SwaggerOperation(OperationId = "PatchApplicationStatus")]
+    [EndpointName("PatchApplicationStatus")]
     public async Task<IActionResult> UpdateStatus(
         Guid id, [FromBody] UpdateApplicationStatusRequest request, CancellationToken ct = default)
     {
@@ -63,7 +62,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
-    [SwaggerOperation(OperationId = "DeleteApplication")]
+    [EndpointName("DeleteApplication")]
     public async Task<IActionResult> Delete(Guid id, CancellationToken ct = default)
     {
         await mediator.Send(new DeleteApplicationCommand(id), ct);

@@ -5,7 +5,7 @@
       "yaam-api": {
         "generatorName": "typescript-angular",
         "output": "src/app/generated/api",
-        "inputSpec": "http://localhost:5001/swagger/v1/swagger.json",
+        "inputSpec": "http://localhost:5001/openapi/v1.json",
         "additionalProperties": {
           "ngVersion": "22",
           "providedIn": "root",
