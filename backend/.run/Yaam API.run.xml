@@ -1,8 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Yaam API" type="DotNetProject" factoryName=".NET Project">
-    <option name="PROJECT_PATH" value="$PROJECT_DIR$/Yaam.API/Yaam.API.csproj" />
-    <option name="PROJECT_EFT" value="net10.0" />
-    <option name="PASS_PARENT_ENVS" value="1" />
-    <method v="2" />
-  </configuration>
-</component>
