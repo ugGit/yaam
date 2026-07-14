@@ -51,7 +51,8 @@ if [ "$FRONTEND_CHANGED" = true ]; then
   # shellcheck source=/dev/null
   [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
   if command -v nvm &>/dev/null; then
-    nvm use || fail "nvm could not switch to the required Node version (see frontend/.nvmrc)"
+    nvm_version=$(tr -d '[:space:]' < .nvmrc)
+    nvm use "$nvm_version" || fail "nvm could not switch to Node $nvm_version (see frontend/.nvmrc)"
   fi
 
   node_major=$(node -v | grep -oP '(?<=v)\d+')
