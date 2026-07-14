@@ -16,5 +16,5 @@ export const problemDetailsInterceptor: HttpInterceptorFn = (req, next) =>
         status: error.status,
       };
       return throwError(() => problem);
-    })
+    }),
   );

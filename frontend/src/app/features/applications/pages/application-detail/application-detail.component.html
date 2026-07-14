@@ -22,7 +22,8 @@
       <app-application-form
         [existing]="applicationResource.value() ?? null"
         (saved)="onSave($event)"
-        (cancelled)="onCancelEdit()" />
+        (cancelled)="onCancelEdit()"
+      />
     </div>
   } @else {
     @let app = applicationResource.value()!;
@@ -34,7 +35,9 @@
         </div>
         <div class="flex gap-2">
           <button class="btn btn-sm btn-outline" (click)="editMode.set(true)">Edit</button>
-          <button class="btn btn-sm btn-error btn-outline" (click)="deleteModalOpen.set(true)">Delete</button>
+          <button class="btn btn-sm btn-error btn-outline" (click)="deleteModalOpen.set(true)">
+            Delete
+          </button>
         </div>
       </div>
 
@@ -45,7 +48,8 @@
           class="select select-bordered select-sm"
           [value]="app.status"
           [disabled]="statusSaving()"
-          (change)="onStatusChange($event)">
+          (change)="onStatusChange($event)"
+        >
           @for (s of ALL_STATUSES; track s) {
             <option [value]="s">{{ STATUS_LABELS[s] }}</option>
           }
@@ -71,7 +75,9 @@
       @if (app.jobPosting) {
         <div>
           <p class="font-medium mb-2">Job posting</p>
-          <pre class="bg-base-200 rounded p-4 text-sm whitespace-pre-wrap">{{ app.jobPosting }}</pre>
+          <pre class="bg-base-200 rounded p-4 text-sm whitespace-pre-wrap">{{
+            app.jobPosting
+          }}</pre>
         </div>
       }
 

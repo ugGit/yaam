@@ -44,7 +44,11 @@ export class ApplicationsService {
   private readonly baseUrl = '/api/applications';
   constructor(private http: HttpClient) {}
 
-  listApplications(status?: string, sort?: string, order?: string): Observable<ApplicationSummaryDto[]> {
+  listApplications(
+    status?: string,
+    sort?: string,
+    order?: string,
+  ): Observable<ApplicationSummaryDto[]> {
     let params = new HttpParams();
     if (status) params = params.set('status', status);
     if (sort) params = params.set('sort', sort);
@@ -76,7 +80,11 @@ export class ApplicationsService {
     return this.http.post<ApplicationNoteDto>(`${this.baseUrl}/${id}/notes`, body);
   }
 
-  updateApplicationNote(id: string, noteId: string, body: { body: string }): Observable<ApplicationNoteDto> {
+  updateApplicationNote(
+    id: string,
+    noteId: string,
+    body: { body: string },
+  ): Observable<ApplicationNoteDto> {
     return this.http.put<ApplicationNoteDto>(`${this.baseUrl}/${id}/notes/${noteId}`, body);
   }
 

@@ -30,16 +30,14 @@ export class ApplicationDetailComponent {
   protected readonly serverErrors = signal<Record<string, string[]>>({});
 
   protected readonly applicationId = toSignal(
-    this.route.paramMap.pipe(map(p => p.get('id') ?? undefined))
+    this.route.paramMap.pipe(map((p) => p.get('id') ?? undefined)),
   );
   protected readonly isNew = computed(() => !this.applicationId());
 
   protected readonly applicationResource = resource<Application | undefined, string | undefined>({
     params: () => this.applicationId(),
     loader: ({ params }) =>
-      params
-        ? firstValueFrom(this.api.getApplication(params))
-        : Promise.resolve(undefined),
+      params ? firstValueFrom(this.api.getApplication(params)) : Promise.resolve(undefined),
   });
 
   protected async onSave(form: FormGroup): Promise<void> {
@@ -49,9 +47,7 @@ export class ApplicationDetailComponent {
         const created = await firstValueFrom(this.api.createApplication(value));
         await this.router.navigate(['/applications', created.id]);
       } else {
-        await firstValueFrom(
-          this.api.updateApplication(this.applicationId()!, value)
-        );
+        await firstValueFrom(this.api.updateApplication(this.applicationId()!, value));
         this.applicationResource.reload();
         this.editMode.set(false);
       }
@@ -73,9 +69,7 @@ export class ApplicationDetailComponent {
     const status = (event.target as HTMLSelectElement).value;
     this.statusSaving.set(true);
     try {
-      await firstValueFrom(
-        this.api.patchApplicationStatus(this.applicationId()!, { status })
-      );
+      await firstValueFrom(this.api.patchApplicationStatus(this.applicationId()!, { status }));
       this.applicationResource.reload();
     } finally {
       this.statusSaving.set(false);

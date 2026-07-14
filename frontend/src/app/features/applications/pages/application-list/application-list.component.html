@@ -5,12 +5,11 @@
   </div>
 
   <div class="flex gap-2 mb-4 flex-wrap">
-    <button class="btn btn-sm" [class.btn-active]="filterStatus() === ''" (click)="setFilter('')">All</button>
+    <button class="btn btn-sm" [class.btn-active]="filterStatus() === ''" (click)="setFilter('')">
+      All
+    </button>
     @for (s of ALL_STATUSES; track s) {
-      <button
-        class="btn btn-sm"
-        [class.btn-active]="filterStatus() === s"
-        (click)="setFilter(s)">
+      <button class="btn btn-sm" [class.btn-active]="filterStatus() === s" (click)="setFilter(s)">
         {{ STATUS_LABELS[s] }}
       </button>
     }

@@ -31,10 +31,8 @@ export class ApplicationNotesComponent implements OnInit {
   protected async addNote(): Promise<void> {
     const body = this.newNoteBody().trim();
     if (!body) return;
-    const note = await firstValueFrom(
-      this.api.addApplicationNote(this.applicationId(), { body })
-    );
-    this.notes.update(n => [note, ...n]);
+    const note = await firstValueFrom(this.api.addApplicationNote(this.applicationId(), { body }));
+    this.notes.update((n) => [note, ...n]);
     this.newNoteBody.set('');
   }
 
@@ -52,19 +50,15 @@ export class ApplicationNotesComponent implements OnInit {
     const body = this.editingBody().trim();
     if (!body) return;
     const updated = await firstValueFrom(
-      this.api.updateApplicationNote(this.applicationId(), noteId, { body })
+      this.api.updateApplicationNote(this.applicationId(), noteId, { body }),
     );
-    this.notes.update(notes =>
-      notes.map(n => (n.id === noteId ? updated : n))
-    );
+    this.notes.update((notes) => notes.map((n) => (n.id === noteId ? updated : n)));
     this.editingNoteId.set(null);
   }
 
   protected async deleteNote(noteId: string): Promise<void> {
-    await firstValueFrom(
-      this.api.deleteApplicationNote(this.applicationId(), noteId)
-    );
-    this.notes.update(notes => notes.filter(n => n.id !== noteId));
+    await firstValueFrom(this.api.deleteApplicationNote(this.applicationId(), noteId));
+    this.notes.update((notes) => notes.filter((n) => n.id !== noteId));
     this.deleteConfirmId.set(null);
   }
 

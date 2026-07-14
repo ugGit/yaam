@@ -2,11 +2,7 @@ import { Component, inject, signal, resource } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { ApplicationsService } from '../../../../generated/api';
-import {
-  ApplicationSummary,
-  ALL_STATUSES,
-  STATUS_LABELS,
-} from '../../models/application.model';
+import { ApplicationSummary, ALL_STATUSES, STATUS_LABELS } from '../../models/application.model';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -26,7 +22,10 @@ export class ApplicationListComponent {
   protected readonly sort = signal('dateApplied');
   protected readonly order = signal<'asc' | 'desc'>('desc');
 
-  protected readonly applications = resource<ApplicationSummary[], { status: string; sort: string; order: 'asc' | 'desc' }>({
+  protected readonly applications = resource<
+    ApplicationSummary[],
+    { status: string; sort: string; order: 'asc' | 'desc' }
+  >({
     params: () => ({
       status: this.filterStatus(),
       sort: this.sort(),
@@ -34,11 +33,7 @@ export class ApplicationListComponent {
     }),
     loader: ({ params }) =>
       firstValueFrom(
-        this.api.listApplications(
-          params.status || undefined,
-          params.sort,
-          params.order
-        )
+        this.api.listApplications(params.status || undefined, params.sort, params.order),
       ),
   });
 
@@ -47,7 +42,7 @@ export class ApplicationListComponent {
   }
 
   protected toggleOrder(): void {
-    this.order.update(o => (o === 'desc' ? 'asc' : 'desc'));
+    this.order.update((o) => (o === 'desc' ? 'asc' : 'desc'));
   }
 
   protected statusBadgeClass(status: string): string {
