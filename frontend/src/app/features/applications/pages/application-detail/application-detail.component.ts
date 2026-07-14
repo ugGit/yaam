@@ -55,8 +55,9 @@ export class ApplicationDetailComponent {
         this.applicationResource.reload();
         this.editMode.set(false);
       }
-    } catch (err: any) {
-      this.serverErrors.set(err?.errors ?? {});
+    } catch (err: unknown) {
+      const apiErr = err as { errors?: Record<string, string[]> };
+      this.serverErrors.set(apiErr?.errors ?? {});
     }
   }
 

@@ -1,23 +1,23 @@
 <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-4">
   <div class="form-control">
-    <label class="label"><span class="label-text">Company name *</span></label>
-    <input formControlName="companyName" type="text" class="input input-bordered" />
+    <label class="label" for="companyName"><span class="label-text">Company name *</span></label>
+    <input id="companyName" formControlName="companyName" type="text" class="input input-bordered" />
     @if (fieldError('companyName')) {
-      <label class="label"><span class="label-text-alt text-error">{{ fieldError('companyName') }}</span></label>
+      <div class="label"><span class="label-text-alt text-error">{{ fieldError('companyName') }}</span></div>
     }
   </div>
 
   <div class="form-control">
-    <label class="label"><span class="label-text">Role *</span></label>
-    <input formControlName="role" type="text" class="input input-bordered" />
+    <label class="label" for="role"><span class="label-text">Role *</span></label>
+    <input id="role" formControlName="role" type="text" class="input input-bordered" />
     @if (fieldError('role')) {
-      <label class="label"><span class="label-text-alt text-error">{{ fieldError('role') }}</span></label>
+      <div class="label"><span class="label-text-alt text-error">{{ fieldError('role') }}</span></div>
     }
   </div>
 
   <div class="form-control">
-    <label class="label"><span class="label-text">Status *</span></label>
-    <select formControlName="status" class="select select-bordered">
+    <label class="label" for="status"><span class="label-text">Status *</span></label>
+    <select id="status" formControlName="status" class="select select-bordered">
       @for (s of ALL_STATUSES; track s) {
         <option [value]="s">{{ STATUS_LABELS[s] }}</option>
       }
@@ -25,28 +25,28 @@
   </div>
 
   <div class="form-control">
-    <label class="label"><span class="label-text">Date applied</span></label>
-    <input formControlName="dateApplied" type="date" class="input input-bordered" />
+    <label class="label" for="dateApplied"><span class="label-text">Date applied</span></label>
+    <input id="dateApplied" formControlName="dateApplied" type="date" class="input input-bordered" />
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
     <div class="form-control">
-      <label class="label"><span class="label-text">Contact name</span></label>
-      <input formControlName="contactName" type="text" class="input input-bordered" />
+      <label class="label" for="contactName"><span class="label-text">Contact name</span></label>
+      <input id="contactName" formControlName="contactName" type="text" class="input input-bordered" />
     </div>
     <div class="form-control">
-      <label class="label"><span class="label-text">Contact email</span></label>
-      <input formControlName="contactEmail" type="email" class="input input-bordered" />
+      <label class="label" for="contactEmail"><span class="label-text">Contact email</span></label>
+      <input id="contactEmail" formControlName="contactEmail" type="email" class="input input-bordered" />
     </div>
     <div class="form-control">
-      <label class="label"><span class="label-text">Contact phone</span></label>
-      <input formControlName="contactPhone" type="text" class="input input-bordered" />
+      <label class="label" for="contactPhone"><span class="label-text">Contact phone</span></label>
+      <input id="contactPhone" formControlName="contactPhone" type="text" class="input input-bordered" />
     </div>
   </div>
 
   <div class="form-control">
-    <label class="label"><span class="label-text">Job posting</span></label>
-    <textarea formControlName="jobPosting" rows="6" class="textarea textarea-bordered"></textarea>
+    <label class="label" for="jobPosting"><span class="label-text">Job posting</span></label>
+    <textarea id="jobPosting" formControlName="jobPosting" rows="6" class="textarea textarea-bordered"></textarea>
   </div>
 
   <div class="flex gap-2 justify-end">

@@ -1,4 +1,4 @@
-import { Component, input, output, OnInit } from '@angular/core';
+import { Component, inject, input, output, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Application, ALL_STATUSES, STATUS_LABELS } from '../../models/application.model';
@@ -19,7 +19,7 @@ export class ApplicationFormComponent implements OnInit {
 
   protected form!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  private readonly fb = inject(FormBuilder);
 
   ngOnInit(): void {
     const a = this.existing();

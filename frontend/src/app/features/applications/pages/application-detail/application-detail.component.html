@@ -39,8 +39,9 @@
       </div>
 
       <div class="flex items-center gap-3">
-        <label class="label-text font-medium">Status</label>
+        <label class="label-text font-medium" for="inlineStatus">Status</label>
         <select
+          id="inlineStatus"
           class="select select-bordered select-sm"
           [value]="app.status"
           [disabled]="statusSaving()"
