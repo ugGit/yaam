@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+FRONTEND_CHANGED=false
+BACKEND_CHANGED=false
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  if [ "$remote_sha" = "0000000000000000000000000000000000000000" ]; then
+    base=$(git merge-base "$local_sha" origin/main 2>/dev/null || git rev-parse "${local_sha}^")
+  else
+    base="$remote_sha"
+  fi
+  changed=$(git diff --name-only "$base" "$local_sha")
+  echo "$changed" | grep -q "^frontend/" && FRONTEND_CHANGED=true
+  echo "$changed" | grep -q "^backend/"  && BACKEND_CHANGED=true
+done
+
+if [ "$BACKEND_CHANGED" = false ] && [ "$FRONTEND_CHANGED" = false ]; then
+  exit 0
+fi
+
+fail() { echo ""; echo "✗ pre-push: $*" >&2; exit 1; }
+
+if [ "$BACKEND_CHANGED" = true ]; then
+  echo ""
+  echo "── Backend checks ───────────────────────────────"
+  cd "$REPO_ROOT/backend"
+
+  echo "  build (Release)..."
+  dotnet build --configuration Release -p:TreatWarningsAsErrors=false -v:q --nologo \
+    || fail "backend build failed"
+
+  echo "  format check..."
+  dotnet format --verify-no-changes \
+    || fail "backend format check failed — run: dotnet format"
+
+  echo "  unit tests..."
+  dotnet test Yaam.Tests.Unit --no-build --configuration Release -v:q --nologo \
+    || fail "backend unit tests failed"
+
+  echo "  ✓ backend OK"
+fi
+
+if [ "$FRONTEND_CHANGED" = true ]; then
+  echo ""
+  echo "── Frontend checks ──────────────────────────────"
+  cd "$REPO_ROOT/frontend"
+
+  export NVM_DIR="$HOME/.nvm"
+  # shellcheck source=/dev/null
+  [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+  nvm use 24 --silent 2>/dev/null || true
+
+  echo "  lint..."
+  npx ng lint --silent \
+    || fail "frontend lint failed — run: npx ng lint"
+
+  echo "  format check..."
+  npm run format:check --silent \
+    || fail "frontend format check failed — run: npm run format"
+
+  echo "  build (production)..."
+  npx ng build --configuration production \
+    || fail "frontend build failed"
+
+  echo "  ✓ frontend OK"
+fi
+
+echo ""
