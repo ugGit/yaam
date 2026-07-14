@@ -47,17 +47,10 @@ if [ "$FRONTEND_CHANGED" = true ]; then
   echo "── Frontend checks ──────────────────────────────"
   cd "$REPO_ROOT/frontend"
 
-  export NVM_DIR="$HOME/.nvm"
-  # shellcheck source=/dev/null
-  [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
-  if command -v nvm &>/dev/null; then
-    nvm_version=$(tr -d '[:space:]' < .nvmrc)
-    nvm use "$nvm_version" || fail "nvm could not switch to Node $nvm_version (see frontend/.nvmrc)"
-  fi
-
+  required_node=$(tr -d '[:space:]' < .nvmrc)
   node_major=$(node -v | grep -oP '(?<=v)\d+')
   if [ "$node_major" -lt 22 ]; then
-    fail "Node.js v22+ required (current: $(node -v)). Run: nvm use  (inside frontend/)"
+    fail "Node.js v22+ required (current: $(node -v), .nvmrc: $required_node). Run: nvm use $required_node"
   fi
 
   echo "  lint..."
