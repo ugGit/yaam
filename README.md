@@ -31,6 +31,14 @@ A job application tracker that closes the loop: import your CV, build your profi
 | Node.js | 24.x | https://nodejs.org |
 | Docker + Compose | any recent | https://docs.docker.com/get-docker |
 
+### 0 — After cloning
+
+```bash
+git config core.hooksPath .githooks
+```
+
+This activates the pre-push hook that runs CI checks (build, format, lint, unit tests) locally before every push.
+
 ### 1 — Start the database and Ollama
 
 ```bash
@@ -59,7 +67,7 @@ dotnet run --project Yaam.API
 API available at:
 - HTTP: `http://localhost:5231`
 - HTTPS: `https://localhost:7131`
-- Swagger UI: `https://localhost:7131/swagger`
+- Scalar UI: `https://localhost:7131/scalar/v1`
 
 ### 3 — Run the frontend
 
