@@ -96,16 +96,16 @@ cd frontend && npx ng lint && npm run format:check
 | IDE | Open | Run configs |
 |-----|------|-------------|
 | **WebStorm** | `frontend/` folder | `frontend/.run/` — Dev Server, Lint, Build Production |
-| **Rider** | `backend/Yaam.slnx` | `backend/.run/` — Yaam API, Unit Tests |
-| **IntelliJ IDEA** | repo root | discovers all configs above automatically |
+| **Rider** | `backend/Yaam.slnx` | use Rider's built-in run/test buttons |
+| **IntelliJ IDEA** | repo root | discovers frontend configs automatically |
 
-Any editor works, but only the three above have pre-configured run configs checked into the repo.
+Any editor works, but only WebStorm has pre-configured run configs checked into the repo.
 
 **WebStorm** — node version is managed via `frontend/.nvmrc`. Point the project Node interpreter at the nvm-managed binary or let WebStorm pick it up automatically.
 
-**Rider** — open `backend/Yaam.slnx` directly (not the folder). The solution file includes all backend projects.
+**Rider** — open `backend/Yaam.slnx` directly (not the folder). The solution file includes all backend projects. Use the built-in run/debug buttons and the test explorer for unit tests.
 
-**IntelliJ IDEA** — useful for cross-cutting work: docs, CI config, the root `docker-compose.yml`. It will surface the WebStorm and Rider run configs from the subfolders, but running the frontend or backend from here is not tested.
+**IntelliJ IDEA** — useful for cross-cutting work: docs, CI config, the root `docker-compose.yml`. It will surface the WebStorm run configs from the frontend subfolder, but running the backend from here is not tested.
 
 ---
 
