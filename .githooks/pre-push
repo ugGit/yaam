@@ -48,7 +48,7 @@ if [ "$FRONTEND_CHANGED" = true ]; then
   cd "$REPO_ROOT/frontend"
 
   required_node=$(tr -d '[:space:]' < .nvmrc)
-  node_major=$(node -v | grep -oP '(?<=v)\d+')
+  node_major=$(node -v | cut -d. -f1 | tr -d 'v')
   if [ "$node_major" -lt 22 ]; then
     fail "Node.js v22+ required (current: $(node -v), .nvmrc: $required_node). Run: nvm use $required_node"
   fi
