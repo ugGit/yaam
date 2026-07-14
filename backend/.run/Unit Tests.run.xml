@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Unit Tests" type="dotnet_unittest" factoryName="Unit Test">
+    <option name="PROJECT_PATH" value="$PROJECT_DIR$/Yaam.Tests.Unit/Yaam.Tests.Unit.csproj" />
+    <option name="PASS_PARENT_ENVS" value="1" />
+    <method v="2" />
+  </configuration>
+</component>
