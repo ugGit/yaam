@@ -8,8 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "format": "prettier --write \"src/**/*.{ts,html,scss,json}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,html,scss,json}\"",
+    "format": "prettier --write \"src/**/*.{ts,html,scss,json}\" && npx eslint --fix \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.{ts,html,scss,json}\" && npx eslint \"src/**/*.ts\"",
     "generate:api": "openapi-generator-cli generate"
   },
   "private": true,
@@ -34,6 +34,7 @@
     "autoprefixer": "^10.5.2",
     "daisyui": "^3.9.4",
     "eslint": "^10.3.0",
+    "eslint-plugin-unused-imports": "^4.4.1",
     "jsdom": "^28.0.0",
     "postcss": "^8.5.16",
     "prettier": "^3.9.4",
