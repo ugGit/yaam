@@ -96,13 +96,15 @@ public class ApplicationsEndpointsTests(ApiFactory factory) : IClassFixture<ApiF
     }
 
     [Fact]
-    public async Task DELETE_Application_Returns204()
+    public async Task DELETE_Application_Returns204_AndRemovesEntity()
     {
         var created = await CreateApplicationAsync("Delete Test Co", "PM");
 
-        var response = await _client.DeleteAsync($"/api/applications/{created.Id}");
+        var deleteResponse = await _client.DeleteAsync($"/api/applications/{created.Id}");
+        deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
-        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        var getResponse = await _client.GetAsync($"/api/applications/{created.Id}");
+        getResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
     [Fact]
@@ -135,15 +137,19 @@ public class ApplicationsEndpointsTests(ApiFactory factory) : IClassFixture<ApiF
     }
 
     [Fact]
-    public async Task DELETE_Note_Returns204()
+    public async Task DELETE_Note_Returns204_AndRemovesNote()
     {
         var app = await CreateApplicationAsync("Note Delete Co", "Dev");
         var note = await CreateNoteAsync(app.Id, "To be deleted.");
 
-        var response = await _client.DeleteAsync(
+        var deleteResponse = await _client.DeleteAsync(
             $"/api/applications/{app.Id}/notes/{note.Id}");
+        deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
-        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        var getResponse = await _client.GetAsync($"/api/applications/{app.Id}");
+        getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var body = await getResponse.Content.ReadFromJsonAsync<ApplicationDto>();
+        body!.Notes.Should().NotContain(n => n.Id == note.Id);
     }
 
     private async Task<ApplicationDto> CreateApplicationAsync(string company, string role)

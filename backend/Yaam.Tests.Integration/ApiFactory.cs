@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Yaam.Infrastructure.Persistence;
 
@@ -8,13 +9,14 @@ namespace Yaam.Tests.Integration;
 
 public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
-    private readonly string _connectionString =
-        Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
-        ?? "Host=localhost;Port=5433;Database=yaam_test;Username=yaam;Password=yaam";
-
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.ConfigureServices(services =>
+        builder.ConfigureAppConfiguration((_, config) =>
+            config.AddJsonFile(
+                Path.Combine(AppContext.BaseDirectory, "appsettings.Test.json"),
+                optional: false));
+
+        builder.ConfigureServices((context, services) =>
         {
             var descriptor = services.SingleOrDefault(
                 d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
@@ -22,7 +24,10 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
                 services.Remove(descriptor);
 
             services.AddDbContext<AppDbContext>(options =>
-                options.UseNpgsql(_connectionString));
+                options.UseNpgsql(
+                    context.Configuration.GetConnectionString("DefaultConnection")
+                    ?? throw new InvalidOperationException(
+                        "Test connection string 'DefaultConnection' not found in appsettings.Test.json.")));
         });
     }
 

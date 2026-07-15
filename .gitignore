@@ -23,6 +23,7 @@ frontend/src/app/generated/*
 appsettings.*.json
 !appsettings.json
 !appsettings.Development.json
+!appsettings.Test.json
 .env
 .env.local
 
