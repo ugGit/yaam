@@ -25,7 +25,8 @@ public class UpdateApplicationCommandValidator : AbstractValidator<UpdateApplica
     public UpdateApplicationCommandValidator()
     {
         RuleFor(x => x.CompanyName).NotEmpty().MaximumLength(200);
-        RuleFor(x => x.Role).NotEmpty().MaximumLength(200);
+        RuleFor(x => x.Role).NotEmpty().MaximumLength(350);
+        RuleFor(x => x.ContactPhone).MaximumLength(20).When(x => x.ContactPhone is not null);
         RuleFor(x => x.DateApplied)
             .NotNull()
             .WithMessage("Date applied is required unless status is Draft.")

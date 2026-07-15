@@ -4,8 +4,8 @@ namespace Yaam.Domain.Entities;
 
 public class Application : Entity
 {
-    public string CompanyName { get; set; } = string.Empty;
-    public string Role { get; set; } = string.Empty;
+    public required string CompanyName { get; set; }
+    public required string Role { get; set; }
     public DateOnly? DateApplied { get; set; }
     public ApplicationStatus Status { get; set; } = ApplicationStatus.Draft;
     public string? ContactName { get; set; }

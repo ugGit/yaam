@@ -11,11 +11,11 @@ public class ApplicationConfiguration : IEntityTypeConfiguration<global::Yaam.Do
     {
         builder.HasKey(a => a.Id);
         builder.Property(a => a.CompanyName).IsRequired().HasMaxLength(200);
-        builder.Property(a => a.Role).IsRequired().HasMaxLength(200);
+        builder.Property(a => a.Role).IsRequired().HasMaxLength(350);
         builder.Property(a => a.Status).IsRequired().HasConversion<string>();
         builder.Property(a => a.ContactName).HasMaxLength(200);
         builder.Property(a => a.ContactEmail).HasMaxLength(200);
-        builder.Property(a => a.ContactPhone).HasMaxLength(50);
+        builder.Property(a => a.ContactPhone).HasMaxLength(20);
 
         builder.HasMany(a => a.Notes)
             .WithOne()
