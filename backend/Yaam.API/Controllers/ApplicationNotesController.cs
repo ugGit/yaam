@@ -11,19 +11,20 @@ public class ApplicationNotesController(IMediator mediator) : ControllerBase
     [HttpPost]
     [EndpointName("AddApplicationNote")]
     public async Task<IActionResult> Add(
-        Guid applicationId, [FromBody] NoteBodyRequest request, CancellationToken cancellationToken)
+        Guid applicationId, [FromBody] CreateApplicationNoteInputModel input, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(new AddApplicationNoteCommand(applicationId, request.Body), cancellationToken);
+        var result = await mediator.Send(new AddApplicationNoteCommand(applicationId, input.Body), cancellationToken);
         return result is null ? NotFound() : Created(string.Empty, result);
     }
 
     [HttpPut("{noteId:guid}")]
     [EndpointName("UpdateApplicationNote")]
     public async Task<IActionResult> Update(
-        Guid applicationId, Guid noteId, [FromBody] NoteBodyRequest request, CancellationToken cancellationToken)
+        Guid applicationId, Guid noteId,
+        [FromBody] UpdateApplicationNoteInputModel input, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new UpdateApplicationNoteCommand(applicationId, noteId, request.Body), cancellationToken);
+            new UpdateApplicationNoteCommand(applicationId, noteId, input.Body), cancellationToken);
         return result is null ? NotFound() : Ok(result);
     }
 
@@ -37,4 +38,5 @@ public class ApplicationNotesController(IMediator mediator) : ControllerBase
     }
 }
 
-public record NoteBodyRequest(string Body);
+public record CreateApplicationNoteInputModel(string Body);
+public record UpdateApplicationNoteInputModel(string Body);

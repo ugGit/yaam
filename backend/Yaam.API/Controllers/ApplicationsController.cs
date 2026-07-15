@@ -33,28 +33,38 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     [HttpPost]
     [EndpointName("CreateApplication")]
     public async Task<IActionResult> Create(
-        [FromBody] CreateApplicationCommand command, CancellationToken cancellationToken)
+        [FromBody] CreateApplicationInputModel input, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(command, cancellationToken);
+        var result = await mediator.Send(
+            new CreateApplicationCommand(
+                input.CompanyName,
+                input.Role,
+                input.DateApplied,
+                input.Status,
+                input.ContactName,
+                input.ContactEmail,
+                input.ContactPhone,
+                input.JobPosting),
+            cancellationToken);
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
 
     [HttpPut("{id:guid}")]
     [EndpointName("UpdateApplication")]
     public async Task<IActionResult> Update(
-        Guid id, [FromBody] UpdateApplicationRequest request, CancellationToken cancellationToken)
+        Guid id, [FromBody] UpdateApplicationInputModel input, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
             new UpdateApplicationCommand(
                 id,
-                request.CompanyName,
-                request.Role,
-                request.DateApplied,
-                request.Status,
-                request.ContactName,
-                request.ContactEmail,
-                request.ContactPhone,
-                request.JobPosting),
+                input.CompanyName,
+                input.Role,
+                input.DateApplied,
+                input.Status,
+                input.ContactName,
+                input.ContactEmail,
+                input.ContactPhone,
+                input.JobPosting),
             cancellationToken);
         return result is null ? NotFound() : Ok(result);
     }
@@ -62,10 +72,10 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     [HttpPatch("{id:guid}/status")]
     [EndpointName("PatchApplicationStatus")]
     public async Task<IActionResult> UpdateStatus(
-        Guid id, [FromBody] UpdateApplicationStatusRequest request, CancellationToken cancellationToken)
+        Guid id, [FromBody] UpdateApplicationStatusInputModel input, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new UpdateApplicationStatusCommand(id, request.Status), cancellationToken);
+            new UpdateApplicationStatusCommand(id, input.Status), cancellationToken);
         return result is null ? NotFound() : Ok(result);
     }
 
@@ -78,7 +88,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     }
 }
 
-public record UpdateApplicationRequest(
+public record CreateApplicationInputModel(
     string CompanyName,
     string Role,
     DateOnly? DateApplied,
@@ -88,4 +98,14 @@ public record UpdateApplicationRequest(
     string? ContactPhone,
     string? JobPosting);
 
-public record UpdateApplicationStatusRequest(ApplicationStatus Status);
+public record UpdateApplicationInputModel(
+    string CompanyName,
+    string Role,
+    DateOnly? DateApplied,
+    ApplicationStatus Status,
+    string? ContactName,
+    string? ContactEmail,
+    string? ContactPhone,
+    string? JobPosting);
+
+public record UpdateApplicationStatusInputModel(ApplicationStatus Status);
