@@ -3,7 +3,6 @@ using MediatR;
 using Yaam.Application.Applications.Dtos;
 using Yaam.Domain.Enums;
 using Yaam.Domain.Repositories;
-using DomainApp = Yaam.Domain.Entities.Application;
 
 namespace Yaam.Application.Applications.Commands;
 
@@ -34,18 +33,18 @@ public class CreateApplicationCommandHandler(IApplicationRepository repository)
     : IRequestHandler<CreateApplicationCommand, ApplicationDto>
 {
     public async Task<ApplicationDto> Handle(
-        CreateApplicationCommand request, CancellationToken cancellationToken)
+        CreateApplicationCommand command, CancellationToken cancellationToken)
     {
-        var application = new DomainApp
+        var application = new global::Yaam.Domain.Entities.Application
         {
-            CompanyName = request.CompanyName,
-            Role = request.Role,
-            DateApplied = request.DateApplied,
-            Status = request.Status,
-            ContactName = request.ContactName,
-            ContactEmail = request.ContactEmail,
-            ContactPhone = request.ContactPhone,
-            JobPosting = request.JobPosting,
+            CompanyName = command.CompanyName,
+            Role = command.Role,
+            DateApplied = command.DateApplied,
+            Status = command.Status,
+            ContactName = command.ContactName,
+            ContactEmail = command.ContactEmail,
+            ContactPhone = command.ContactPhone,
+            JobPosting = command.JobPosting,
         };
 
         await repository.AddAsync(application, cancellationToken);

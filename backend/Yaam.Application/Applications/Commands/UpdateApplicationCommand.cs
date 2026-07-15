@@ -34,19 +34,19 @@ public class UpdateApplicationCommandHandler(IApplicationRepository repository)
     : IRequestHandler<UpdateApplicationCommand, ApplicationDto?>
 {
     public async Task<ApplicationDto?> Handle(
-        UpdateApplicationCommand request, CancellationToken cancellationToken)
+        UpdateApplicationCommand command, CancellationToken cancellationToken)
     {
-        var application = await repository.GetByIdAsync(request.Id, cancellationToken);
+        var application = await repository.GetByIdAsync(command.Id, cancellationToken);
         if (application is null) return null;
 
-        application.CompanyName = request.CompanyName;
-        application.Role = request.Role;
-        application.DateApplied = request.DateApplied;
-        application.Status = request.Status;
-        application.ContactName = request.ContactName;
-        application.ContactEmail = request.ContactEmail;
-        application.ContactPhone = request.ContactPhone;
-        application.JobPosting = request.JobPosting;
+        application.CompanyName = command.CompanyName;
+        application.Role = command.Role;
+        application.DateApplied = command.DateApplied;
+        application.Status = command.Status;
+        application.ContactName = command.ContactName;
+        application.ContactEmail = command.ContactEmail;
+        application.ContactPhone = command.ContactPhone;
+        application.JobPosting = command.JobPosting;
 
         await repository.UpdateAsync(application, cancellationToken);
 

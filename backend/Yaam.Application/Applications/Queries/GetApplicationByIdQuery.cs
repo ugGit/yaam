@@ -2,7 +2,6 @@ using MediatR;
 using Yaam.Application.Applications.Dtos;
 using Yaam.Domain.Entities;
 using Yaam.Domain.Repositories;
-using DomainApp = Yaam.Domain.Entities.Application;
 
 namespace Yaam.Application.Applications.Queries;
 
@@ -12,13 +11,13 @@ public class GetApplicationByIdQueryHandler(IApplicationRepository repository)
     : IRequestHandler<GetApplicationByIdQuery, ApplicationDto?>
 {
     public async Task<ApplicationDto?> Handle(
-        GetApplicationByIdQuery request, CancellationToken cancellationToken)
+        GetApplicationByIdQuery query, CancellationToken cancellationToken)
     {
-        var application = await repository.GetByIdAsync(request.Id, cancellationToken);
+        var application = await repository.GetByIdAsync(query.Id, cancellationToken);
         return application is null ? null : ToDto(application);
     }
 
-    private static ApplicationDto ToDto(DomainApp a) => new(
+    private static ApplicationDto ToDto(global::Yaam.Domain.Entities.Application a) => new(
         a.Id, a.CompanyName, a.Role, a.DateApplied, a.Status,
         a.ContactName, a.ContactEmail, a.ContactPhone, a.JobPosting,
         a.CreatedAt, a.UpdatedAt,

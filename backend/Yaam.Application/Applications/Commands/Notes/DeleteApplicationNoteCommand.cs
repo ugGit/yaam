@@ -11,6 +11,6 @@ public class DeleteApplicationNoteCommandHandler(IApplicationRepository reposito
     : IRequestHandler<DeleteApplicationNoteCommand>
 {
     public async Task Handle(
-        DeleteApplicationNoteCommand request, CancellationToken cancellationToken)
-        => await repository.DeleteNoteAsync(request.ApplicationId, request.NoteId, cancellationToken);
+        DeleteApplicationNoteCommand command, CancellationToken cancellationToken)
+        => await repository.DeleteNoteAsync(command.ApplicationId, command.NoteId, cancellationToken);
 }

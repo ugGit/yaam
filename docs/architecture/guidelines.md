@@ -33,7 +33,13 @@ Concrete patterns are documented in [patterns.md](patterns.md). Summary:
 - No magic strings — use enums and constants
 - Explicit over implicit — avoid clever code
 - One responsibility per class/component
-- Map consequently between layers 
+- Map consequently between layers
+
+### Backend Naming Conventions
+
+- **Handler parameter:** `command` for `IRequestHandler<TCommand>`, `query` for `IRequestHandler<TQuery>`. Never `request`.
+- **Controller CancellationToken:** Always named `cancellationToken`. Never `ct`. Never `= default` — ASP.NET Core always injects it.
+- **Type aliases:** No abbreviated aliases (`DomainApp`, `DomainNote`). If a `using` alias is genuinely needed to resolve ambiguity, use the full class name as the alias (e.g., `using Application = Yaam.Domain.Entities.Application`). Prefer resolving the ambiguity by restructuring instead.
 
 ## Testing Approach
 

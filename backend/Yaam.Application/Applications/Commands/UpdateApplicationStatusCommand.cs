@@ -13,12 +13,12 @@ public class UpdateApplicationStatusCommandHandler(IApplicationRepository reposi
     : IRequestHandler<UpdateApplicationStatusCommand, ApplicationDto?>
 {
     public async Task<ApplicationDto?> Handle(
-        UpdateApplicationStatusCommand request, CancellationToken cancellationToken)
+        UpdateApplicationStatusCommand command, CancellationToken cancellationToken)
     {
-        var application = await repository.GetByIdAsync(request.Id, cancellationToken);
+        var application = await repository.GetByIdAsync(command.Id, cancellationToken);
         if (application is null) return null;
 
-        application.Status = request.Status;
+        application.Status = command.Status;
         await repository.UpdateAsync(application, cancellationToken);
 
         return new ApplicationDto(

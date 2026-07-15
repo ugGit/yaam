@@ -1,14 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Yaam.Domain.Entities;
-using DomainApplication = Yaam.Domain.Entities.Application;
-using DomainApplicationNote = Yaam.Domain.Entities.ApplicationNote;
+using ApplicationNote = Yaam.Domain.Entities.ApplicationNote;
 
 namespace Yaam.Infrastructure.Persistence;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public DbSet<DomainApplication> Applications => Set<DomainApplication>();
-    public DbSet<DomainApplicationNote> ApplicationNotes => Set<DomainApplicationNote>();
+    public DbSet<global::Yaam.Domain.Entities.Application> Applications => Set<global::Yaam.Domain.Entities.Application>();
+    public DbSet<ApplicationNote> ApplicationNotes => Set<ApplicationNote>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

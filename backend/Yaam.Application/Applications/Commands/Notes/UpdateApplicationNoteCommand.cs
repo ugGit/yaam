@@ -22,13 +22,13 @@ public class UpdateApplicationNoteCommandHandler(IApplicationRepository reposito
     : IRequestHandler<UpdateApplicationNoteCommand, ApplicationNoteDto?>
 {
     public async Task<ApplicationNoteDto?> Handle(
-        UpdateApplicationNoteCommand request, CancellationToken cancellationToken)
+        UpdateApplicationNoteCommand command, CancellationToken cancellationToken)
     {
         var note = await repository.GetNoteByIdAsync(
-            request.ApplicationId, request.NoteId, cancellationToken);
+            command.ApplicationId, command.NoteId, cancellationToken);
         if (note is null) return null;
 
-        note.Body = request.Body;
+        note.Body = command.Body;
         await repository.UpdateNoteAsync(note, cancellationToken);
         return new ApplicationNoteDto(note.Id, note.Body, note.CreatedAt, note.UpdatedAt);
     }

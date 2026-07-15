@@ -1,14 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Yaam.Domain.Enums;
-using DomainApplication = Yaam.Domain.Entities.Application;
-using DomainApplicationNote = Yaam.Domain.Entities.ApplicationNote;
+using ApplicationNote = Yaam.Domain.Entities.ApplicationNote;
 
 namespace Yaam.Infrastructure.Persistence.Configurations;
 
-public class ApplicationConfiguration : IEntityTypeConfiguration<DomainApplication>
+public class ApplicationConfiguration : IEntityTypeConfiguration<global::Yaam.Domain.Entities.Application>
 {
-    public void Configure(EntityTypeBuilder<DomainApplication> builder)
+    public void Configure(EntityTypeBuilder<global::Yaam.Domain.Entities.Application> builder)
     {
         builder.HasKey(a => a.Id);
         builder.Property(a => a.CompanyName).IsRequired().HasMaxLength(200);
@@ -20,7 +19,7 @@ public class ApplicationConfiguration : IEntityTypeConfiguration<DomainApplicati
 
         builder.HasMany(a => a.Notes)
             .WithOne()
-            .HasForeignKey((DomainApplicationNote n) => n.ApplicationId)
+            .HasForeignKey((ApplicationNote n) => n.ApplicationId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -1,8 +1,8 @@
 using FluentValidation;
 using MediatR;
 using Yaam.Application.Applications.Dtos;
+using Yaam.Domain.Entities;
 using Yaam.Domain.Repositories;
-using DomainNote = Yaam.Domain.Entities.ApplicationNote;
 
 namespace Yaam.Application.Applications.Commands.Notes;
 
@@ -22,15 +22,15 @@ public class AddApplicationNoteCommandHandler(IApplicationRepository repository)
     : IRequestHandler<AddApplicationNoteCommand, ApplicationNoteDto?>
 {
     public async Task<ApplicationNoteDto?> Handle(
-        AddApplicationNoteCommand request, CancellationToken cancellationToken)
+        AddApplicationNoteCommand command, CancellationToken cancellationToken)
     {
-        var application = await repository.GetByIdAsync(request.ApplicationId, cancellationToken);
+        var application = await repository.GetByIdAsync(command.ApplicationId, cancellationToken);
         if (application is null) return null;
 
-        var note = new DomainNote
+        var note = new ApplicationNote
         {
-            ApplicationId = request.ApplicationId,
-            Body = request.Body,
+            ApplicationId = command.ApplicationId,
+            Body = command.Body,
         };
 
         await repository.AddNoteAsync(note, cancellationToken);

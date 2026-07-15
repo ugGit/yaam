@@ -13,59 +13,67 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     [HttpGet]
     [EndpointName("ListApplications")]
     public async Task<IActionResult> GetAll(
+        CancellationToken cancellationToken,
         [FromQuery] ApplicationStatus? status,
         [FromQuery] string sort = "dateApplied",
-        [FromQuery] string order = "desc",
-        CancellationToken ct = default)
+        [FromQuery] string order = "desc")
     {
-        var result = await mediator.Send(new GetApplicationsQuery(status, sort, order), ct);
+        var result = await mediator.Send(new GetApplicationsQuery(status, sort, order), cancellationToken);
         return Ok(result);
     }
 
     [HttpGet("{id:guid}")]
     [EndpointName("GetApplication")]
-    public async Task<IActionResult> GetById(Guid id, CancellationToken ct = default)
+    public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(new GetApplicationByIdQuery(id), ct);
+        var result = await mediator.Send(new GetApplicationByIdQuery(id), cancellationToken);
         return result is null ? NotFound() : Ok(result);
     }
 
     [HttpPost]
     [EndpointName("CreateApplication")]
     public async Task<IActionResult> Create(
-        [FromBody] CreateApplicationCommand command, CancellationToken ct = default)
+        [FromBody] CreateApplicationCommand command, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(command, ct);
+        var result = await mediator.Send(command, cancellationToken);
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
 
     [HttpPut("{id:guid}")]
     [EndpointName("UpdateApplication")]
     public async Task<IActionResult> Update(
-        Guid id, [FromBody] UpdateApplicationRequest request, CancellationToken ct = default)
+        Guid id, [FromBody] UpdateApplicationRequest request, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new UpdateApplicationCommand(id, request.CompanyName, request.Role,
-                request.DateApplied, request.Status, request.ContactName,
-                request.ContactEmail, request.ContactPhone, request.JobPosting), ct);
+            new UpdateApplicationCommand(
+                id,
+                request.CompanyName,
+                request.Role,
+                request.DateApplied,
+                request.Status,
+                request.ContactName,
+                request.ContactEmail,
+                request.ContactPhone,
+                request.JobPosting),
+            cancellationToken);
         return result is null ? NotFound() : Ok(result);
     }
 
     [HttpPatch("{id:guid}/status")]
     [EndpointName("PatchApplicationStatus")]
     public async Task<IActionResult> UpdateStatus(
-        Guid id, [FromBody] UpdateApplicationStatusRequest request, CancellationToken ct = default)
+        Guid id, [FromBody] UpdateApplicationStatusRequest request, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new UpdateApplicationStatusCommand(id, request.Status), ct);
+            new UpdateApplicationStatusCommand(id, request.Status), cancellationToken);
         return result is null ? NotFound() : Ok(result);
     }
 
     [HttpDelete("{id:guid}")]
     [EndpointName("DeleteApplication")]
-    public async Task<IActionResult> Delete(Guid id, CancellationToken ct = default)
+    public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
     {
-        await mediator.Send(new DeleteApplicationCommand(id), ct);
+        await mediator.Send(new DeleteApplicationCommand(id), cancellationToken);
         return NoContent();
     }
 }
