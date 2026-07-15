@@ -1,17 +1,17 @@
 import { Component, input, linkedSignal, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormField, FormRoot, form, required, submit } from '@angular/forms';
+import { FormField, FormRoot, form, required, submit } from '@angular/forms/signals';
 import { Application, ALL_STATUSES, STATUS_LABELS } from '../../models/application.model';
 
 export interface ApplicationFormData {
   companyName: string;
   role: string;
-  dateApplied: string | null;
+  dateApplied: string;
   status: string;
-  contactName: string | null;
-  contactEmail: string | null;
-  contactPhone: string | null;
-  jobPosting: string | null;
+  contactName: string;
+  contactEmail: string;
+  contactPhone: string;
+  jobPosting: string;
 }
 
 @Component({
@@ -31,12 +31,12 @@ export class ApplicationFormComponent {
   protected readonly formModel = linkedSignal<ApplicationFormData>(() => ({
     companyName: this.existing()?.companyName ?? '',
     role: this.existing()?.role ?? '',
-    dateApplied: this.existing()?.dateApplied ?? null,
+    dateApplied: this.existing()?.dateApplied ?? '',
     status: this.existing()?.status ?? 'Draft',
-    contactName: this.existing()?.contactName ?? null,
-    contactEmail: this.existing()?.contactEmail ?? null,
-    contactPhone: this.existing()?.contactPhone ?? null,
-    jobPosting: this.existing()?.jobPosting ?? null,
+    contactName: this.existing()?.contactName ?? '',
+    contactEmail: this.existing()?.contactEmail ?? '',
+    contactPhone: this.existing()?.contactPhone ?? '',
+    jobPosting: this.existing()?.jobPosting ?? '',
   }));
 
   protected readonly fields = form(this.formModel, (fields) => {

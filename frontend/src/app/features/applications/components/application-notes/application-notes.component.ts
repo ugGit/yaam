@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormField, FormRoot, form, required, submit } from '@angular/forms';
+import { FormField, FormRoot, form, required, submit } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
 import { ApplicationsService } from '../../../../generated/api';
 import { ApplicationNote } from '../../models/application-note.model';
