@@ -1,8 +1,6 @@
 using FluentValidation;
 using MediatR;
-using Yaam.Application.Applications;
 using Yaam.Application.Applications.Dtos;
-using Yaam.Domain.Entities;
 using Yaam.Domain.Enums;
 using Yaam.Domain.Errors;
 using Yaam.Domain.Repositories;

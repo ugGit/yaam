@@ -1,4 +1,3 @@
-using FluentAssertions;
 using FluentValidation.TestHelper;
 using Yaam.Application.Applications.Commands;
 using Yaam.Domain.Enums;
