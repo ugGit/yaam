@@ -1,71 +1,72 @@
-<div>
-  <h2 class="text-lg font-semibold mb-4">Notes</h2>
+<h2 class="text-lg font-semibold mb-4">Notes</h2>
 
-  <div class="form-control mb-4">
-    <textarea
-      class="textarea textarea-bordered"
-      rows="3"
-      placeholder="Add a note…"
-      [value]="newNoteBody()"
-      (input)="newNoteBody.set($any($event.target).value)"
+<form [formRoot]="newNoteFields" class="form-control mb-4">
+  <textarea
+    class="textarea textarea-bordered"
+    rows="3"
+    placeholder="Add a note…"
+    [formField]="newNoteFields.body"
+  ></textarea>
+  <div class="mt-2 flex justify-end">
+    <button
+      type="button"
+      class="btn btn-sm btn-primary"
+      [disabled]="!newNoteModel().body.trim()"
+      (click)="addNote()"
     >
-    </textarea>
-    <div class="mt-2 flex justify-end">
-      <button class="btn btn-sm btn-primary" [disabled]="!newNoteBody().trim()" (click)="addNote()">
-        Add note
-      </button>
-    </div>
+      Add note
+    </button>
   </div>
+</form>
 
-  @if (!notes().length) {
-    <p class="text-base-content/50 text-sm text-center py-6">No notes yet.</p>
-  }
+@if (!notes().length) {
+  <p class="text-base-content/50 text-sm text-center py-6">No notes yet.</p>
+}
 
-  <div class="space-y-3">
-    @for (note of notes(); track note.id) {
-      <div class="card bg-base-200 p-4">
-        @if (editingNoteId() === note.id) {
+<div class="space-y-3">
+  @for (note of notes(); track note.id) {
+    <div class="card bg-base-200 p-4">
+      @if (editingNoteId() === note.id) {
+        <form [formRoot]="editingFields">
           <textarea
             class="textarea textarea-bordered w-full mb-2"
             rows="3"
-            [value]="editingBody()"
-            (input)="editingBody.set($any($event.target).value)"
-          >
-          </textarea>
+            [formField]="editingFields.body"
+          ></textarea>
           <div class="flex gap-2 justify-end">
-            <button class="btn btn-ghost btn-xs" (click)="cancelEdit()">Cancel</button>
-            <button class="btn btn-primary btn-xs" (click)="saveEdit(note.id)">Save</button>
+            <button class="btn btn-ghost btn-xs" type="button" (click)="cancelEdit()">Cancel</button>
+            <button class="btn btn-primary btn-xs" type="button" (click)="saveEdit(note.id)">Save</button>
           </div>
-        } @else {
-          <p class="text-sm whitespace-pre-wrap mb-2">{{ note.body }}</p>
-          <div class="flex items-center justify-between text-xs text-base-content/50">
-            <span>
-              {{ note.createdAt | date: 'medium' }}
-              @if (isEdited(note)) {
-                <span class="ml-1">(edited {{ note.updatedAt | date: 'medium' }})</span>
-              }
-            </span>
-            <div class="flex gap-2">
-              <button class="btn btn-ghost btn-xs" (click)="startEdit(note)">Edit</button>
-              @if (deleteConfirmId() === note.id) {
-                <button class="btn btn-error btn-xs" (click)="deleteNote(note.id)">
-                  Confirm delete
-                </button>
-                <button class="btn btn-ghost btn-xs" (click)="deleteConfirmId.set(null)">
-                  Cancel
-                </button>
-              } @else {
-                <button
-                  class="btn btn-ghost btn-xs text-error"
-                  (click)="deleteConfirmId.set(note.id)"
-                >
-                  Delete
-                </button>
-              }
-            </div>
+        </form>
+      } @else {
+        <p class="text-sm whitespace-pre-wrap mb-2">{{ note.body }}</p>
+        <div class="flex items-center justify-between text-xs text-base-content/50">
+          <span>
+            {{ note.createdAt | date: 'medium' }}
+            @if (isEdited(note)) {
+              <span class="ml-1">(edited {{ note.updatedAt | date: 'medium' }})</span>
+            }
+          </span>
+          <div class="flex gap-2">
+            <button class="btn btn-ghost btn-xs" (click)="startEdit(note)">Edit</button>
+            @if (deleteConfirmId() === note.id) {
+              <button class="btn btn-error btn-xs" (click)="deleteNote(note.id)">
+                Confirm delete
+              </button>
+              <button class="btn btn-ghost btn-xs" (click)="deleteConfirmId.set(null)">
+                Cancel
+              </button>
+            } @else {
+              <button
+                class="btn btn-ghost btn-xs text-error"
+                (click)="deleteConfirmId.set(note.id)"
+              >
+                Delete
+              </button>
+            }
           </div>
-        }
-      </div>
-    }
-  </div>
+        </div>
+      }
+    </div>
+  }
 </div>

@@ -1,7 +1,6 @@
-import { Component, input, OnInit, signal } from '@angular/core';
+import { Component, OnInit, inject, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { inject } from '@angular/core';
+import { FormField, FormRoot, form, required, submit } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
 import { ApplicationsService } from '../../../../generated/api';
 import { ApplicationNote } from '../../models/application-note.model';
@@ -9,7 +8,7 @@ import { ApplicationNote } from '../../models/application-note.model';
 @Component({
   selector: 'app-application-notes',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormField, FormRoot],
   templateUrl: './application-notes.component.html',
 })
 export class ApplicationNotesComponent implements OnInit {
@@ -19,41 +18,55 @@ export class ApplicationNotesComponent implements OnInit {
   private readonly api = inject(ApplicationsService);
 
   protected notes = signal<ApplicationNote[]>([]);
-  protected newNoteBody = signal('');
-  protected editingNoteId = signal<string | null>(null);
-  protected editingBody = signal('');
   protected deleteConfirmId = signal<string | null>(null);
+  protected editingNoteId = signal<string | null>(null);
+
+  protected readonly newNoteModel = signal({ body: '' });
+  protected readonly newNoteFields = form(this.newNoteModel, (fields) => {
+    required(fields.body);
+  });
+
+  protected readonly editingModel = signal({ body: '' });
+  protected readonly editingFields = form(this.editingModel, (fields) => {
+    required(fields.body);
+  });
 
   ngOnInit(): void {
     this.notes.set([...this.initialNotes()]);
   }
 
   protected async addNote(): Promise<void> {
-    const body = this.newNoteBody().trim();
-    if (!body) return;
-    const note = await firstValueFrom(this.api.addApplicationNote(this.applicationId(), { body }));
-    this.notes.update((n) => [note, ...n]);
-    this.newNoteBody.set('');
+    await submit(this.newNoteFields, async () => {
+      const note = await firstValueFrom(
+        this.api.addApplicationNote(this.applicationId(), { body: this.newNoteModel().body }),
+      );
+      this.notes.update((n) => [note, ...n]);
+      this.newNoteModel.set({ body: '' });
+      return undefined;
+    });
   }
 
   protected startEdit(note: ApplicationNote): void {
     this.editingNoteId.set(note.id);
-    this.editingBody.set(note.body);
+    this.editingModel.set({ body: note.body });
   }
 
   protected cancelEdit(): void {
     this.editingNoteId.set(null);
-    this.editingBody.set('');
+    this.editingModel.set({ body: '' });
   }
 
   protected async saveEdit(noteId: string): Promise<void> {
-    const body = this.editingBody().trim();
-    if (!body) return;
-    const updated = await firstValueFrom(
-      this.api.updateApplicationNote(this.applicationId(), noteId, { body }),
-    );
-    this.notes.update((notes) => notes.map((n) => (n.id === noteId ? updated : n)));
-    this.editingNoteId.set(null);
+    await submit(this.editingFields, async () => {
+      const updated = await firstValueFrom(
+        this.api.updateApplicationNote(this.applicationId(), noteId, {
+          body: this.editingModel().body,
+        }),
+      );
+      this.notes.update((notes) => notes.map((n) => (n.id === noteId ? updated : n)));
+      this.editingNoteId.set(null);
+      return undefined;
+    });
   }
 
   protected async deleteNote(noteId: string): Promise<void> {
