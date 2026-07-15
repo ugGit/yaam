@@ -34,8 +34,12 @@
             [formField]="editingFields.body"
           ></textarea>
           <div class="flex gap-2 justify-end">
-            <button class="btn btn-ghost btn-xs" type="button" (click)="cancelEdit()">Cancel</button>
-            <button class="btn btn-primary btn-xs" type="button" (click)="saveEdit(note.id)">Save</button>
+            <button class="btn btn-ghost btn-xs" type="button" (click)="cancelEdit()">
+              Cancel
+            </button>
+            <button class="btn btn-primary btn-xs" type="button" (click)="saveEdit(note.id)">
+              Save
+            </button>
           </div>
         </form>
       } @else {
