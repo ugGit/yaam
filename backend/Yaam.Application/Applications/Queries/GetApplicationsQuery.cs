@@ -1,6 +1,7 @@
 using FluentValidation;
 using MediatR;
 using Yaam.Application.Applications.Dtos;
+using Yaam.Domain.Common;
 using Yaam.Domain.Enums;
 using Yaam.Domain.Repositories;
 
@@ -10,14 +11,6 @@ public record GetApplicationsQuery(
     ApplicationStatus? Status,
     string Sort = "dateApplied",
     string Order = "desc") : IRequest<List<ApplicationSummaryDto>>;
-
-public static class ApplicationSortFields
-{
-    public const string DateApplied = "dateApplied";
-    public const string CompanyName = "companyName";
-    public static readonly IReadOnlySet<string> All = new HashSet<string>
-        { DateApplied, CompanyName };
-}
 
 public class GetApplicationsQueryValidator : AbstractValidator<GetApplicationsQuery>
 {

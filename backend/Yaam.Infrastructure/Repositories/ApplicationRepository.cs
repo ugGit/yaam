@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Yaam.Application.Applications.Queries;
+using Yaam.Domain.Common;
 using Yaam.Domain.Enums;
 using Yaam.Domain.Repositories;
 using Yaam.Infrastructure.Persistence;
