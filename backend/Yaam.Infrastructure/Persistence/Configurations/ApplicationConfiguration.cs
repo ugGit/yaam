@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Yaam.Domain.Entities;
 
 namespace Yaam.Infrastructure.Persistence.Configurations;
 
@@ -18,7 +17,7 @@ public class ApplicationConfiguration : IEntityTypeConfiguration<global::Yaam.Do
 
         builder.HasMany(a => a.Notes)
             .WithOne()
-            .HasForeignKey((ApplicationNote n) => n.ApplicationId)
+            .HasForeignKey(n => n.ApplicationId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
