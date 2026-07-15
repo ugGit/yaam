@@ -1,32 +1,46 @@
-<form [formGroup]="form" (ngSubmit)="submit()" class="space-y-4">
+<form
+  [formRoot]="fields"
+  class="space-y-4"
+>
   <div class="form-control">
-    <label class="label" for="companyName"><span class="label-text">Company name *</span></label>
+    <label class="label" for="companyName">
+      <span class="label-text">Company name *</span>
+    </label>
     <input
       id="companyName"
-      formControlName="companyName"
+      [formField]="fields.companyName"
       type="text"
       class="input input-bordered"
     />
-    @if (fieldError('companyName')) {
+    @if (fields.companyName().touched() && fields.companyName().errors().length) {
       <div class="label">
-        <span class="label-text-alt text-error">{{ fieldError('companyName') }}</span>
+        <span class="label-text-alt text-error">{{ fields.companyName().errors()[0].message }}</span>
       </div>
     }
   </div>
 
   <div class="form-control">
     <label class="label" for="role"><span class="label-text">Role *</span></label>
-    <input id="role" formControlName="role" type="text" class="input input-bordered" />
-    @if (fieldError('role')) {
+    <input
+      id="role"
+      [formField]="fields.role"
+      type="text"
+      class="input input-bordered"
+    />
+    @if (fields.role().touched() && fields.role().errors().length) {
       <div class="label">
-        <span class="label-text-alt text-error">{{ fieldError('role') }}</span>
+        <span class="label-text-alt text-error">{{ fields.role().errors()[0].message }}</span>
       </div>
     }
   </div>
 
   <div class="form-control">
     <label class="label" for="status"><span class="label-text">Status *</span></label>
-    <select id="status" formControlName="status" class="select select-bordered">
+    <select
+      id="status"
+      [formField]="fields.status"
+      class="select select-bordered"
+    >
       @for (s of ALL_STATUSES; track s) {
         <option [value]="s">{{ STATUS_LABELS[s] }}</option>
       }
@@ -37,7 +51,7 @@
     <label class="label" for="dateApplied"><span class="label-text">Date applied</span></label>
     <input
       id="dateApplied"
-      formControlName="dateApplied"
+      [formField]="fields.dateApplied"
       type="date"
       class="input input-bordered"
     />
@@ -48,7 +62,7 @@
       <label class="label" for="contactName"><span class="label-text">Contact name</span></label>
       <input
         id="contactName"
-        formControlName="contactName"
+        [formField]="fields.contactName"
         type="text"
         class="input input-bordered"
       />
@@ -57,7 +71,7 @@
       <label class="label" for="contactEmail"><span class="label-text">Contact email</span></label>
       <input
         id="contactEmail"
-        formControlName="contactEmail"
+        [formField]="fields.contactEmail"
         type="email"
         class="input input-bordered"
       />
@@ -66,7 +80,7 @@
       <label class="label" for="contactPhone"><span class="label-text">Contact phone</span></label>
       <input
         id="contactPhone"
-        formControlName="contactPhone"
+        [formField]="fields.contactPhone"
         type="text"
         class="input input-bordered"
       />
@@ -77,7 +91,7 @@
     <label class="label" for="jobPosting"><span class="label-text">Job posting</span></label>
     <textarea
       id="jobPosting"
-      formControlName="jobPosting"
+      [formField]="fields.jobPosting"
       rows="6"
       class="textarea textarea-bordered"
     ></textarea>
@@ -85,6 +99,6 @@
 
   <div class="flex gap-2 justify-end">
     <button type="button" class="btn btn-ghost" (click)="cancel()">Cancel</button>
-    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
   </div>
 </form>

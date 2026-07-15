@@ -6,9 +6,8 @@ import { map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
 import { ApplicationsService } from '../../../../generated/api';
 import { Application, STATUS_LABELS, ALL_STATUSES } from '../../models/application.model';
-import { ApplicationFormComponent } from '../../components/application-form/application-form.component';
+import { ApplicationFormComponent, ApplicationFormData } from '../../components/application-form/application-form.component';
 import { ApplicationNotesComponent } from '../../components/application-notes/application-notes.component';
-import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-application-detail',
@@ -40,14 +39,13 @@ export class ApplicationDetailComponent {
       params ? firstValueFrom(this.api.getApplication(params)) : Promise.resolve(undefined),
   });
 
-  protected async onSave(form: FormGroup): Promise<void> {
-    const value = form.value;
+  protected async onSave(formData: ApplicationFormData): Promise<void> {
     try {
       if (this.isNew()) {
-        const created = await firstValueFrom(this.api.createApplication(value));
+        const created = await firstValueFrom(this.api.createApplication(formData));
         await this.router.navigate(['/applications', created.id]);
       } else {
-        await firstValueFrom(this.api.updateApplication(this.applicationId()!, value));
+        await firstValueFrom(this.api.updateApplication(this.applicationId()!, formData));
         this.applicationResource.reload();
         this.editMode.set(false);
       }
