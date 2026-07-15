@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Yaam.Domain.Enums;
-using ApplicationNote = Yaam.Domain.Entities.ApplicationNote;
+using Yaam.Domain.Entities;
 
 namespace Yaam.Infrastructure.Persistence.Configurations;
 
