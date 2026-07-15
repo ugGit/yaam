@@ -4,9 +4,12 @@ import { CommonModule } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
-import { ApplicationsService } from '../../../../generated/api';
+import { ApplicationStatus, ApplicationsService } from '../../../../generated/api';
 import { Application, STATUS_LABELS, ALL_STATUSES } from '../../models/application.model';
-import { ApplicationFormComponent, ApplicationFormData } from '../../components/application-form/application-form.component';
+import {
+  ApplicationFormComponent,
+  ApplicationFormData,
+} from '../../components/application-form/application-form.component';
 import { ApplicationNotesComponent } from '../../components/application-notes/application-notes.component';
 
 @Component({
@@ -40,12 +43,21 @@ export class ApplicationDetailComponent {
   });
 
   protected async onSave(formData: ApplicationFormData): Promise<void> {
+    const payload = {
+      ...formData,
+      status: formData.status as ApplicationStatus,
+      dateApplied: formData.dateApplied || undefined,
+      contactName: formData.contactName || undefined,
+      contactEmail: formData.contactEmail || undefined,
+      contactPhone: formData.contactPhone || undefined,
+      jobPosting: formData.jobPosting || undefined,
+    };
     try {
       if (this.isNew()) {
-        const created = await firstValueFrom(this.api.createApplication(formData));
+        const created = await firstValueFrom(this.api.createApplication(payload));
         await this.router.navigate(['/applications', created.id]);
       } else {
-        await firstValueFrom(this.api.updateApplication(this.applicationId()!, formData));
+        await firstValueFrom(this.api.updateApplication(this.applicationId()!, payload));
         this.applicationResource.reload();
         this.editMode.set(false);
       }
