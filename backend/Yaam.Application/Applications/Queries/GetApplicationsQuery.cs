@@ -1,3 +1,4 @@
+using FluentValidation;
 using MediatR;
 using Yaam.Application.Applications.Dtos;
 using Yaam.Domain.Enums;
@@ -9,6 +10,27 @@ public record GetApplicationsQuery(
     ApplicationStatus? Status,
     string Sort = "dateApplied",
     string Order = "desc") : IRequest<List<ApplicationSummaryDto>>;
+
+public static class ApplicationSortFields
+{
+    public const string DateApplied = "dateApplied";
+    public const string CompanyName = "companyName";
+    public static readonly IReadOnlySet<string> All = new HashSet<string>
+        { DateApplied, CompanyName };
+}
+
+public class GetApplicationsQueryValidator : AbstractValidator<GetApplicationsQuery>
+{
+    public GetApplicationsQueryValidator()
+    {
+        RuleFor(x => x.Sort)
+            .Must(ApplicationSortFields.All.Contains)
+            .WithMessage($"Sort must be one of: {string.Join(", ", ApplicationSortFields.All)}.");
+        RuleFor(x => x.Order)
+            .Must(o => o == "asc" || o == "desc")
+            .WithMessage("Order must be 'asc' or 'desc'.");
+    }
+}
 
 public class GetApplicationsQueryHandler(IApplicationRepository repository)
     : IRequestHandler<GetApplicationsQuery, List<ApplicationSummaryDto>>

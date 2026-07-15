@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Yaam.Application.Applications.Queries;
 using Yaam.Domain.Enums;
 using Yaam.Domain.Repositories;
 using Yaam.Infrastructure.Persistence;
@@ -16,14 +17,13 @@ public class ApplicationRepository(AppDbContext db) : IApplicationRepository
         if (status.HasValue)
             query = query.Where(a => a.Status == status.Value);
 
-        query = (sort.ToLower(), order.ToLower()) switch
+        query = (sort, order.ToLower()) switch
         {
-            ("companyname", "asc") => query.OrderBy(a => a.CompanyName),
-            ("companyname", _) => query.OrderByDescending(a => a.CompanyName),
-            ("status", "asc") => query.OrderBy(a => a.Status),
-            ("status", _) => query.OrderByDescending(a => a.Status),
-            (_, "asc") => query.OrderBy(a => a.DateApplied),
-            _ => query.OrderByDescending(a => a.DateApplied),
+            (ApplicationSortFields.CompanyName, "asc") => query.OrderBy(a => a.CompanyName),
+            (ApplicationSortFields.CompanyName, _) => query.OrderByDescending(a => a.CompanyName),
+            (ApplicationSortFields.DateApplied, "asc") => query.OrderBy(a => a.DateApplied),
+            (ApplicationSortFields.DateApplied, _) => query.OrderByDescending(a => a.DateApplied),
+            _ => throw new ArgumentOutOfRangeException(nameof(sort), sort, "Unsupported sort field.")
         };
 
         return await query.ToListAsync(ct);
