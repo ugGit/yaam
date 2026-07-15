@@ -27,7 +27,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(new GetApplicationByIdQuery(id), cancellationToken);
-        return result is null ? NotFound() : Ok(result);
+        return Ok(result);
     }
 
     [HttpPost]
@@ -66,7 +66,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
                 input.ContactPhone,
                 input.JobPosting),
             cancellationToken);
-        return result is null ? NotFound() : Ok(result);
+        return Ok(result);
     }
 
     [HttpPatch("{id:guid}/status")]
@@ -76,7 +76,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     {
         var result = await mediator.Send(
             new UpdateApplicationStatusCommand(id, input.Status), cancellationToken);
-        return result is null ? NotFound() : Ok(result);
+        return Ok(result);
     }
 
     [HttpDelete("{id:guid}")]

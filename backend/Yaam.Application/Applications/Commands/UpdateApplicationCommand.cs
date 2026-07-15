@@ -1,7 +1,9 @@
 using FluentValidation;
 using MediatR;
 using Yaam.Application.Applications.Dtos;
+using Yaam.Domain.Entities;
 using Yaam.Domain.Enums;
+using Yaam.Domain.Errors;
 using Yaam.Domain.Repositories;
 
 namespace Yaam.Application.Applications.Commands;
@@ -15,7 +17,7 @@ public record UpdateApplicationCommand(
     string? ContactName,
     string? ContactEmail,
     string? ContactPhone,
-    string? JobPosting) : IRequest<ApplicationDto?>;
+    string? JobPosting) : IRequest<ApplicationDto>;
 
 public class UpdateApplicationCommandValidator : AbstractValidator<UpdateApplicationCommand>
 {
@@ -31,13 +33,13 @@ public class UpdateApplicationCommandValidator : AbstractValidator<UpdateApplica
 }
 
 public class UpdateApplicationCommandHandler(IApplicationRepository repository)
-    : IRequestHandler<UpdateApplicationCommand, ApplicationDto?>
+    : IRequestHandler<UpdateApplicationCommand, ApplicationDto>
 {
-    public async Task<ApplicationDto?> Handle(
+    public async Task<ApplicationDto> Handle(
         UpdateApplicationCommand command, CancellationToken cancellationToken)
     {
         var application = await repository.GetByIdAsync(command.Id, cancellationToken);
-        if (application is null) return null;
+        if (application is null) throw new NotFoundException(nameof(Application), command.Id);
 
         application.CompanyName = command.CompanyName;
         application.Role = command.Role;

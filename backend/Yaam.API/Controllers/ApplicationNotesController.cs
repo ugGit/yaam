@@ -14,7 +14,7 @@ public class ApplicationNotesController(IMediator mediator) : ControllerBase
         Guid applicationId, [FromBody] CreateApplicationNoteInputModel input, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(new AddApplicationNoteCommand(applicationId, input.Body), cancellationToken);
-        return result is null ? NotFound() : Created(string.Empty, result);
+        return Created(string.Empty, result);
     }
 
     [HttpPut("{noteId:guid}")]
@@ -25,7 +25,7 @@ public class ApplicationNotesController(IMediator mediator) : ControllerBase
     {
         var result = await mediator.Send(
             new UpdateApplicationNoteCommand(applicationId, noteId, input.Body), cancellationToken);
-        return result is null ? NotFound() : Ok(result);
+        return Ok(result);
     }
 
     [HttpDelete("{noteId:guid}")]

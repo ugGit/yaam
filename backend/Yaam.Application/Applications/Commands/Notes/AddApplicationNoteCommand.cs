@@ -2,13 +2,14 @@ using FluentValidation;
 using MediatR;
 using Yaam.Application.Applications.Dtos;
 using Yaam.Domain.Entities;
+using Yaam.Domain.Errors;
 using Yaam.Domain.Repositories;
 
 namespace Yaam.Application.Applications.Commands.Notes;
 
 public record AddApplicationNoteCommand(
     Guid ApplicationId,
-    string Body) : IRequest<ApplicationNoteDto?>;
+    string Body) : IRequest<ApplicationNoteDto>;
 
 public class AddApplicationNoteCommandValidator : AbstractValidator<AddApplicationNoteCommand>
 {
@@ -19,13 +20,14 @@ public class AddApplicationNoteCommandValidator : AbstractValidator<AddApplicati
 }
 
 public class AddApplicationNoteCommandHandler(IApplicationRepository repository)
-    : IRequestHandler<AddApplicationNoteCommand, ApplicationNoteDto?>
+    : IRequestHandler<AddApplicationNoteCommand, ApplicationNoteDto>
 {
-    public async Task<ApplicationNoteDto?> Handle(
+    public async Task<ApplicationNoteDto> Handle(
         AddApplicationNoteCommand command, CancellationToken cancellationToken)
     {
         var application = await repository.GetByIdAsync(command.ApplicationId, cancellationToken);
-        if (application is null) return null;
+        if (application is null)
+            throw new NotFoundException(nameof(Application), command.ApplicationId);
 
         var note = new ApplicationNote
         {
