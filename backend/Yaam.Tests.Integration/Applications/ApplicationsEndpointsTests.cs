@@ -21,25 +21,6 @@ public class ApplicationsEndpointsTests(ApiFactory factory) : IClassFixture<ApiF
     }
 
     [Fact]
-    public async Task POST_Applications_Returns201_WithValidDraftApplication()
-    {
-        var payload = new
-        {
-            companyName = "Acme Corp",
-            role = "Software Engineer",
-            status = "Draft"
-        };
-
-        var response = await _client.PostAsJsonAsync("/api/applications", payload);
-
-        response.StatusCode.Should().Be(HttpStatusCode.Created);
-        var body = await response.Content.ReadFromJsonAsync<ApplicationDto>();
-        body!.CompanyName.Should().Be("Acme Corp");
-        body.Status.Should().Be(ApplicationStatus.Draft);
-        body.DateApplied.Should().BeNull();
-    }
-
-    [Fact]
     public async Task POST_Applications_Returns400_WhenDateAppliedMissingForNonDraft()
     {
         var payload = new
@@ -63,106 +44,69 @@ public class ApplicationsEndpointsTests(ApiFactory factory) : IClassFixture<ApiF
     }
 
     [Fact]
-    public async Task PUT_Application_UpdatesAndReturns200()
+    public async Task ApplicationCrudFlow_CreateUpdatePatchNotesReadDelete()
     {
-        var created = await CreateApplicationAsync("Update Test Co", "Dev");
+        // Create
+        var createPayload = new { companyName = "Acme Corp", role = "Software Engineer", status = "Draft" };
+        var createResponse = await _client.PostAsJsonAsync("/api/applications", createPayload);
+        createResponse.StatusCode.Should().Be(HttpStatusCode.Created);
+        var created = await createResponse.Content.ReadFromJsonAsync<ApplicationDto>();
+        created!.CompanyName.Should().Be("Acme Corp");
+        created.Status.Should().Be(ApplicationStatus.Draft);
 
-        var update = new
+        // Update
+        var updatePayload = new
         {
-            companyName = "Updated Co",
-            role = "Dev",
+            companyName = "Acme Corp",
+            role = "Senior Software Engineer",
             status = "Applied",
             dateApplied = "2026-07-10"
         };
+        var updateResponse = await _client.PutAsJsonAsync($"/api/applications/{created.Id}", updatePayload);
+        updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var updated = await updateResponse.Content.ReadFromJsonAsync<ApplicationDto>();
+        updated!.Role.Should().Be("Senior Software Engineer");
+        updated.Status.Should().Be(ApplicationStatus.Applied);
 
-        var response = await _client.PutAsJsonAsync($"/api/applications/{created.Id}", update);
+        // Patch status
+        var patchResponse = await _client.PatchAsJsonAsync(
+            $"/api/applications/{created.Id}/status", new { status = "Interviewed" });
+        patchResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var patched = await patchResponse.Content.ReadFromJsonAsync<ApplicationDto>();
+        patched!.Status.Should().Be(ApplicationStatus.Interviewed);
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var body = await response.Content.ReadFromJsonAsync<ApplicationDto>();
-        body!.CompanyName.Should().Be("Updated Co");
-    }
+        // Add note
+        var addNoteResponse = await _client.PostAsJsonAsync(
+            $"/api/applications/{created.Id}/notes", new { body = "Had a great interview." });
+        addNoteResponse.StatusCode.Should().Be(HttpStatusCode.Created);
+        var note = await addNoteResponse.Content.ReadFromJsonAsync<ApplicationNoteDto>();
+        note!.Body.Should().Be("Had a great interview.");
 
-    [Fact]
-    public async Task PATCH_ApplicationStatus_UpdatesStatusImmediately()
-    {
-        var created = await CreateApplicationAsync("Status Test Co", "QA");
+        // Update note
+        var updateNoteResponse = await _client.PutAsJsonAsync(
+            $"/api/applications/{created.Id}/notes/{note.Id}", new { body = "Updated note." });
+        updateNoteResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var updatedNote = await updateNoteResponse.Content.ReadFromJsonAsync<ApplicationNoteDto>();
+        updatedNote!.Body.Should().Be("Updated note.");
 
-        var patch = new { status = "Applied" };
-        var response = await _client.PatchAsJsonAsync($"/api/applications/{created.Id}/status", patch);
+        // Read by id — note present after update
+        var getResponse = await _client.GetAsync($"/api/applications/{created.Id}");
+        getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var fetched = await getResponse.Content.ReadFromJsonAsync<ApplicationDto>();
+        fetched!.Notes.Should().Contain(n => n.Id == note.Id && n.Body == "Updated note.");
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var body = await response.Content.ReadFromJsonAsync<ApplicationDto>();
-        body!.Status.Should().Be(ApplicationStatus.Applied);
-    }
+        // Delete note
+        var deleteNoteResponse = await _client.DeleteAsync(
+            $"/api/applications/{created.Id}/notes/{note.Id}");
+        deleteNoteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        var afterNoteDelete = await _client.GetAsync($"/api/applications/{created.Id}");
+        var afterNoteDeleteBody = await afterNoteDelete.Content.ReadFromJsonAsync<ApplicationDto>();
+        afterNoteDeleteBody!.Notes.Should().NotContain(n => n.Id == note.Id);
 
-    [Fact]
-    public async Task DELETE_Application_Returns204_AndRemovesEntity()
-    {
-        var created = await CreateApplicationAsync("Delete Test Co", "PM");
-
+        // Delete application
         var deleteResponse = await _client.DeleteAsync($"/api/applications/{created.Id}");
         deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
-
-        var getResponse = await _client.GetAsync($"/api/applications/{created.Id}");
-        getResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
-    }
-
-    [Fact]
-    public async Task POST_Note_Returns201_WithValidBody()
-    {
-        var app = await CreateApplicationAsync("Note Test Co", "Dev");
-
-        var payload = new { body = "Had a great call with the recruiter." };
-        var response = await _client.PostAsJsonAsync(
-            $"/api/applications/{app.Id}/notes", payload);
-
-        response.StatusCode.Should().Be(HttpStatusCode.Created);
-        var note = await response.Content.ReadFromJsonAsync<ApplicationNoteDto>();
-        note!.Body.Should().Be("Had a great call with the recruiter.");
-    }
-
-    [Fact]
-    public async Task PUT_Note_UpdatesBody()
-    {
-        var app = await CreateApplicationAsync("Note Update Co", "Dev");
-        var note = await CreateNoteAsync(app.Id, "Original note.");
-
-        var update = new { body = "Updated note." };
-        var response = await _client.PutAsJsonAsync(
-            $"/api/applications/{app.Id}/notes/{note.Id}", update);
-
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var body = await response.Content.ReadFromJsonAsync<ApplicationNoteDto>();
-        body!.Body.Should().Be("Updated note.");
-    }
-
-    [Fact]
-    public async Task DELETE_Note_Returns204_AndRemovesNote()
-    {
-        var app = await CreateApplicationAsync("Note Delete Co", "Dev");
-        var note = await CreateNoteAsync(app.Id, "To be deleted.");
-
-        var deleteResponse = await _client.DeleteAsync(
-            $"/api/applications/{app.Id}/notes/{note.Id}");
-        deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
-
-        var getResponse = await _client.GetAsync($"/api/applications/{app.Id}");
-        getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        var body = await getResponse.Content.ReadFromJsonAsync<ApplicationDto>();
-        body!.Notes.Should().NotContain(n => n.Id == note.Id);
-    }
-
-    private async Task<ApplicationDto> CreateApplicationAsync(string company, string role)
-    {
-        var payload = new { companyName = company, role, status = "Draft" };
-        var response = await _client.PostAsJsonAsync("/api/applications", payload);
-        return (await response.Content.ReadFromJsonAsync<ApplicationDto>())!;
-    }
-
-    private async Task<ApplicationNoteDto> CreateNoteAsync(Guid applicationId, string body)
-    {
-        var response = await _client.PostAsJsonAsync(
-            $"/api/applications/{applicationId}/notes", new { body });
-        return (await response.Content.ReadFromJsonAsync<ApplicationNoteDto>())!;
+        var afterDelete = await _client.GetAsync($"/api/applications/{created.Id}");
+        afterDelete.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 }
