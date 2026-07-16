@@ -32,7 +32,9 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     [EndpointName("GetApplication")]
     public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(new GetApplicationByIdQuery(id), cancellationToken);
+        var result = await mediator.Send(
+            new GetApplicationByIdQuery(id),
+            cancellationToken);
         return Ok(result);
     }
 
@@ -81,7 +83,8 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
         Guid id, [FromBody] UpdateApplicationStatusInputModel input, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new UpdateApplicationStatusCommand(id, input.Status), cancellationToken);
+            new UpdateApplicationStatusCommand(id, input.Status),
+            cancellationToken);
         return Ok(result);
     }
 
@@ -89,7 +92,9 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     [EndpointName("DeleteApplication")]
     public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
     {
-        await mediator.Send(new DeleteApplicationCommand(id), cancellationToken);
+        await mediator.Send(
+            new DeleteApplicationCommand(id),
+            cancellationToken);
         return NoContent();
     }
 }

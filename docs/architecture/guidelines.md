@@ -40,6 +40,16 @@ Concrete patterns are documented in [patterns.md](patterns.md). Summary:
 - **Handler parameter:** `command` for `IRequestHandler<TCommand>`, `query` for `IRequestHandler<TQuery>`. Never `request`.
 - **Controller CancellationToken:** Always named `cancellationToken`. Never `ct`. Never `= default` — ASP.NET Core always injects it.
 - **Type aliases:** No abbreviated aliases (`DomainApp`, `DomainNote`). If a `using` alias is genuinely needed to resolve ambiguity, use the full class name as the alias (e.g., `using Application = Yaam.Domain.Entities.Application`). Prefer resolving the ambiguity by restructuring instead.
+- **mediator.Send formatting:** Always put the command/query on its own line and `cancellationToken` on a third line. Single-line calls are not permitted regardless of length.
+  ```csharp
+  // correct
+  var result = await mediator.Send(
+      new MyCommand(arg1, arg2),
+      cancellationToken);
+
+  // wrong
+  var result = await mediator.Send(new MyCommand(arg1, arg2), cancellationToken);
+  ```
 
 ## Testing Approach
 
