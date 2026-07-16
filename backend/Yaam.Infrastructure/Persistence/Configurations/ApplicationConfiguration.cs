@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Yaam.Domain.Entities;
 
 namespace Yaam.Infrastructure.Persistence.Configurations;
 
-public class ApplicationConfiguration : IEntityTypeConfiguration<global::Yaam.Domain.Entities.Application>
+public class ApplicationConfiguration : IEntityTypeConfiguration<Application>
 {
-    public void Configure(EntityTypeBuilder<global::Yaam.Domain.Entities.Application> builder)
+    public void Configure(EntityTypeBuilder<Application> builder)
     {
         builder.HasKey(a => a.Id);
         builder.Property(a => a.CompanyName).IsRequired().HasMaxLength(200);

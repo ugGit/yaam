@@ -1,7 +1,7 @@
 using MediatR;
 using Yaam.Domain.Repositories;
 
-namespace Yaam.Application.Applications.Commands;
+namespace Yaam.UseCases.Applications.Commands;
 
 public record DeleteApplicationCommand(Guid Id) : IRequest;
 

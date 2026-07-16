@@ -1,7 +1,8 @@
 using NSubstitute;
-using Yaam.Application.Applications.Queries;
+using Yaam.UseCases.Applications.Queries;
 using Yaam.Domain.Enums;
 using Yaam.Domain.Repositories;
+using Yaam.Domain.Entities;
 
 namespace Yaam.Tests.Unit.Applications;
 
@@ -13,7 +14,7 @@ public class GetApplicationsQueryTests
     public async Task Handle_PassesFilterAndSortToRepository()
     {
         _repo.GetAllAsync(ApplicationStatus.Applied, "companyName", "asc", Arg.Any<CancellationToken>())
-            .Returns(new List<global::Yaam.Domain.Entities.Application>());
+            .Returns(new List<Application>());
 
         var handler = new GetApplicationsQueryHandler(_repo);
         await handler.Handle(

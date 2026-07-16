@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Yaam.Application\Yaam.Application.csproj" />
+    <ProjectReference Include="..\Yaam.UseCases\Yaam.UseCases.csproj" />
     <ProjectReference Include="..\Yaam.Infrastructure\Yaam.Infrastructure.csproj" />
   </ItemGroup>
 

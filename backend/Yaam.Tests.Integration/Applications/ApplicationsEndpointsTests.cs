@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
-using Yaam.Application.Applications.Dtos;
+using Yaam.UseCases.Applications.Dtos;
 using Yaam.Domain.Enums;
 
 namespace Yaam.Tests.Integration.Applications;

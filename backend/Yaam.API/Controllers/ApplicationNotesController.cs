@@ -1,6 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Yaam.Application.Applications.Commands.Notes;
+using Yaam.UseCases.Applications.Commands.Notes;
 
 namespace Yaam.API.Controllers;
 

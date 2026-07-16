@@ -1,6 +1,6 @@
 using Yaam.Domain.Enums;
 
-namespace Yaam.Application.Applications.Dtos;
+namespace Yaam.UseCases.Applications.Dtos;
 
 public record ApplicationSummaryDto(
     Guid Id,

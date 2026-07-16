@@ -1,9 +1,9 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Yaam.Application.Common.Behaviors;
+using Yaam.UseCases.Common.Behaviors;
 
-namespace Yaam.Application;
+namespace Yaam.UseCases;
 
 public static class DependencyInjection
 {

@@ -1,6 +1,6 @@
 <Solution>
   <Project Path="Yaam.API/Yaam.API.csproj" />
-  <Project Path="Yaam.Application/Yaam.Application.csproj" />
+  <Project Path="Yaam.UseCases/Yaam.UseCases.csproj" />
   <Project Path="Yaam.Domain/Yaam.Domain.csproj" />
   <Project Path="Yaam.Infrastructure/Yaam.Infrastructure.csproj" />
   <Project Path="Yaam.Tests.Integration/Yaam.Tests.Integration.csproj" />

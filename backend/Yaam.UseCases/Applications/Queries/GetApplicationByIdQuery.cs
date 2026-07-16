@@ -1,9 +1,10 @@
 using MediatR;
-using Yaam.Application.Applications.Dtos;
+using Yaam.UseCases.Applications.Dtos;
+using Yaam.Domain.Entities;
 using Yaam.Domain.Errors;
 using Yaam.Domain.Repositories;
 
-namespace Yaam.Application.Applications.Queries;
+namespace Yaam.UseCases.Applications.Queries;
 
 public record GetApplicationByIdQuery(Guid Id) : IRequest<ApplicationDto>;
 

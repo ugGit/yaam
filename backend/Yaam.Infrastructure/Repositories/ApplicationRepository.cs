@@ -9,7 +9,7 @@ namespace Yaam.Infrastructure.Repositories;
 
 public class ApplicationRepository(AppDbContext db) : IApplicationRepository
 {
-    public async Task<List<global::Yaam.Domain.Entities.Application>> GetAllAsync(
+    public async Task<List<Application>> GetAllAsync(
         ApplicationStatus? status, string sort, string order, CancellationToken cancellationToken)
     {
         var query = db.Applications.AsQueryable();
@@ -29,19 +29,19 @@ public class ApplicationRepository(AppDbContext db) : IApplicationRepository
         return await query.ToListAsync(cancellationToken);
     }
 
-    public async Task<global::Yaam.Domain.Entities.Application?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<Application?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         => await db.Applications
             .Include(a => a.Notes.OrderByDescending(n => n.CreatedAt))
             .FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
 
-    public async Task<global::Yaam.Domain.Entities.Application> AddAsync(global::Yaam.Domain.Entities.Application application, CancellationToken cancellationToken)
+    public async Task<Application> AddAsync(Application application, CancellationToken cancellationToken)
     {
         db.Applications.Add(application);
         await db.SaveChangesAsync(cancellationToken);
         return application;
     }
 
-    public async Task UpdateAsync(global::Yaam.Domain.Entities.Application application, CancellationToken cancellationToken)
+    public async Task UpdateAsync(Application application, CancellationToken cancellationToken)
     {
         await db.SaveChangesAsync(cancellationToken);
     }

@@ -1,10 +1,11 @@
 using FluentValidation;
 using MediatR;
-using Yaam.Application.Applications.Dtos;
+using Yaam.UseCases.Applications.Dtos;
 using Yaam.Domain.Enums;
 using Yaam.Domain.Repositories;
+using Yaam.Domain.Entities;
 
-namespace Yaam.Application.Applications.Commands;
+namespace Yaam.UseCases.Applications.Commands;
 
 public record CreateApplicationCommand(
     string CompanyName,
@@ -36,7 +37,7 @@ public class CreateApplicationCommandHandler(IApplicationRepository repository)
     public async Task<ApplicationDto> Handle(
         CreateApplicationCommand command, CancellationToken cancellationToken)
     {
-        var application = new global::Yaam.Domain.Entities.Application
+        var application = new Application
         {
             CompanyName = command.CompanyName,
             Role = command.Role,

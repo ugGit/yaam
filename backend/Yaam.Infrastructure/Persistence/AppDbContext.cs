@@ -5,7 +5,7 @@ namespace Yaam.Infrastructure.Persistence;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public DbSet<global::Yaam.Domain.Entities.Application> Applications => Set<global::Yaam.Domain.Entities.Application>();
+    public DbSet<Application> Applications => Set<Application>();
     public DbSet<ApplicationNote> ApplicationNotes => Set<ApplicationNote>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

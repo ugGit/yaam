@@ -1,11 +1,12 @@
 using FluentValidation;
 using MediatR;
-using Yaam.Application.Applications.Dtos;
+using Yaam.UseCases.Applications.Dtos;
 using Yaam.Domain.Common;
 using Yaam.Domain.Enums;
 using Yaam.Domain.Repositories;
+using Yaam.Domain.Entities;
 
-namespace Yaam.Application.Applications.Queries;
+namespace Yaam.UseCases.Applications.Queries;
 
 public record GetApplicationsQuery(
     ApplicationStatus? Status,
@@ -36,6 +37,6 @@ public class GetApplicationsQueryHandler(IApplicationRepository repository)
         return applications.Select(ToDto).ToList();
     }
 
-    private static ApplicationSummaryDto ToDto(global::Yaam.Domain.Entities.Application a) =>
+    private static ApplicationSummaryDto ToDto(Application a) =>
         new(a.Id, a.CompanyName, a.Role, a.DateApplied, a.Status);
 }

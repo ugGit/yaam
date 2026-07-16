@@ -1,4 +1,4 @@
-namespace Yaam.Application.Applications.Dtos;
+namespace Yaam.UseCases.Applications.Dtos;
 
 public record ApplicationNoteDto(
     Guid Id,

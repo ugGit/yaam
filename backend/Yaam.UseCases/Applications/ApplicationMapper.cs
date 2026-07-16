@@ -1,11 +1,11 @@
-using Yaam.Application.Applications.Dtos;
+using Yaam.UseCases.Applications.Dtos;
 using Yaam.Domain.Entities;
 
-namespace Yaam.Application.Applications;
+namespace Yaam.UseCases.Applications;
 
 internal static class ApplicationMapper
 {
-    internal static ApplicationDto ToDto(global::Yaam.Domain.Entities.Application a) => new(
+    internal static ApplicationDto ToDto(Application a) => new(
         a.Id, a.CompanyName, a.Role, a.DateApplied, a.Status,
         a.ContactName, a.ContactEmail, a.ContactPhone, a.JobPosting,
         a.CreatedAt, a.UpdatedAt,

@@ -1,11 +1,12 @@
 using FluentValidation;
 using MediatR;
-using Yaam.Application.Applications.Dtos;
+using Yaam.UseCases.Applications.Dtos;
+using Yaam.Domain.Entities;
 using Yaam.Domain.Enums;
 using Yaam.Domain.Errors;
 using Yaam.Domain.Repositories;
 
-namespace Yaam.Application.Applications.Commands;
+namespace Yaam.UseCases.Applications.Commands;
 
 public record UpdateApplicationCommand(
     Guid Id,

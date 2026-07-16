@@ -1,7 +1,7 @@
 using MediatR;
 using Yaam.Domain.Repositories;
 
-namespace Yaam.Application.Applications.Commands.Notes;
+namespace Yaam.UseCases.Applications.Commands.Notes;
 
 public record DeleteApplicationNoteCommand(
     Guid ApplicationId,

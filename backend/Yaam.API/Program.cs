@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Scalar.AspNetCore;
 using Yaam.API;
-using Yaam.Application;
+using Yaam.UseCases;
 using Yaam.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);

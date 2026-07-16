@@ -1,7 +1,7 @@
 using FluentValidation;
 using MediatR;
 
-namespace Yaam.Application.Common.Behaviors;
+namespace Yaam.UseCases.Common.Behaviors;
 
 public class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
     : IPipelineBehavior<TRequest, TResponse>
