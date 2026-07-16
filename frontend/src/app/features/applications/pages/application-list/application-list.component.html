@@ -4,7 +4,7 @@
     <a routerLink="/applications/new" class="btn btn-primary btn-sm">Add application</a>
   </div>
 
-  <div class="flex gap-2 mb-4 flex-wrap">
+  <div class="flex gap-2 mb-2 flex-wrap">
     <button class="btn btn-sm" [class.btn-active]="filterStatus() === ''" (click)="setFilter('')">
       All
     </button>
@@ -13,6 +13,22 @@
         {{ STATUS_LABELS[s] }}
       </button>
     }
+  </div>
+
+  <div class="flex gap-2 mb-4 flex-wrap items-center">
+    <span class="text-sm text-base-content/60">Sort by</span>
+    @for (opt of SORT_OPTIONS; track opt.value) {
+      <button
+        class="btn btn-sm"
+        [class.btn-active]="sort() === opt.value"
+        (click)="setSort(opt.value)"
+      >
+        {{ opt.label }}
+      </button>
+    }
+    <button class="btn btn-sm btn-ghost" (click)="toggleOrder()">
+      {{ order() === 'desc' ? '↓' : '↑' }}
+    </button>
   </div>
 
   @if (applications.isLoading()) {
@@ -34,12 +50,7 @@
             <tr>
               <th>Company</th>
               <th>Role</th>
-              <th>
-                <button class="flex items-center gap-1" (click)="toggleOrder()">
-                  Date applied
-                  <span>{{ order() === 'desc' ? '↓' : '↑' }}</span>
-                </button>
-              </th>
+              <th>Date applied</th>
               <th>Status</th>
             </tr>
           </thead>

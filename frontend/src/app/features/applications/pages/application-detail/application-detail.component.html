@@ -21,7 +21,7 @@
       }
       <app-application-form
         [existing]="applicationResource.value() ?? null"
-        (saved)="onSave($event)"
+        (save)="onSave($event)"
         (cancelled)="onCancelEdit()"
       />
     </div>

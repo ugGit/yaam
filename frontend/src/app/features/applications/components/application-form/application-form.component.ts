@@ -22,7 +22,7 @@ export interface ApplicationFormData {
 })
 export class ApplicationFormComponent {
   readonly existing = input<Application | null>(null);
-  readonly saved = output<ApplicationFormData>();
+  readonly save = output<ApplicationFormData>();
   readonly cancelled = output<void>();
 
   protected readonly ALL_STATUSES = ALL_STATUSES;
@@ -46,7 +46,7 @@ export class ApplicationFormComponent {
 
   protected async onSubmit(): Promise<void> {
     await submit(this.fields, async () => {
-      this.saved.emit(this.formModel());
+      this.save.emit(this.formModel());
     });
   }
 

@@ -22,6 +22,11 @@ export class ApplicationListComponent {
   protected readonly sort = signal('dateApplied');
   protected readonly order = signal<'asc' | 'desc'>('desc');
 
+  protected readonly SORT_OPTIONS: { value: string; label: string }[] = [
+    { value: 'dateApplied', label: 'Date applied' },
+    { value: 'companyName', label: 'Company' },
+  ];
+
   protected readonly applications = resource<
     ApplicationSummary[],
     { status: string; sort: string; order: 'asc' | 'desc' }
@@ -39,6 +44,10 @@ export class ApplicationListComponent {
 
   protected setFilter(status: string): void {
     this.filterStatus.set(status);
+  }
+
+  protected setSort(sortField: string): void {
+    this.sort.set(sortField);
   }
 
   protected toggleOrder(): void {
