@@ -1,9 +1,9 @@
 using MediatR;
-using Yaam.UseCases.Applications.Dtos;
 using Yaam.Domain.Entities;
 using Yaam.Domain.Enums;
 using Yaam.Domain.Errors;
 using Yaam.Domain.Repositories;
+using Yaam.UseCases.Applications.Dtos;
 
 namespace Yaam.UseCases.Applications.Commands;
 

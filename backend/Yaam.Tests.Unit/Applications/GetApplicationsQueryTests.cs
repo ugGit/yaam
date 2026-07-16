@@ -1,9 +1,9 @@
 using NSubstitute;
-using Yaam.UseCases.Applications.Queries;
 using Yaam.Domain.Common;
+using Yaam.Domain.Entities;
 using Yaam.Domain.Enums;
 using Yaam.Domain.Repositories;
-using Yaam.Domain.Entities;
+using Yaam.UseCases.Applications.Queries;
 
 namespace Yaam.Tests.Unit.Applications;
 

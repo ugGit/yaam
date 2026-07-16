@@ -1,5 +1,5 @@
-using Yaam.UseCases.Applications.Dtos;
 using Yaam.Domain.Entities;
+using Yaam.UseCases.Applications.Dtos;
 
 namespace Yaam.UseCases.Applications;
 

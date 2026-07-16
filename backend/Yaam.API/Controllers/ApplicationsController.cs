@@ -1,9 +1,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Yaam.UseCases.Applications.Commands;
-using Yaam.UseCases.Applications.Queries;
 using Yaam.Domain.Common;
 using Yaam.Domain.Enums;
+using Yaam.UseCases.Applications.Commands;
+using Yaam.UseCases.Applications.Queries;
 
 namespace Yaam.API.Controllers;
 

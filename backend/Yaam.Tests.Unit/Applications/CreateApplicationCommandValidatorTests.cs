@@ -1,6 +1,6 @@
 using FluentValidation.TestHelper;
-using Yaam.UseCases.Applications.Commands;
 using Yaam.Domain.Enums;
+using Yaam.UseCases.Applications.Commands;
 
 namespace Yaam.Tests.Unit.Applications;
 
