@@ -5,8 +5,13 @@
       <ul class="flex flex-col gap-2 mt-2">
         @for (item of items(); track item.id) {
           <li>
-            <a [href]="item.url" target="_blank" rel="noopener noreferrer"
-               class="link link-primary">{{ item.label }}</a>
+            <a
+              [href]="item.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link link-primary"
+              >{{ item.label }}</a
+            >
           </li>
         }
       </ul>

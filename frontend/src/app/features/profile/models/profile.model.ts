@@ -42,8 +42,12 @@ export const LANGUAGE_PROFICIENCY_LABELS: Record<LanguageProficiency, string> = 
   Native: 'Native',
 };
 
-export const ALL_LANGUAGE_PROFICIENCIES: LanguageProficiency[] =
-  ['Basic', 'BusinessProficiency', 'Fluent', 'Native'];
+export const ALL_LANGUAGE_PROFICIENCIES: LanguageProficiency[] = [
+  'Basic',
+  'BusinessProficiency',
+  'Fluent',
+  'Native',
+];
 
 export interface Language {
   id: string;
