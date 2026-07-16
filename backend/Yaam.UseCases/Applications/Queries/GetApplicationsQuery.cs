@@ -10,16 +10,13 @@ namespace Yaam.UseCases.Applications.Queries;
 
 public record GetApplicationsQuery(
     ApplicationStatus? Status,
-    string Sort = "dateApplied",
+    ApplicationSortField Sort = ApplicationSortField.DateApplied,
     string Order = "desc") : IRequest<List<ApplicationSummaryDto>>;
 
 public class GetApplicationsQueryValidator : AbstractValidator<GetApplicationsQuery>
 {
     public GetApplicationsQueryValidator()
     {
-        RuleFor(x => x.Sort)
-            .Must(ApplicationSortFields.All.Contains)
-            .WithMessage($"Sort must be one of: {string.Join(", ", ApplicationSortFields.All)}.");
         RuleFor(x => x.Order)
             .Must(o => o == "asc" || o == "desc")
             .WithMessage("Order must be 'asc' or 'desc'.");

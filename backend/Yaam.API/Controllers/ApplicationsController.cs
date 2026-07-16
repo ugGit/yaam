@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Yaam.UseCases.Applications.Commands;
 using Yaam.UseCases.Applications.Queries;
+using Yaam.Domain.Common;
 using Yaam.Domain.Enums;
 
 namespace Yaam.API.Controllers;
@@ -15,10 +16,15 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetAll(
         CancellationToken cancellationToken,
         [FromQuery] ApplicationStatus? status,
-        [FromQuery] string sort = "dateApplied",
+        [FromQuery] string sort = ApplicationSortFields.DateApplied,
         [FromQuery] string order = "desc")
     {
-        var result = await mediator.Send(new GetApplicationsQuery(status, sort, order), cancellationToken);
+        var sortField = sort switch
+        {
+            ApplicationSortFields.CompanyName => ApplicationSortField.CompanyName,
+            _ => ApplicationSortField.DateApplied,
+        };
+        var result = await mediator.Send(new GetApplicationsQuery(status, sortField, order), cancellationToken);
         return Ok(result);
     }
 

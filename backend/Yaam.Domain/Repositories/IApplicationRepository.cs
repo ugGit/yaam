@@ -1,3 +1,4 @@
+using Yaam.Domain.Common;
 using Yaam.Domain.Entities;
 using Yaam.Domain.Enums;
 
@@ -5,7 +6,7 @@ namespace Yaam.Domain.Repositories;
 
 public interface IApplicationRepository
 {
-    Task<List<Application>> GetAllAsync(ApplicationStatus? status, string sort, string order, CancellationToken cancellationToken);
+    Task<List<Application>> GetAllAsync(ApplicationStatus? status, ApplicationSortField sort, string order, CancellationToken cancellationToken);
     Task<Application?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
     Task<Application> AddAsync(Application application, CancellationToken cancellationToken);
     Task UpdateAsync(Application application, CancellationToken cancellationToken);

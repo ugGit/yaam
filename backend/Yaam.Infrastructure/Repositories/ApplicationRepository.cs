@@ -10,7 +10,7 @@ namespace Yaam.Infrastructure.Repositories;
 public class ApplicationRepository(AppDbContext db) : IApplicationRepository
 {
     public async Task<List<Application>> GetAllAsync(
-        ApplicationStatus? status, string sort, string order, CancellationToken cancellationToken)
+        ApplicationStatus? status, ApplicationSortField sort, string order, CancellationToken cancellationToken)
     {
         var query = db.Applications.AsQueryable();
 
@@ -19,10 +19,10 @@ public class ApplicationRepository(AppDbContext db) : IApplicationRepository
 
         query = (sort, order.ToLower()) switch
         {
-            (ApplicationSortFields.CompanyName, "asc") => query.OrderBy(a => a.CompanyName),
-            (ApplicationSortFields.CompanyName, _) => query.OrderByDescending(a => a.CompanyName),
-            (ApplicationSortFields.DateApplied, "asc") => query.OrderBy(a => a.DateApplied),
-            (ApplicationSortFields.DateApplied, _) => query.OrderByDescending(a => a.DateApplied),
+            (ApplicationSortField.CompanyName, "asc") => query.OrderBy(a => a.CompanyName),
+            (ApplicationSortField.CompanyName, _) => query.OrderByDescending(a => a.CompanyName),
+            (ApplicationSortField.DateApplied, "asc") => query.OrderBy(a => a.DateApplied),
+            (ApplicationSortField.DateApplied, _) => query.OrderByDescending(a => a.DateApplied),
             _ => throw new ArgumentOutOfRangeException(nameof(sort), sort, "Unsupported sort field.")
         };
 
