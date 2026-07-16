@@ -12,9 +12,12 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureAppConfiguration((_, config) =>
+        {
             config.AddJsonFile(
                 Path.Combine(AppContext.BaseDirectory, "appsettings.Test.json"),
-                optional: false));
+                optional: true);
+            config.AddEnvironmentVariables();
+        });
 
         builder.ConfigureServices((context, services) =>
         {
