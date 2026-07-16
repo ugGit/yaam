@@ -6,7 +6,7 @@
 
 ## Summary
 
-Account management covers registration, login, password reset, and account settings (timezone, notification email). It is the auth layer that gates access to all YAAM features. The user's job-search profile is separate from their account.
+Account management covers registration, login, password reset, and account settings (notification email, password change). It is the auth layer that gates access to all YAAM features. The user's job-search profile is separate from their account.
 
 ---
 
@@ -20,7 +20,7 @@ so that my data is private and accessible only to me.
 **Acceptance Criteria:**
 - Given I navigate to the registration page, when I enter a valid email and a password meeting minimum requirements, then my account is created and I am logged in automatically.
 - Given I try to register with an email that already exists, when I submit, then I see an error message and no duplicate account is created.
-- Given I enter a password shorter than 8 characters or missing complexity requirements, when I submit, then I see a field-level validation message listing the requirements.
+- Given I enter a password shorter than 12 characters or missing complexity requirements, when I submit, then I see a field-level validation message listing the requirements.
 - Given my account is created, when I am redirected, then I land on the onboarding flow (CV upload prompt).
 
 ---
@@ -53,8 +53,8 @@ so that I can regain access to my account without losing my data.
 
 ### Story 4: Manage account settings
 As a returning user,
-I want to update my account settings — timezone and notification email — from a settings page,
-so that reminders are sent at the right time and to the right address.
+I want to update my account settings — notification email and password — from a settings page,
+so that reminders reach the right address and my account stays secure.
 
 **Acceptance Criteria:**
 - Given I navigate to account settings, when the page loads, then I see my current notification email and a change password option.

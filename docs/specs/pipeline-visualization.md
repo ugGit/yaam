@@ -1,7 +1,7 @@
 # Application Pipeline Visualization
 
 **Date:** 2026-07-15
-**Status:** Future — not yet scoped
+**Status:** Draft — deferred; build after MVP core loop is complete
 **MVP fit:** Out of scope
 
 ## Summary
@@ -40,7 +40,7 @@ so that I can spot periods of high or low activity and adjust my effort accordin
 
 ---
 
-### Story 3: Interview and milestone timeline
+### Story 3: Interview and milestone timeline *(deferred — requires status-change history table)*
 
 As a job seeker,
 I want to see key milestones (first interview scheduled, offer received) plotted on a date axis,
@@ -78,7 +78,7 @@ so that I can measure whether my applications are landing at a reasonable rate.
 
 ## Decisions
 
-- **Chart library:** TBD. Candidates for Angular: Apache ECharts (ngx-echarts), Chart.js (ng2-charts), D3. Prefer a library with minimal bundle impact and good accessibility (ARIA roles, keyboard navigation).
+- **Chart library:** Deferred — decide at implementation time. Candidates: Apache ECharts (ngx-echarts), Chart.js (ng2-charts), D3. Prefer minimal bundle impact and good accessibility (ARIA roles, keyboard navigation).
 - **Placement:** Visualization sits above or alongside the applications list on the same route — not a separate page — so the user never loses context while looking at the charts.
 - **Status history:** If milestone tracking (Story 3) is implemented, status change history should be append-only and stored as a child table (`ApplicationStatusHistory`) rather than overwriting a single `statusChangedAt` field, to preserve the full progression for future analytics.
 - **Date grouping:** Weekly grouping below 12 weeks of data, monthly above — keeps the timeline readable at any scale without requiring a zoom control.
