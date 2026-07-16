@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Yaam.Domain.Common;
 using Yaam.Domain.Entities;
 using Yaam.Domain.Enums;
+using Yaam.Domain.Errors;
 using Yaam.Domain.Repositories;
 using Yaam.Infrastructure.Persistence;
 
@@ -48,12 +49,10 @@ public class ApplicationRepository(AppDbContext db) : IApplicationRepository
 
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
-        var application = await db.Applications.FindAsync([id], cancellationToken);
-        if (application is not null)
-        {
-            db.Applications.Remove(application);
-            await db.SaveChangesAsync(cancellationToken);
-        }
+        var application = await db.Applications.FindAsync([id], cancellationToken)
+            ?? throw new NotFoundException(nameof(Application), id);
+        db.Applications.Remove(application);
+        await db.SaveChangesAsync(cancellationToken);
     }
 
     public async Task<ApplicationNote?> GetNoteByIdAsync(Guid applicationId, Guid noteId, CancellationToken cancellationToken)
@@ -75,11 +74,9 @@ public class ApplicationRepository(AppDbContext db) : IApplicationRepository
     public async Task DeleteNoteAsync(Guid applicationId, Guid noteId, CancellationToken cancellationToken)
     {
         var note = await db.ApplicationNotes
-            .FirstOrDefaultAsync(n => n.ApplicationId == applicationId && n.Id == noteId, cancellationToken);
-        if (note is not null)
-        {
-            db.ApplicationNotes.Remove(note);
-            await db.SaveChangesAsync(cancellationToken);
-        }
+            .FirstOrDefaultAsync(n => n.ApplicationId == applicationId && n.Id == noteId, cancellationToken)
+            ?? throw new NotFoundException(nameof(ApplicationNote), noteId);
+        db.ApplicationNotes.Remove(note);
+        await db.SaveChangesAsync(cancellationToken);
     }
 }

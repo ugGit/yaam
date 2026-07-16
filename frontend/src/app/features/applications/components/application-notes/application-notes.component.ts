@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, input, signal } from '@angular/core';
+import { Component, inject, input, linkedSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormField, FormRoot, form, required, submit } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
@@ -11,13 +11,13 @@ import { ApplicationNote } from '../../models/application-note.model';
   imports: [CommonModule, FormField, FormRoot],
   templateUrl: './application-notes.component.html',
 })
-export class ApplicationNotesComponent implements OnInit {
+export class ApplicationNotesComponent {
   readonly applicationId = input.required<string>();
   readonly initialNotes = input<ApplicationNote[]>([]);
 
   private readonly api = inject(ApplicationsService);
 
-  protected notes = signal<ApplicationNote[]>([]);
+  protected readonly notes = linkedSignal(() => [...this.initialNotes()]);
   protected deleteConfirmId = signal<string | null>(null);
   protected editingNoteId = signal<string | null>(null);
 
@@ -30,10 +30,6 @@ export class ApplicationNotesComponent implements OnInit {
   protected readonly editingFields = form(this.editingModel, (fields) => {
     required(fields.body);
   });
-
-  ngOnInit(): void {
-    this.notes.set([...this.initialNotes()]);
-  }
 
   protected async addNote(): Promise<void> {
     await submit(this.newNoteFields, async () => {

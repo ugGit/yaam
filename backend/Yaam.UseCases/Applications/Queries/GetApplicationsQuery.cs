@@ -1,7 +1,6 @@
 using FluentValidation;
 using MediatR;
 using Yaam.Domain.Common;
-using Yaam.Domain.Entities;
 using Yaam.Domain.Enums;
 using Yaam.Domain.Repositories;
 using Yaam.UseCases.Applications.Dtos;
@@ -31,9 +30,6 @@ public class GetApplicationsQueryHandler(IApplicationRepository repository)
     {
         var applications = await repository.GetAllAsync(
             query.Status, query.Sort, query.Order, cancellationToken);
-        return applications.Select(ToDto).ToList();
+        return applications.Select(ApplicationMapper.ToSummaryDto).ToList();
     }
-
-    private static ApplicationSummaryDto ToDto(Application a) =>
-        new(a.Id, a.CompanyName, a.Role, a.DateApplied, a.Status);
 }

@@ -3,6 +3,7 @@ using MediatR;
 using Yaam.Domain.Entities;
 using Yaam.Domain.Enums;
 using Yaam.Domain.Repositories;
+using Yaam.UseCases.Applications;
 using Yaam.UseCases.Applications.Dtos;
 
 namespace Yaam.UseCases.Applications.Commands;
@@ -51,10 +52,6 @@ public class CreateApplicationCommandHandler(IApplicationRepository repository)
 
         await repository.AddAsync(application, cancellationToken);
 
-        return new ApplicationDto(
-            application.Id, application.CompanyName, application.Role,
-            application.DateApplied, application.Status,
-            application.ContactName, application.ContactEmail, application.ContactPhone,
-            application.JobPosting, application.CreatedAt, application.UpdatedAt, []);
+        return ApplicationMapper.ToDto(application);
     }
 }

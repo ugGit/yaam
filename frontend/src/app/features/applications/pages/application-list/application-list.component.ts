@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ApplicationListComponent {
   private readonly api = inject(ApplicationsService);
-  protected readonly router = inject(Router);
+  private readonly router = inject(Router);
 
   protected readonly STATUS_LABELS = STATUS_LABELS;
   protected readonly ALL_STATUSES = ALL_STATUSES;

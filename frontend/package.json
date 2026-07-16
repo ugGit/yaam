@@ -8,8 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "format": "prettier --write \"src/**/*.{ts,html,scss,json}\" && npx eslint --fix \"src/**/*.ts\"",
-    "format:check": "prettier --check \"src/**/*.{ts,html,scss,json}\" && npx eslint \"src/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.{ts,html,scss,json}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,html,scss,json}\"",
     "generate:api": "openapi-generator-cli generate"
   },
   "private": true,
