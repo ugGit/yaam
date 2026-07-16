@@ -31,6 +31,14 @@ A job application tracker that closes the loop: import your CV, build your profi
 | Node.js | 24.x | https://nodejs.org |
 | Docker + Compose | any recent | https://docs.docker.com/get-docker |
 
+### 0 — After cloning
+
+```bash
+git config core.hooksPath .githooks
+```
+
+This activates the pre-push hook that runs CI checks (build, format, lint, unit tests) locally before every push.
+
 ### 1 — Start the database and Ollama
 
 ```bash
@@ -59,7 +67,7 @@ dotnet run --project Yaam.API
 API available at:
 - HTTP: `http://localhost:5231`
 - HTTPS: `https://localhost:7131`
-- Swagger UI: `https://localhost:7131/swagger`
+- Scalar UI: `https://localhost:7131/scalar/v1`
 
 ### 3 — Run the frontend
 
@@ -80,6 +88,24 @@ dotnet test backend/
 # Frontend lint + format check
 cd frontend && npx ng lint && npm run format:check
 ```
+
+---
+
+## IDE setup
+
+| IDE | Open | Run configs |
+|-----|------|-------------|
+| **WebStorm** | `frontend/` folder | `frontend/.run/` — Dev Server, Lint, Build Production |
+| **Rider** | `backend/Yaam.slnx` | use Rider's built-in run/test buttons |
+| **IntelliJ IDEA** | repo root | discovers frontend configs automatically |
+
+Any editor works, but only WebStorm has pre-configured run configs checked into the repo.
+
+**WebStorm** — node version is managed via `frontend/.nvmrc`. Point the project Node interpreter at the nvm-managed binary or let WebStorm pick it up automatically.
+
+**Rider** — open `backend/Yaam.slnx` directly (not the folder). The solution file includes all backend projects. Use the built-in run/debug buttons and the test explorer for unit tests.
+
+**IntelliJ IDEA** — useful for cross-cutting work: docs, CI config, the root `docker-compose.yml`. It will surface the WebStorm run configs from the frontend subfolder, but running the backend from here is not tested.
 
 ---
 
@@ -107,7 +133,7 @@ cd frontend && npm run format
 
 ```
 yaam/
-├── backend/          .NET 10 solution (API / Application / Domain / Infrastructure)
+├── backend/          .NET 10 solution (API / UseCases / Domain / Infrastructure)
 ├── frontend/         Angular 22 app
 ├── ai-adapters/      Provider-agnostic AI abstraction (future)
 └── docs/
@@ -122,7 +148,7 @@ yaam/
 
 ```
 Yaam.API                .NET 10 — HTTP layer, controllers, middleware, DI wiring
-Yaam.Application        Use cases — CQRS commands/queries, MediatR handlers, validators
+Yaam.UseCases          Use cases — CQRS commands/queries, MediatR handlers, validators
 Yaam.Domain             Entities, value objects, repository interfaces (no infra deps)
 Yaam.Infrastructure     EF Core, PostgreSQL, AI adapters (implements Domain interfaces)
 Yaam.Tests.Unit         Unit tests (domain logic)

@@ -1,9 +1,13 @@
 using Microsoft.EntityFrameworkCore;
+using Yaam.Domain.Entities;
 
 namespace Yaam.Infrastructure.Persistence;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
+    public DbSet<Application> Applications => Set<Application>();
+    public DbSet<ApplicationNote> ApplicationNotes => Set<ApplicationNote>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
@@ -12,7 +16,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        foreach (var entry in ChangeTracker.Entries<Yaam.Domain.Entities.Entity>())
+        foreach (var entry in ChangeTracker.Entries<Entity>())
         {
             if (entry.State == EntityState.Modified)
                 entry.Entity.UpdatedAt = DateTime.UtcNow;

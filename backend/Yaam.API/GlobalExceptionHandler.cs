@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Yaam.Domain.Errors;
 
 namespace Yaam.API;
 
@@ -21,7 +22,8 @@ public class GlobalExceptionHandler(IProblemDetailsService problemDetailsService
                     .ToDictionary(
                         g => g.Key,
                         g => g.Select(e => e.ErrorMessage).ToArray())),
-            _ => (StatusCodes.Status500InternalServerError, "An unexpected error occurred.", null)
+            NotFoundException => (StatusCodes.Status404NotFound, "Resource not found.", (Dictionary<string, string[]>?)null),
+            _ => (StatusCodes.Status500InternalServerError, "An unexpected error occurred.", (Dictionary<string, string[]>?)null)
         };
 
         context.Response.StatusCode = statusCode;

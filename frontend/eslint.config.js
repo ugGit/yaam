@@ -3,8 +3,12 @@ const eslint = require('@eslint/js');
 const { defineConfig } = require('eslint/config');
 const tseslint = require('typescript-eslint');
 const angular = require('angular-eslint');
+const unusedImports = require('eslint-plugin-unused-imports');
 
 module.exports = defineConfig([
+  {
+    ignores: ['src/app/generated/**'],
+  },
   {
     files: ['**/*.ts'],
     extends: [
@@ -13,8 +17,10 @@ module.exports = defineConfig([
       tseslint.configs.stylistic,
       angular.configs.tsRecommended,
     ],
+    plugins: { 'unused-imports': unusedImports },
     processor: angular.processInlineTemplates,
     rules: {
+      'unused-imports/no-unused-imports': 'error',
       '@angular-eslint/directive-selector': [
         'error',
         {

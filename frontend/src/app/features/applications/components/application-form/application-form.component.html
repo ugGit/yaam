@@ -1,0 +1,94 @@
+<form [formRoot]="fields" class="space-y-4">
+  <div class="form-control">
+    <label class="label" for="companyName">
+      <span class="label-text">Company name *</span>
+    </label>
+    <input
+      id="companyName"
+      [formField]="fields.companyName"
+      type="text"
+      class="input input-bordered"
+    />
+    @if (fields.companyName().touched() && fields.companyName().errors().length) {
+      <div class="label">
+        <span class="label-text-alt text-error">{{
+          fields.companyName().errors()[0].message
+        }}</span>
+      </div>
+    }
+  </div>
+
+  <div class="form-control">
+    <label class="label" for="role"><span class="label-text">Role *</span></label>
+    <input id="role" [formField]="fields.role" type="text" class="input input-bordered" />
+    @if (fields.role().touched() && fields.role().errors().length) {
+      <div class="label">
+        <span class="label-text-alt text-error">{{ fields.role().errors()[0].message }}</span>
+      </div>
+    }
+  </div>
+
+  <div class="form-control">
+    <label class="label" for="status"><span class="label-text">Status *</span></label>
+    <select id="status" [formField]="fields.status" class="select select-bordered">
+      @for (s of ALL_STATUSES; track s) {
+        <option [value]="s">{{ STATUS_LABELS[s] }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="form-control">
+    <label class="label" for="dateApplied"><span class="label-text">Date applied</span></label>
+    <input
+      id="dateApplied"
+      [formField]="fields.dateApplied"
+      type="date"
+      class="input input-bordered"
+    />
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="form-control">
+      <label class="label" for="contactName"><span class="label-text">Contact name</span></label>
+      <input
+        id="contactName"
+        [formField]="fields.contactName"
+        type="text"
+        class="input input-bordered"
+      />
+    </div>
+    <div class="form-control">
+      <label class="label" for="contactEmail"><span class="label-text">Contact email</span></label>
+      <input
+        id="contactEmail"
+        [formField]="fields.contactEmail"
+        type="email"
+        class="input input-bordered"
+      />
+    </div>
+    <div class="form-control">
+      <label class="label" for="contactPhone"><span class="label-text">Contact phone</span></label>
+      <input
+        id="contactPhone"
+        [formField]="fields.contactPhone"
+        type="text"
+        class="input input-bordered"
+      />
+    </div>
+  </div>
+
+  <div class="form-control">
+    <label class="label" for="jobPosting"><span class="label-text">Job posting</span></label>
+    <textarea
+      id="jobPosting"
+      [formField]="fields.jobPosting"
+      rows="6"
+      class="textarea textarea-bordered"
+    ></textarea>
+  </div>
+
+  <div class="flex gap-2 justify-end">
+    <button type="button" class="btn btn-ghost" (click)="cancel()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+  </div>
+</form>

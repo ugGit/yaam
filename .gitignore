@@ -15,10 +15,15 @@ frontend/node_modules/
 frontend/dist/
 frontend/.angular/
 
+# Generated API client — api.ts stub IS committed; only ignore generated output beyond it
+frontend/src/app/generated/*
+!frontend/src/app/generated/api.ts
+
 # Environment / secrets
 appsettings.*.json
 !appsettings.json
 !appsettings.Development.json
+!appsettings.Test.json
 .env
 .env.local
 

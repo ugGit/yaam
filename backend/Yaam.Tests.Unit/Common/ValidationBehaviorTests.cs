@@ -2,7 +2,7 @@ using FluentAssertions;
 using FluentValidation;
 using MediatR;
 using NSubstitute;
-using Yaam.Application.Common.Behaviors;
+using Yaam.UseCases.Common.Behaviors;
 
 namespace Yaam.Tests.Unit.Common;
 

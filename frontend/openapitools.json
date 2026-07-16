@@ -1,0 +1,18 @@
+{
+  "generator-cli": {
+    "version": "7.13.0",
+    "generators": {
+      "yaam-api": {
+        "generatorName": "typescript-angular",
+        "output": "src/app/generated/api",
+        "inputSpec": "http://localhost:5001/openapi/v1.json",
+        "additionalProperties": {
+          "ngVersion": "22",
+          "providedIn": "root",
+          "withInterfaces": true,
+          "enumPropertyNaming": "original"
+        }
+      }
+    }
+  }
+}

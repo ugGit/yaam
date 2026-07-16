@@ -1,0 +1,75 @@
+<div class="container mx-auto p-6">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold">Applications</h1>
+    <a routerLink="/applications/new" class="btn btn-primary btn-sm">Add application</a>
+  </div>
+
+  <div class="flex gap-2 mb-2 flex-wrap">
+    <button class="btn btn-sm" [class.btn-active]="filterStatus() === ''" (click)="setFilter('')">
+      All
+    </button>
+    @for (s of ALL_STATUSES; track s) {
+      <button class="btn btn-sm" [class.btn-active]="filterStatus() === s" (click)="setFilter(s)">
+        {{ STATUS_LABELS[s] }}
+      </button>
+    }
+  </div>
+
+  <div class="flex gap-2 mb-4 flex-wrap items-center">
+    <span class="text-sm text-base-content/60">Sort by</span>
+    @for (opt of SORT_OPTIONS; track opt.value) {
+      <button
+        class="btn btn-sm"
+        [class.btn-active]="sort() === opt.value"
+        (click)="setSort(opt.value)"
+      >
+        {{ opt.label }}
+      </button>
+    }
+    <button class="btn btn-sm btn-ghost" (click)="toggleOrder()">
+      {{ order() === 'desc' ? '↓' : '↑' }}
+    </button>
+  </div>
+
+  @if (applications.isLoading()) {
+    <div class="flex justify-center py-12">
+      <span class="loading loading-spinner loading-lg"></span>
+    </div>
+  } @else if (applications.status() === 'error') {
+    <div class="alert alert-error">Failed to load applications.</div>
+  } @else if (!applications.value()?.length) {
+    <div class="flex flex-col items-center py-16 text-base-content/50">
+      <p class="text-lg">No applications yet.</p>
+      <a routerLink="/applications/new" class="btn btn-primary mt-4">Add your first application</a>
+    </div>
+  } @else {
+    <div class="card bg-base-100 shadow">
+      <div class="overflow-x-auto">
+        <table class="table table-zebra">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Role</th>
+              <th>Date applied</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (app of applications.value(); track app.id) {
+              <tr class="cursor-pointer hover" [routerLink]="['/applications', app.id]">
+                <td class="font-medium">{{ app.companyName }}</td>
+                <td>{{ app.role }}</td>
+                <td>{{ app.dateApplied ?? '—' }}</td>
+                <td>
+                  <span class="badge badge-sm" [class]="statusBadgeClass(app.status)">
+                    {{ STATUS_LABELS[app.status] ?? app.status }}
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+</div>
