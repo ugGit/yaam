@@ -133,7 +133,7 @@ cd frontend && npm run format
 
 ```
 yaam/
-├── backend/          .NET 10 solution (API / Application / Domain / Infrastructure)
+├── backend/          .NET 10 solution (API / UseCases / Domain / Infrastructure)
 ├── frontend/         Angular 22 app
 ├── ai-adapters/      Provider-agnostic AI abstraction (future)
 └── docs/
@@ -148,7 +148,7 @@ yaam/
 
 ```
 Yaam.API                .NET 10 — HTTP layer, controllers, middleware, DI wiring
-Yaam.Application        Use cases — CQRS commands/queries, MediatR handlers, validators
+Yaam.UseCases          Use cases — CQRS commands/queries, MediatR handlers, validators
 Yaam.Domain             Entities, value objects, repository interfaces (no infra deps)
 Yaam.Infrastructure     EF Core, PostgreSQL, AI adapters (implements Domain interfaces)
 Yaam.Tests.Unit         Unit tests (domain logic)

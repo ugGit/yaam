@@ -9,7 +9,7 @@ Domain Layer       → Entities, value objects, domain logic (no infrastructure 
 Infrastructure     → DB, AI adapters, email, file storage (implements interfaces)
 ```
 
-Dependencies flow inward: Infrastructure → Application → Domain. Domain knows nothing about infrastructure.
+Dependencies flow inward: Infrastructure → UseCases → Domain. Domain knows nothing about infrastructure.
 
 ## Layer Structure (Frontend)
 

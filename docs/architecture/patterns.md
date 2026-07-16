@@ -7,7 +7,7 @@ Decisions made through design review. These apply across the entire codebase —
 ## Backend
 
 ### CQRS + MediatR
-Every use case in the Application layer is a self-contained `Command` or `Query` with a matching `Handler`. MediatR dispatches them.
+Every use case in the UseCase layer is a self-contained `Command` or `Query` with a matching `Handler`. MediatR dispatches them.
 
 ```
 Commands → mutate state       (e.g., CreateApplicationCommand)
