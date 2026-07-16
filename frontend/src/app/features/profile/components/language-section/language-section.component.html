@@ -1,0 +1,17 @@
+<div class="card bg-base-100 shadow">
+  <div class="card-body">
+    <h2 class="card-title text-lg">Languages</h2>
+    @if (items().length > 0) {
+      <ul class="flex flex-col gap-2 mt-2">
+        @for (item of items(); track item.id) {
+          <li class="flex justify-between">
+            <span>{{ item.name }}</span>
+            <span class="badge badge-ghost">{{ proficiencyLabels[item.proficiency] }}</span>
+          </li>
+        }
+      </ul>
+    } @else {
+      <p class="text-base-content/40 italic">No languages added yet.</p>
+    }
+  </div>
+</div>

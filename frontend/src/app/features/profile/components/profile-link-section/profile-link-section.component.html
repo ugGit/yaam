@@ -1,0 +1,17 @@
+<div class="card bg-base-100 shadow">
+  <div class="card-body">
+    <h2 class="card-title text-lg">Links</h2>
+    @if (items().length > 0) {
+      <ul class="flex flex-col gap-2 mt-2">
+        @for (item of items(); track item.id) {
+          <li>
+            <a [href]="item.url" target="_blank" rel="noopener noreferrer"
+               class="link link-primary">{{ item.label }}</a>
+          </li>
+        }
+      </ul>
+    } @else {
+      <p class="text-base-content/40 italic">No links added yet.</p>
+    }
+  </div>
+</div>

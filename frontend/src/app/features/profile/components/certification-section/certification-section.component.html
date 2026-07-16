@@ -1,0 +1,21 @@
+<div class="card bg-base-100 shadow">
+  <div class="card-body">
+    <h2 class="card-title text-lg">Certifications</h2>
+    @if (items().length > 0) {
+      <ul class="flex flex-col gap-2 mt-2">
+        @for (item of items(); track item.id) {
+          <li>
+            <p class="font-medium">{{ item.name }}</p>
+            @if (item.issuer) {
+              <p class="text-sm text-base-content/60">{{ item.issuer }} · {{ item.date }}</p>
+            } @else {
+              <p class="text-sm text-base-content/60">{{ item.date }}</p>
+            }
+          </li>
+        }
+      </ul>
+    } @else {
+      <p class="text-base-content/40 italic">No certifications added yet.</p>
+    }
+  </div>
+</div>

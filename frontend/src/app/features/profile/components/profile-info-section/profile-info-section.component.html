@@ -1,0 +1,55 @@
+<div class="card bg-base-100 shadow">
+  <div class="card-body">
+    <h2 class="card-title text-lg">Contact Info</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
+      <div>
+        <p class="text-xs text-base-content/50 uppercase tracking-wide mb-1">First name</p>
+        @if (profile().firstName) {
+          <p>{{ profile().firstName }}</p>
+        } @else {
+          <p class="text-base-content/40 italic">Not set</p>
+        }
+      </div>
+      <div>
+        <p class="text-xs text-base-content/50 uppercase tracking-wide mb-1">Last name</p>
+        @if (profile().lastName) {
+          <p>{{ profile().lastName }}</p>
+        } @else {
+          <p class="text-base-content/40 italic">Not set</p>
+        }
+      </div>
+      <div>
+        <p class="text-xs text-base-content/50 uppercase tracking-wide mb-1">Email</p>
+        @if (profile().email) {
+          <p>{{ profile().email }}</p>
+        } @else {
+          <p class="text-base-content/40 italic">Not set</p>
+        }
+      </div>
+      <div>
+        <p class="text-xs text-base-content/50 uppercase tracking-wide mb-1">Phone</p>
+        @if (profile().phone) {
+          <p>{{ profile().phone }}</p>
+        } @else {
+          <p class="text-base-content/40 italic">Not set</p>
+        }
+      </div>
+      <div class="sm:col-span-2">
+        <p class="text-xs text-base-content/50 uppercase tracking-wide mb-1">Location</p>
+        @if (profile().location) {
+          <p>{{ profile().location }}</p>
+        } @else {
+          <p class="text-base-content/40 italic">Not set</p>
+        }
+      </div>
+    </div>
+
+    <div class="divider my-2"></div>
+    <h2 class="card-title text-lg">Summary</h2>
+    @if (profile().summary) {
+      <p class="whitespace-pre-wrap">{{ profile().summary }}</p>
+    } @else {
+      <p class="text-base-content/40 italic">No summary yet. Add a brief professional summary.</p>
+    }
+  </div>
+</div>
