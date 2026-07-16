@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Yaam.Domain.Entities;
-using ApplicationNote = Yaam.Domain.Entities.ApplicationNote;
 
 namespace Yaam.Infrastructure.Persistence;
 

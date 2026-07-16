@@ -1,16 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using Yaam.Domain.Common;
+using Yaam.Domain.Entities;
 using Yaam.Domain.Enums;
 using Yaam.Domain.Repositories;
 using Yaam.Infrastructure.Persistence;
-using ApplicationNote = Yaam.Domain.Entities.ApplicationNote;
 
 namespace Yaam.Infrastructure.Repositories;
 
 public class ApplicationRepository(AppDbContext db) : IApplicationRepository
 {
     public async Task<List<global::Yaam.Domain.Entities.Application>> GetAllAsync(
-        ApplicationStatus? status, string sort, string order, CancellationToken ct)
+        ApplicationStatus? status, string sort, string order, CancellationToken cancellationToken)
     {
         var query = db.Applications.AsQueryable();
 
@@ -26,60 +26,60 @@ public class ApplicationRepository(AppDbContext db) : IApplicationRepository
             _ => throw new ArgumentOutOfRangeException(nameof(sort), sort, "Unsupported sort field.")
         };
 
-        return await query.ToListAsync(ct);
+        return await query.ToListAsync(cancellationToken);
     }
 
-    public async Task<global::Yaam.Domain.Entities.Application?> GetByIdAsync(Guid id, CancellationToken ct)
+    public async Task<global::Yaam.Domain.Entities.Application?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         => await db.Applications
             .Include(a => a.Notes.OrderByDescending(n => n.CreatedAt))
-            .FirstOrDefaultAsync(a => a.Id == id, ct);
+            .FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
 
-    public async Task<global::Yaam.Domain.Entities.Application> AddAsync(global::Yaam.Domain.Entities.Application application, CancellationToken ct)
+    public async Task<global::Yaam.Domain.Entities.Application> AddAsync(global::Yaam.Domain.Entities.Application application, CancellationToken cancellationToken)
     {
         db.Applications.Add(application);
-        await db.SaveChangesAsync(ct);
+        await db.SaveChangesAsync(cancellationToken);
         return application;
     }
 
-    public async Task UpdateAsync(global::Yaam.Domain.Entities.Application application, CancellationToken ct)
+    public async Task UpdateAsync(global::Yaam.Domain.Entities.Application application, CancellationToken cancellationToken)
     {
-        await db.SaveChangesAsync(ct);
+        await db.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task DeleteAsync(Guid id, CancellationToken ct)
+    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
-        var application = await db.Applications.FindAsync([id], ct);
+        var application = await db.Applications.FindAsync([id], cancellationToken);
         if (application is not null)
         {
             db.Applications.Remove(application);
-            await db.SaveChangesAsync(ct);
+            await db.SaveChangesAsync(cancellationToken);
         }
     }
 
-    public async Task<ApplicationNote?> GetNoteByIdAsync(Guid applicationId, Guid noteId, CancellationToken ct)
+    public async Task<ApplicationNote?> GetNoteByIdAsync(Guid applicationId, Guid noteId, CancellationToken cancellationToken)
         => await db.ApplicationNotes
-            .FirstOrDefaultAsync(n => n.ApplicationId == applicationId && n.Id == noteId, ct);
+            .FirstOrDefaultAsync(n => n.ApplicationId == applicationId && n.Id == noteId, cancellationToken);
 
-    public async Task<ApplicationNote> AddNoteAsync(ApplicationNote note, CancellationToken ct)
+    public async Task<ApplicationNote> AddNoteAsync(ApplicationNote note, CancellationToken cancellationToken)
     {
         db.ApplicationNotes.Add(note);
-        await db.SaveChangesAsync(ct);
+        await db.SaveChangesAsync(cancellationToken);
         return note;
     }
 
-    public async Task UpdateNoteAsync(ApplicationNote note, CancellationToken ct)
+    public async Task UpdateNoteAsync(ApplicationNote note, CancellationToken cancellationToken)
     {
-        await db.SaveChangesAsync(ct);
+        await db.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task DeleteNoteAsync(Guid applicationId, Guid noteId, CancellationToken ct)
+    public async Task DeleteNoteAsync(Guid applicationId, Guid noteId, CancellationToken cancellationToken)
     {
         var note = await db.ApplicationNotes
-            .FirstOrDefaultAsync(n => n.ApplicationId == applicationId && n.Id == noteId, ct);
+            .FirstOrDefaultAsync(n => n.ApplicationId == applicationId && n.Id == noteId, cancellationToken);
         if (note is not null)
         {
             db.ApplicationNotes.Remove(note);
-            await db.SaveChangesAsync(ct);
+            await db.SaveChangesAsync(cancellationToken);
         }
     }
 }

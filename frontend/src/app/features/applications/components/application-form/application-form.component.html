@@ -20,7 +20,12 @@
 
   <div class="form-control">
     <label class="label" for="role"><span class="label-text">Role *</span></label>
-    <input id="role" [formField]="fields.role" type="text" class="input input-bordered" />
+    <input
+      id="role"
+      [formField]="fields.role"
+      type="text"
+      class="input input-bordered"
+    />
     @if (fields.role().touched() && fields.role().errors().length) {
       <div class="label">
         <span class="label-text-alt text-error">{{ fields.role().errors()[0].message }}</span>
