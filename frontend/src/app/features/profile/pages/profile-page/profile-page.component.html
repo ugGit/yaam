@@ -17,7 +17,10 @@
       <app-education-section [items]="profile.educations" (changed)="onProfileChanged($event)" />
       <app-profile-skills-section [skills]="profile.skills" (changed)="onProfileChanged($event)" />
       <app-language-section [items]="profile.languages" (changed)="onProfileChanged($event)" />
-      <app-certification-section [items]="profile.certifications" (changed)="onProfileChanged($event)" />
+      <app-certification-section
+        [items]="profile.certifications"
+        (changed)="onProfileChanged($event)"
+      />
       <app-profile-link-section [items]="profile.links" (changed)="onProfileChanged($event)" />
       <app-custom-fields-section [fields]="profile.customFields" />
     </div>
