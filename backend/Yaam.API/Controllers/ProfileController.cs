@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Yaam.UseCases.Profile.Commands;
+using Yaam.UseCases.Profile.Commands.Education;
 using Yaam.UseCases.Profile.Commands.WorkExperiences;
 using Yaam.UseCases.Profile.Dtos;
 using Yaam.UseCases.Profile.Queries;
@@ -82,6 +83,40 @@ public class ProfileController(IMediator mediator) : ControllerBase
             cancellationToken);
         return NoContent();
     }
+
+    [HttpPost("education")]
+    [EndpointName("AddEducation")]
+    public async Task<IActionResult> AddEducation(
+        [FromBody] EducationInputModel input, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new AddEducationCommand(
+                input.Institution, input.Degree, input.FieldOfStudy, input.StartDate, input.EndDate),
+            cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpPut("education/{id:guid}")]
+    [EndpointName("UpdateEducation")]
+    public async Task<IActionResult> UpdateEducation(
+        Guid id, [FromBody] EducationInputModel input, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new UpdateEducationCommand(
+                id, input.Institution, input.Degree, input.FieldOfStudy, input.StartDate, input.EndDate),
+            cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpDelete("education/{id:guid}")]
+    [EndpointName("DeleteEducation")]
+    public async Task<IActionResult> DeleteEducation(Guid id, CancellationToken cancellationToken)
+    {
+        await mediator.Send(
+            new DeleteEducationCommand(id),
+            cancellationToken);
+        return NoContent();
+    }
 }
 
 public record UpdateProfileInfoInputModel(
@@ -100,3 +135,10 @@ public record WorkExperienceInputModel(
     DateOnly StartDate,
     DateOnly? EndDate,
     string? Description);
+
+public record EducationInputModel(
+    string Institution,
+    string? Degree,
+    string? FieldOfStudy,
+    DateOnly? StartDate,
+    DateOnly? EndDate);

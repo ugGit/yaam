@@ -134,4 +134,30 @@ public class ProfileEndpointsTests(ApiFactory factory)
         var response = await _client.PostAsJsonAsync("/api/profile/work-experiences", payload);
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
+
+    [Fact]
+    public async Task EducationCrudFlow()
+    {
+        var addPayload = new
+        {
+            institution = "ETH Zurich",
+            degree = "MSc",
+            fieldOfStudy = "Computer Science",
+            startDate = "2018-09-01",
+            endDate = "2020-06-30"
+        };
+        var addResponse = await _client.PostAsJsonAsync("/api/profile/education", addPayload);
+        addResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var added = await addResponse.Content.ReadFromJsonAsync<EducationDto>();
+        added!.Institution.Should().Be("ETH Zurich");
+
+        var updatePayload = new { institution = "ETH Zurich", degree = "PhD", fieldOfStudy = "Computer Science", startDate = "2020-09-01", endDate = (string?)null };
+        var updateResponse = await _client.PutAsJsonAsync($"/api/profile/education/{added.Id}", updatePayload);
+        updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var updated = await updateResponse.Content.ReadFromJsonAsync<EducationDto>();
+        updated!.Degree.Should().Be("PhD");
+
+        var deleteResponse = await _client.DeleteAsync($"/api/profile/education/{added.Id}");
+        deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
+    }
 }
