@@ -1,7 +1,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Yaam.Domain.Enums;
 using Yaam.UseCases.Profile.Commands;
 using Yaam.UseCases.Profile.Commands.Education;
+using Yaam.UseCases.Profile.Commands.Languages;
 using Yaam.UseCases.Profile.Commands.WorkExperiences;
 using Yaam.UseCases.Profile.Dtos;
 using Yaam.UseCases.Profile.Queries;
@@ -117,6 +119,38 @@ public class ProfileController(IMediator mediator) : ControllerBase
             cancellationToken);
         return NoContent();
     }
+
+    [HttpPost("languages")]
+    [EndpointName("AddLanguage")]
+    public async Task<IActionResult> AddLanguage(
+        [FromBody] LanguageInputModel input, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new AddLanguageCommand(input.Name, input.Proficiency),
+            cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpPut("languages/{id:guid}")]
+    [EndpointName("UpdateLanguage")]
+    public async Task<IActionResult> UpdateLanguage(
+        Guid id, [FromBody] LanguageInputModel input, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new UpdateLanguageCommand(id, input.Name, input.Proficiency),
+            cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpDelete("languages/{id:guid}")]
+    [EndpointName("DeleteLanguage")]
+    public async Task<IActionResult> DeleteLanguage(Guid id, CancellationToken cancellationToken)
+    {
+        await mediator.Send(
+            new DeleteLanguageCommand(id),
+            cancellationToken);
+        return NoContent();
+    }
 }
 
 public record UpdateProfileInfoInputModel(
@@ -142,3 +176,5 @@ public record EducationInputModel(
     string? FieldOfStudy,
     DateOnly? StartDate,
     DateOnly? EndDate);
+
+public record LanguageInputModel(string Name, LanguageProficiency Proficiency);

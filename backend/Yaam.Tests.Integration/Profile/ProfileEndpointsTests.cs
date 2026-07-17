@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
+using Yaam.Domain.Enums;
 using Yaam.UseCases.Profile.Dtos;
 
 namespace Yaam.Tests.Integration.Profile;
@@ -158,6 +159,26 @@ public class ProfileEndpointsTests(ApiFactory factory)
         updated!.Degree.Should().Be("PhD");
 
         var deleteResponse = await _client.DeleteAsync($"/api/profile/education/{added.Id}");
+        deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
+    }
+
+    [Fact]
+    public async Task LanguageCrudFlow()
+    {
+        var addPayload = new { name = "German", proficiency = "Fluent" };
+        var addResponse = await _client.PostAsJsonAsync("/api/profile/languages", addPayload);
+        addResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var added = await addResponse.Content.ReadFromJsonAsync<LanguageDto>();
+        added!.Name.Should().Be("German");
+        added.Proficiency.Should().Be(LanguageProficiency.Fluent);
+
+        var updatePayload = new { name = "German", proficiency = "Native" };
+        var updateResponse = await _client.PutAsJsonAsync($"/api/profile/languages/{added.Id}", updatePayload);
+        updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var updated = await updateResponse.Content.ReadFromJsonAsync<LanguageDto>();
+        updated!.Proficiency.Should().Be(LanguageProficiency.Native);
+
+        var deleteResponse = await _client.DeleteAsync($"/api/profile/languages/{added.Id}");
         deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }
 }
