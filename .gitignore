@@ -15,9 +15,9 @@ frontend/node_modules/
 frontend/dist/
 frontend/.angular/
 
-# Generated API client — api.ts stub IS committed; only ignore generated output beyond it
-frontend/src/app/generated/*
-!frontend/src/app/generated/api.ts
+# Generated API client — api.ts (hand-written) and api/ (openapi-generator output) are both committed
+frontend/src/app/generated/api/.openapi-generator/
+frontend/src/app/generated/api/git_push.sh
 
 # Environment / secrets
 appsettings.*.json

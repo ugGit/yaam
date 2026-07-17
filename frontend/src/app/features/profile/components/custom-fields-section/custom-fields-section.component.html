@@ -1,0 +1,17 @@
+<div class="card bg-base-100 shadow">
+  <div class="card-body">
+    <h2 class="card-title text-lg">Additional Info</h2>
+    @if (fields().length > 0) {
+      <dl class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
+        @for (field of fields(); track field.id) {
+          <div>
+            <dt class="text-xs text-base-content/50 uppercase tracking-wide">{{ field.label }}</dt>
+            <dd>{{ field.value }}</dd>
+          </div>
+        }
+      </dl>
+    } @else {
+      <p class="text-base-content/40 italic">No additional info added yet.</p>
+    }
+  </div>
+</div>

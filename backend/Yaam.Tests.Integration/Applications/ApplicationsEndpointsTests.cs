@@ -6,7 +6,8 @@ using Yaam.UseCases.Applications.Dtos;
 
 namespace Yaam.Tests.Integration.Applications;
 
-public class ApplicationsEndpointsTests(ApiFactory factory) : IClassFixture<ApiFactory>
+[Collection("Integration")]
+public class ApplicationsEndpointsTests(ApiFactory factory)
 {
     private readonly HttpClient _client = factory.CreateClient();
 

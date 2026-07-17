@@ -1,1 +1,1 @@
-export type { ApplicationNoteDto as ApplicationNote } from '../../../generated/api';
+export type { ApplicationNoteDto as ApplicationNote } from '../../../generated/api/index';

@@ -1,0 +1,22 @@
+<div class="card bg-base-100 shadow">
+  <div class="card-body">
+    <h2 class="card-title text-lg">Work Experience</h2>
+    @if (items().length > 0) {
+      <ul class="flex flex-col gap-4 mt-2">
+        @for (item of items(); track item.id) {
+          <li class="border-l-2 border-base-300 pl-4">
+            <p class="font-semibold">{{ item.title }} — {{ item.company }}</p>
+            <p class="text-sm text-base-content/60">
+              {{ item.startDate }} – {{ item.endDate ?? 'Present' }}
+            </p>
+            @if (item.description) {
+              <p class="text-sm mt-1 whitespace-pre-wrap">{{ item.description }}</p>
+            }
+          </li>
+        }
+      </ul>
+    } @else {
+      <p class="text-base-content/40 italic">No work experience added yet.</p>
+    }
+  </div>
+</div>

@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Yaam.UseCases.Applications.Commands.Notes;
+using Yaam.UseCases.Applications.Dtos;
 
 namespace Yaam.API.Controllers;
 
@@ -10,7 +11,7 @@ public class ApplicationNotesController(IMediator mediator) : ControllerBase
 {
     [HttpPost]
     [EndpointName("AddApplicationNote")]
-    public async Task<IActionResult> Add(
+    public async Task<ActionResult<ApplicationNoteDto>> Add(
         Guid applicationId, [FromBody] CreateApplicationNoteInputModel input, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
@@ -21,7 +22,7 @@ public class ApplicationNotesController(IMediator mediator) : ControllerBase
 
     [HttpPut("{noteId:guid}")]
     [EndpointName("UpdateApplicationNote")]
-    public async Task<IActionResult> Update(
+    public async Task<ActionResult<ApplicationNoteDto>> Update(
         Guid applicationId, Guid noteId,
         [FromBody] UpdateApplicationNoteInputModel input, CancellationToken cancellationToken)
     {

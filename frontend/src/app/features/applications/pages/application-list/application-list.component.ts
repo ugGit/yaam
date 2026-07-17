@@ -1,7 +1,7 @@
 import { Component, inject, signal, resource } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { ApplicationsService } from '../../../../generated/api';
+import { ApplicationStatus, ApplicationsService } from '../../../../generated/api/index';
 import { ApplicationSummary, ALL_STATUSES, STATUS_LABELS } from '../../models/application.model';
 import { CommonModule } from '@angular/common';
 
@@ -38,7 +38,11 @@ export class ApplicationListComponent {
     }),
     loader: ({ params }) =>
       firstValueFrom(
-        this.api.listApplications(params.status || undefined, params.sort, params.order),
+        this.api.listApplications(
+          params.status ? (params.status as ApplicationStatus) : undefined,
+          params.sort,
+          params.order,
+        ),
       ),
   });
 

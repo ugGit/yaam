@@ -7,6 +7,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 {
     public DbSet<Application> Applications => Set<Application>();
     public DbSet<ApplicationNote> ApplicationNotes => Set<ApplicationNote>();
+    public DbSet<Profile> Profiles => Set<Profile>();
+    public DbSet<WorkExperience> WorkExperiences => Set<WorkExperience>();
+    public DbSet<Education> Educations => Set<Education>();
+    public DbSet<Language> Languages => Set<Language>();
+    public DbSet<Certification> Certifications => Set<Certification>();
+    public DbSet<ProfileLink> ProfileLinks => Set<ProfileLink>();
+    public DbSet<CustomField> CustomFields => Set<CustomField>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,0 +1,22 @@
+<div class="container mx-auto max-w-4xl px-4 py-8">
+  <h1 class="text-2xl font-bold mb-6">My Profile</h1>
+
+  @if (profileResource.isLoading()) {
+    <div class="flex justify-center py-16">
+      <span class="loading loading-spinner loading-lg"></span>
+    </div>
+  } @else if (profileResource.error()) {
+    <div class="alert alert-error mb-4">Failed to load profile. Please try again.</div>
+  } @else if (profileResource.value(); as profile) {
+    <div class="flex flex-col gap-6">
+      <app-profile-info-section [profile]="profile" />
+      <app-work-experience-section [items]="profile.workExperiences" />
+      <app-education-section [items]="profile.educations" />
+      <app-profile-skills-section [skills]="profile.skills" />
+      <app-language-section [items]="profile.languages" />
+      <app-certification-section [items]="profile.certifications" />
+      <app-profile-link-section [items]="profile.links" />
+      <app-custom-fields-section [fields]="profile.customFields" />
+    </div>
+  }
+</div>
