@@ -200,4 +200,23 @@ public class ProfileEndpointsTests(ApiFactory factory)
         var deleteResponse = await _client.DeleteAsync($"/api/profile/certifications/{added.Id}");
         deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }
+
+    [Fact]
+    public async Task ProfileLinkCrudFlow()
+    {
+        var addPayload = new { label = "GitHub", url = "https://github.com/ada" };
+        var addResponse = await _client.PostAsJsonAsync("/api/profile/links", addPayload);
+        addResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var added = await addResponse.Content.ReadFromJsonAsync<ProfileLinkDto>();
+        added!.Label.Should().Be("GitHub");
+
+        var updatePayload = new { label = "GitHub Profile", url = "https://github.com/ada" };
+        var updateResponse = await _client.PutAsJsonAsync($"/api/profile/links/{added.Id}", updatePayload);
+        updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var updated = await updateResponse.Content.ReadFromJsonAsync<ProfileLinkDto>();
+        updated!.Label.Should().Be("GitHub Profile");
+
+        var deleteResponse = await _client.DeleteAsync($"/api/profile/links/{added.Id}");
+        deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
+    }
 }

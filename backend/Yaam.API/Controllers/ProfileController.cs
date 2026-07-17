@@ -5,6 +5,7 @@ using Yaam.UseCases.Profile.Commands;
 using Yaam.UseCases.Profile.Commands.Education;
 using Yaam.UseCases.Profile.Commands.Certifications;
 using Yaam.UseCases.Profile.Commands.Languages;
+using Yaam.UseCases.Profile.Commands.Links;
 using Yaam.UseCases.Profile.Commands.WorkExperiences;
 using Yaam.UseCases.Profile.Dtos;
 using Yaam.UseCases.Profile.Queries;
@@ -184,6 +185,38 @@ public class ProfileController(IMediator mediator) : ControllerBase
             cancellationToken);
         return NoContent();
     }
+
+    [HttpPost("links")]
+    [EndpointName("AddProfileLink")]
+    public async Task<IActionResult> AddLink(
+        [FromBody] ProfileLinkInputModel input, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new AddProfileLinkCommand(input.Label, input.Url),
+            cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpPut("links/{id:guid}")]
+    [EndpointName("UpdateProfileLink")]
+    public async Task<IActionResult> UpdateLink(
+        Guid id, [FromBody] ProfileLinkInputModel input, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new UpdateProfileLinkCommand(id, input.Label, input.Url),
+            cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpDelete("links/{id:guid}")]
+    [EndpointName("DeleteProfileLink")]
+    public async Task<IActionResult> DeleteLink(Guid id, CancellationToken cancellationToken)
+    {
+        await mediator.Send(
+            new DeleteProfileLinkCommand(id),
+            cancellationToken);
+        return NoContent();
+    }
 }
 
 public record UpdateProfileInfoInputModel(
@@ -213,3 +246,5 @@ public record EducationInputModel(
 public record LanguageInputModel(string Name, LanguageProficiency Proficiency);
 
 public record CertificationInputModel(string Name, string? Issuer, DateOnly Date);
+
+public record ProfileLinkInputModel(string Label, string Url);
