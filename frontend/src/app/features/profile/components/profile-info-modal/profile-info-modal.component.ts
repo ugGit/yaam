@@ -1,4 +1,14 @@
-import { Component, inject, input, linkedSignal, output, signal } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  effect,
+  inject,
+  input,
+  linkedSignal,
+  output,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { FormField, FormRoot, form, required, submit } from '@angular/forms/signals';
@@ -17,6 +27,7 @@ export class ProfileInfoModalComponent {
   readonly dismissed = output<void>();
 
   private readonly profileService = inject(ProfileService);
+  private readonly dialogEl = viewChild<ElementRef<HTMLDialogElement>>('modal');
 
   protected readonly saving = signal(false);
   protected readonly serverErrors = signal<Record<string, string[]>>({});
@@ -36,6 +47,18 @@ export class ProfileInfoModalComponent {
     required(f.email, { message: 'Email is required.' });
     required(f.phone, { message: 'Phone is required.' });
   });
+
+  constructor() {
+    effect(() => {
+      const dialogEl = this.dialogEl()?.nativeElement;
+      if (!dialogEl) return;
+      if (this.open()) {
+        dialogEl.showModal();
+      } else {
+        dialogEl.close();
+      }
+    });
+  }
 
   protected async onSubmit(): Promise<void> {
     await submit(this.fields, async () => {
@@ -64,7 +87,8 @@ export class ProfileInfoModalComponent {
     });
   }
 
-  protected onDismiss(): void {
+  protected onClose(): void {
+    this.serverErrors.set({});
     this.dismissed.emit();
   }
 }

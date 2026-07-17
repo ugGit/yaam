@@ -1,4 +1,4 @@
-import { Component, input, linkedSignal, output } from '@angular/core';
+import { Component, ElementRef, effect, input, linkedSignal, output, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormField, form, required, submit } from '@angular/forms/signals';
 import { LanguageDto, LanguageProficiency } from '../../../../generated/api';
@@ -34,6 +34,8 @@ export class LanguageModalComponent {
   readonly saved = output<LanguageFormData>();
   readonly dismissed = output<void>();
 
+  private readonly dialogEl = viewChild<ElementRef<HTMLDialogElement>>('modal');
+
   protected readonly formModel = linkedSignal<LanguageFormData>(() => ({
     name: this.item()?.name ?? '',
     proficiency: this.item()?.proficiency ?? '',
@@ -47,13 +49,25 @@ export class LanguageModalComponent {
   protected readonly allProficiencies = ALL_LANGUAGE_PROFICIENCIES;
   protected readonly proficiencyLabels = LANGUAGE_PROFICIENCY_LABELS;
 
+  constructor() {
+    effect(() => {
+      const dialogEl = this.dialogEl()?.nativeElement;
+      if (!dialogEl) return;
+      if (this.open()) {
+        dialogEl.showModal();
+      } else {
+        dialogEl.close();
+      }
+    });
+  }
+
   protected async onSubmit(): Promise<void> {
     await submit(this.fields, async () => {
       this.saved.emit(this.formModel());
     });
   }
 
-  protected onDismiss(): void {
+  protected onClose(): void {
     this.dismissed.emit();
   }
 

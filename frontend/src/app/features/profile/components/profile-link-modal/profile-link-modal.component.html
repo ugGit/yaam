@@ -1,52 +1,47 @@
-@if (open()) {
-  <div class="modal modal-open">
-    <div class="modal-box">
-      <h3 class="font-bold text-lg mb-4">{{ isEditMode ? 'Edit' : 'Add' }} Link</h3>
+<dialog #modal class="modal" (close)="onClose()">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg mb-4">{{ isEditMode ? 'Edit' : 'Add' }} Link</h3>
 
-      <div class="flex flex-col gap-3">
-        <div class="form-control">
-          <label class="label" for="label"><span class="label-text">Label *</span></label>
-          <input
-            id="label"
-            [formField]="fields.label"
-            type="text"
-            class="input input-bordered w-full"
-          />
-          @if (fields.label().touched() && fields.label().errors().length) {
-            <div class="label">
-              <span class="label-text-alt text-error">{{
-                fields.label().errors()[0].message
-              }}</span>
-            </div>
-          }
-        </div>
-
-        <div class="form-control">
-          <label class="label" for="url"><span class="label-text">URL *</span></label>
-          <input
-            id="url"
-            [formField]="fields.url"
-            type="text"
-            class="input input-bordered w-full"
-          />
-          @if (fields.url().touched() && fields.url().errors().length) {
-            <div class="label">
-              <span class="label-text-alt text-error">{{ fields.url().errors()[0].message }}</span>
-            </div>
-          }
-        </div>
+    <div class="flex flex-col gap-3">
+      <div class="form-control">
+        <label class="label" for="label"><span class="label-text">Label *</span></label>
+        <input
+          id="label"
+          [formField]="fields.label"
+          type="text"
+          class="input input-bordered w-full"
+        />
+        @if (fields.label().touched() && fields.label().errors().length) {
+          <div class="label">
+            <span class="label-text-alt text-error">{{ fields.label().errors()[0].message }}</span>
+          </div>
+        }
       </div>
 
-      <div class="modal-action">
-        <button type="button" class="btn btn-ghost" (click)="onDismiss()">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+      <div class="form-control">
+        <label class="label" for="url"><span class="label-text">URL *</span></label>
+        <input
+          id="url"
+          [formField]="fields.url"
+          type="text"
+          class="input input-bordered w-full"
+        />
+        @if (fields.url().touched() && fields.url().errors().length) {
+          <div class="label">
+            <span class="label-text-alt text-error">{{ fields.url().errors()[0].message }}</span>
+          </div>
+        }
       </div>
     </div>
-    <button
-      type="button"
-      class="modal-backdrop"
-      (click)="onDismiss()"
-      aria-label="Close modal"
-    ></button>
+
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn btn-ghost">Cancel</button>
+      </form>
+      <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+    </div>
   </div>
-}
+  <form method="dialog" class="modal-backdrop">
+    <button aria-label="Close modal"></button>
+  </form>
+</dialog>

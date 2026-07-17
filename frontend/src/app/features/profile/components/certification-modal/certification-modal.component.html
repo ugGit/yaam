@@ -1,60 +1,57 @@
-@if (open()) {
-  <div class="modal modal-open">
-    <div class="modal-box">
-      <h3 class="font-bold text-lg mb-4">{{ isEditMode ? 'Edit' : 'Add' }} Certification</h3>
+<dialog #modal class="modal" (close)="onClose()">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg mb-4">{{ isEditMode ? 'Edit' : 'Add' }} Certification</h3>
 
-      <div class="flex flex-col gap-3">
-        <div class="form-control">
-          <label class="label" for="name"><span class="label-text">Name *</span></label>
-          <input
-            id="name"
-            [formField]="fields.name"
-            type="text"
-            class="input input-bordered w-full"
-          />
-          @if (fields.name().touched() && fields.name().errors().length) {
-            <div class="label">
-              <span class="label-text-alt text-error">{{ fields.name().errors()[0].message }}</span>
-            </div>
-          }
-        </div>
-
-        <div class="form-control">
-          <label class="label" for="issuer"><span class="label-text">Issuer</span></label>
-          <input
-            id="issuer"
-            [formField]="fields.issuer"
-            type="text"
-            class="input input-bordered w-full"
-          />
-        </div>
-
-        <div class="form-control">
-          <label class="label" for="date"><span class="label-text">Date *</span></label>
-          <input
-            id="date"
-            [formField]="fields.date"
-            type="date"
-            class="input input-bordered w-full"
-          />
-          @if (fields.date().touched() && fields.date().errors().length) {
-            <div class="label">
-              <span class="label-text-alt text-error">{{ fields.date().errors()[0].message }}</span>
-            </div>
-          }
-        </div>
+    <div class="flex flex-col gap-3">
+      <div class="form-control">
+        <label class="label" for="name"><span class="label-text">Name *</span></label>
+        <input
+          id="name"
+          [formField]="fields.name"
+          type="text"
+          class="input input-bordered w-full"
+        />
+        @if (fields.name().touched() && fields.name().errors().length) {
+          <div class="label">
+            <span class="label-text-alt text-error">{{ fields.name().errors()[0].message }}</span>
+          </div>
+        }
       </div>
 
-      <div class="modal-action">
-        <button type="button" class="btn btn-ghost" (click)="onDismiss()">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+      <div class="form-control">
+        <label class="label" for="issuer"><span class="label-text">Issuer</span></label>
+        <input
+          id="issuer"
+          [formField]="fields.issuer"
+          type="text"
+          class="input input-bordered w-full"
+        />
+      </div>
+
+      <div class="form-control">
+        <label class="label" for="date"><span class="label-text">Date *</span></label>
+        <input
+          id="date"
+          [formField]="fields.date"
+          type="date"
+          class="input input-bordered w-full"
+        />
+        @if (fields.date().touched() && fields.date().errors().length) {
+          <div class="label">
+            <span class="label-text-alt text-error">{{ fields.date().errors()[0].message }}</span>
+          </div>
+        }
       </div>
     </div>
-    <button
-      type="button"
-      class="modal-backdrop"
-      (click)="onDismiss()"
-      aria-label="Close modal"
-    ></button>
+
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn btn-ghost">Cancel</button>
+      </form>
+      <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+    </div>
   </div>
-}
+  <form method="dialog" class="modal-backdrop">
+    <button aria-label="Close modal"></button>
+  </form>
+</dialog>
