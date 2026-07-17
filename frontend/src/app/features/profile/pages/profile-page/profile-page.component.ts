@@ -34,4 +34,8 @@ export class ProfilePageComponent {
   protected readonly profileResource = resource<ProfileDto, void>({
     loader: () => firstValueFrom(this.profileService.getProfile()),
   });
+
+  protected onProfileChanged(): void {
+    this.profileResource.reload();
+  }
 }
