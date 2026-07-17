@@ -1,4 +1,4 @@
-import { Component, inject, input, output, signal } from '@angular/core';
+import { Component, inject, input, output, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { ProfileDto, ProfileService, WorkExperienceDto } from '../../../../generated/api';
@@ -18,23 +18,22 @@ export class WorkExperienceSectionComponent {
   readonly changed = output<ProfileDto>();
 
   private readonly profileService = inject(ProfileService);
+  private readonly modal = viewChild.required<WorkExperienceModalComponent>('modal');
 
-  protected readonly modalOpen = signal(false);
   protected readonly editingItem = signal<WorkExperienceDto | null>(null);
   protected readonly deletingId = signal<string | null>(null);
 
   protected onAdd(): void {
     this.editingItem.set(null);
-    this.modalOpen.set(true);
+    this.modal().show();
   }
 
   protected onEdit(item: WorkExperienceDto): void {
     this.editingItem.set(item);
-    this.modalOpen.set(true);
+    this.modal().show();
   }
 
   protected onModalDismissed(): void {
-    this.modalOpen.set(false);
     this.editingItem.set(null);
   }
 
@@ -52,8 +51,6 @@ export class WorkExperienceSectionComponent {
     } else {
       await firstValueFrom(this.profileService.addWorkExperience(payload));
     }
-    this.modalOpen.set(false);
-    this.editingItem.set(null);
     const profile = await firstValueFrom(this.profileService.getProfile());
     this.changed.emit(profile);
   }

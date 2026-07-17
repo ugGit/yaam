@@ -44,7 +44,7 @@
 </div>
 
 <app-profile-link-modal
-  [open]="modalOpen()"
+  #modal
   [item]="editingItem()"
   (saved)="onSaved($event)"
   (dismissed)="onModalDismissed()"

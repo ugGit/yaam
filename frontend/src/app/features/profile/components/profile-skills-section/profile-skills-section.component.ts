@@ -1,4 +1,4 @@
-import { Component, inject, input, output, signal } from '@angular/core';
+import { Component, inject, input, output, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { ProfileDto, ProfileService } from '../../../../generated/api';
@@ -15,20 +15,14 @@ export class ProfileSkillsSectionComponent {
   readonly changed = output<ProfileDto>();
 
   private readonly profileService = inject(ProfileService);
-
-  protected readonly modalOpen = signal(false);
+  private readonly modal = viewChild.required<ProfileSkillsModalComponent>('modal');
 
   protected onEdit(): void {
-    this.modalOpen.set(true);
-  }
-
-  protected onModalDismissed(): void {
-    this.modalOpen.set(false);
+    this.modal().show();
   }
 
   protected async onSaved(skills: string[]): Promise<void> {
     await firstValueFrom(this.profileService.updateProfileSkills({ skills }));
-    this.modalOpen.set(false);
     const profile = await firstValueFrom(this.profileService.getProfile());
     this.changed.emit(profile);
   }

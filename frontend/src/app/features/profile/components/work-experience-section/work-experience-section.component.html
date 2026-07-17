@@ -43,7 +43,7 @@
 </div>
 
 <app-work-experience-modal
-  [open]="modalOpen()"
+  #modal
   [item]="editingItem()"
   (saved)="onSaved($event)"
   (dismissed)="onModalDismissed()"

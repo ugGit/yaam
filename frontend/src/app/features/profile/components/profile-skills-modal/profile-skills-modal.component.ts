@@ -1,7 +1,6 @@
 import {
   Component,
   ElementRef,
-  effect,
   input,
   linkedSignal,
   output,
@@ -18,28 +17,19 @@ import { FormField, form } from '@angular/forms/signals';
   templateUrl: './profile-skills-modal.component.html',
 })
 export class ProfileSkillsModalComponent {
-  readonly open = input.required<boolean>();
   readonly items = input.required<string[]>();
   readonly saved = output<string[]>();
   readonly dismissed = output<void>();
 
-  private readonly dialogEl = viewChild<ElementRef<HTMLDialogElement>>('modal');
+  private readonly dialogEl = viewChild.required<ElementRef<HTMLDialogElement>>('modal');
 
   protected readonly editingSkills = linkedSignal<string[]>(() => [...this.items()]);
 
   protected readonly newSkillModel = signal({ newSkill: '' });
   protected readonly newSkillFields = form(this.newSkillModel);
 
-  constructor() {
-    effect(() => {
-      const dialogEl = this.dialogEl()?.nativeElement;
-      if (!dialogEl) return;
-      if (this.open()) {
-        dialogEl.showModal();
-      } else {
-        dialogEl.close();
-      }
-    });
+  show(): void {
+    this.dialogEl().nativeElement.showModal();
   }
 
   protected onAddSkill(event: Event): void {
@@ -54,6 +44,7 @@ export class ProfileSkillsModalComponent {
   protected onSubmit(): void {
     this.commitPendingSkill();
     this.saved.emit(this.editingSkills());
+    this.dialogEl().nativeElement.close();
   }
 
   protected onClose(): void {

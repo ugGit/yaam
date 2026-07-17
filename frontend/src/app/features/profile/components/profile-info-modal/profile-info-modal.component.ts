@@ -1,7 +1,6 @@
 import {
   Component,
   ElementRef,
-  effect,
   inject,
   input,
   linkedSignal,
@@ -21,13 +20,12 @@ import { ProfileDto, ProfileService } from '../../../../generated/api';
   templateUrl: './profile-info-modal.component.html',
 })
 export class ProfileInfoModalComponent {
-  readonly open = input.required<boolean>();
   readonly profile = input.required<ProfileDto>();
   readonly saved = output<ProfileDto>();
   readonly dismissed = output<void>();
 
   private readonly profileService = inject(ProfileService);
-  private readonly dialogEl = viewChild<ElementRef<HTMLDialogElement>>('modal');
+  private readonly dialogEl = viewChild.required<ElementRef<HTMLDialogElement>>('modal');
 
   protected readonly saving = signal(false);
   protected readonly serverErrors = signal<Record<string, string[]>>({});
@@ -48,16 +46,8 @@ export class ProfileInfoModalComponent {
     required(f.phone, { message: 'Phone is required.' });
   });
 
-  constructor() {
-    effect(() => {
-      const dialogEl = this.dialogEl()?.nativeElement;
-      if (!dialogEl) return;
-      if (this.open()) {
-        dialogEl.showModal();
-      } else {
-        dialogEl.close();
-      }
-    });
+  show(): void {
+    this.dialogEl().nativeElement.showModal();
   }
 
   protected async onSubmit(): Promise<void> {
@@ -78,6 +68,7 @@ export class ProfileInfoModalComponent {
         this.serverErrors.set({});
         const profile = await firstValueFrom(this.profileService.getProfile());
         this.saved.emit(profile);
+        this.dialogEl().nativeElement.close();
       } catch (err: unknown) {
         const apiErr = err as { errors?: Record<string, string[]> };
         this.serverErrors.set(apiErr?.errors ?? {});

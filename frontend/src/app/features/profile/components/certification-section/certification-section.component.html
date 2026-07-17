@@ -42,7 +42,7 @@
 </div>
 
 <app-certification-modal
-  [open]="modalOpen()"
+  #modal
   [item]="editingItem()"
   (saved)="onSaved($event)"
   (dismissed)="onModalDismissed()"

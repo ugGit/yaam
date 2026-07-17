@@ -1,4 +1,4 @@
-import { Component, input, output, signal } from '@angular/core';
+import { Component, input, output, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProfileDto } from '../../../../generated/api';
 import { ProfileInfoModalComponent } from '../profile-info-modal/profile-info-modal.component';
@@ -13,18 +13,13 @@ export class ProfileInfoSectionComponent {
   readonly profile = input.required<ProfileDto>();
   readonly changed = output<ProfileDto>();
 
-  protected readonly modalOpen = signal(false);
+  private readonly modal = viewChild.required<ProfileInfoModalComponent>('modal');
 
   protected onEdit(): void {
-    this.modalOpen.set(true);
-  }
-
-  protected onModalDismissed(): void {
-    this.modalOpen.set(false);
+    this.modal().show();
   }
 
   protected onSaved(profile: ProfileDto): void {
-    this.modalOpen.set(false);
     this.changed.emit(profile);
   }
 }

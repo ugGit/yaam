@@ -58,9 +58,4 @@
   </div>
 </div>
 
-<app-profile-info-modal
-  [open]="modalOpen()"
-  [profile]="profile()"
-  (saved)="onSaved($event)"
-  (dismissed)="onModalDismissed()"
-/>
+<app-profile-info-modal #modal [profile]="profile()" (saved)="onSaved($event)" />

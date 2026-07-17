@@ -17,9 +17,4 @@
   </div>
 </div>
 
-<app-profile-skills-modal
-  [open]="modalOpen()"
-  [items]="skills()"
-  (saved)="onSaved($event)"
-  (dismissed)="onModalDismissed()"
-/>
+<app-profile-skills-modal #modal [items]="skills()" (saved)="onSaved($event)" />
