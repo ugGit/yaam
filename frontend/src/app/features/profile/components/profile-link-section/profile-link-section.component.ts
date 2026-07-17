@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProfileLink } from '../../models/profile.model';
+import { ProfileLinkDto } from '../../../../generated/api';
 
 @Component({
   selector: 'app-profile-link-section',
@@ -9,5 +9,5 @@ import { ProfileLink } from '../../models/profile.model';
   templateUrl: './profile-link-section.component.html',
 })
 export class ProfileLinkSectionComponent {
-  readonly items = input.required<ProfileLink[]>();
+  readonly items = input.required<ProfileLinkDto[]>();
 }

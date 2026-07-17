@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Education } from '../../models/profile.model';
+import { EducationDto } from '../../../../generated/api';
 
 @Component({
   selector: 'app-education-section',
@@ -9,9 +9,9 @@ import { Education } from '../../models/profile.model';
   templateUrl: './education-section.component.html',
 })
 export class EducationSectionComponent {
-  readonly items = input.required<Education[]>();
+  readonly items = input.required<EducationDto[]>();
 
-  protected degreeAndField(item: Education): string {
+  protected degreeAndField(item: EducationDto): string {
     return [item.degree, item.fieldOfStudy].filter((v): v is string => !!v).join(', ');
   }
 }

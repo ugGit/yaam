@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { WorkExperience } from '../../models/profile.model';
+import { WorkExperienceDto } from '../../../../generated/api';
 
 @Component({
   selector: 'app-work-experience-section',
@@ -9,5 +9,5 @@ import { WorkExperience } from '../../models/profile.model';
   templateUrl: './work-experience-section.component.html',
 })
 export class WorkExperienceSectionComponent {
-  readonly items = input.required<WorkExperience[]>();
+  readonly items = input.required<WorkExperienceDto[]>();
 }

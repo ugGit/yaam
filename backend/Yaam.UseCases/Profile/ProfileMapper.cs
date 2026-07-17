@@ -28,7 +28,7 @@ public static class ProfileMapper
         new(e.Id, e.Institution, e.Degree, e.FieldOfStudy, e.StartDate, e.EndDate);
 
     public static LanguageDto ToDto(Language l) =>
-        new(l.Id, l.Name, l.Proficiency.ToString());
+        new(l.Id, l.Name, l.Proficiency);
 
     public static CertificationDto ToDto(Certification c) =>
         new(c.Id, c.Name, c.Issuer, c.Date);

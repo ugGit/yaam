@@ -1,9 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { firstValueFrom, Observable } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { resource } from '@angular/core';
-import { ProfileService } from '../../../../generated/api/index';
-import { Profile } from '../../models/profile.model';
+import { ProfileDto, ProfileService } from '../../../../generated/api/index';
 import { ProfileInfoSectionComponent } from '../../components/profile-info-section/profile-info-section.component';
 import { ProfileSkillsSectionComponent } from '../../components/profile-skills-section/profile-skills-section.component';
 import { WorkExperienceSectionComponent } from '../../components/work-experience-section/work-experience-section.component';
@@ -32,8 +31,8 @@ import { CustomFieldsSectionComponent } from '../../components/custom-fields-sec
 export class ProfilePageComponent {
   private readonly profileService = inject(ProfileService);
 
-  protected readonly profileResource = resource<Profile, void>({
+  protected readonly profileResource = resource<ProfileDto, void>({
     params: () => undefined,
-    loader: () => firstValueFrom(this.profileService.getProfile() as Observable<Profile>),
+    loader: () => firstValueFrom(this.profileService.getProfile()),
   });
 }

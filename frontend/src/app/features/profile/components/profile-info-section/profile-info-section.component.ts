@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Profile } from '../../models/profile.model';
+import { ProfileDto } from '../../../../generated/api';
 
 @Component({
   selector: 'app-profile-info-section',
@@ -9,5 +9,5 @@ import { Profile } from '../../models/profile.model';
   templateUrl: './profile-info-section.component.html',
 })
 export class ProfileInfoSectionComponent {
-  readonly profile = input.required<Profile>();
+  readonly profile = input.required<ProfileDto>();
 }

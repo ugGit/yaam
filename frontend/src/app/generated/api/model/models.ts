@@ -8,6 +8,7 @@ export * from './createApplicationNoteInputModel';
 export * from './customFieldDto';
 export * from './educationDto';
 export * from './languageDto';
+export * from './languageProficiency';
 export * from './profileDto';
 export * from './profileLinkDto';
 export * from './updateApplicationInputModel';

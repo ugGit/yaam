@@ -1,6 +1,13 @@
 import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Language, LANGUAGE_PROFICIENCY_LABELS } from '../../models/profile.model';
+import { LanguageDto, LanguageProficiency } from '../../../../generated/api';
+
+const PROFICIENCY_LABELS: Record<LanguageProficiency, string> = {
+  [LanguageProficiency.Basic]: 'Basic',
+  [LanguageProficiency.BusinessProficiency]: 'Business Proficiency',
+  [LanguageProficiency.Fluent]: 'Fluent',
+  [LanguageProficiency.Native]: 'Native',
+};
 
 @Component({
   selector: 'app-language-section',
@@ -9,6 +16,6 @@ import { Language, LANGUAGE_PROFICIENCY_LABELS } from '../../models/profile.mode
   templateUrl: './language-section.component.html',
 })
 export class LanguageSectionComponent {
-  readonly items = input.required<Language[]>();
-  protected readonly proficiencyLabels = LANGUAGE_PROFICIENCY_LABELS;
+  readonly items = input.required<LanguageDto[]>();
+  protected readonly proficiencyLabels = PROFICIENCY_LABELS;
 }

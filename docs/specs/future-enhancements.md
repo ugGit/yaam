@@ -2,6 +2,10 @@
 
 Items noted during code review as valuable but out of scope for the current story.
 
+## Mandatory profile fields (post-onboarding)
+
+`Profile.FirstName`, `Profile.LastName`, and `Profile.Email` are currently optional. Once a proper onboarding flow exists, these should be required fields. Note: `Profile.Email` is a contact/CV email and does not need to match the account login email.
+
 ## Job posting enrichment
 
 Currently `JobPosting` is stored as a plain URL string. A future story should:
