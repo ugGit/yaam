@@ -1,17 +1,38 @@
 <div class="card bg-base-100 shadow">
   <div class="card-body">
-    <h2 class="card-title text-lg">Languages</h2>
+    <div class="flex items-center justify-between">
+      <h2 class="card-title text-lg">Languages</h2>
+      <button class="btn btn-ghost btn-sm" (click)="onAdd()">+ Add</button>
+    </div>
+
     @if (items().length > 0) {
       <ul class="flex flex-col gap-2 mt-2">
         @for (item of items(); track item.id) {
-          <li class="flex justify-between">
-            <span>{{ item.name }}</span>
-            <span class="badge badge-ghost">{{ proficiencyLabels[item.proficiency] }}</span>
+          <li class="flex items-center justify-between">
+            <div>
+              <span class="font-medium">{{ item.name }}</span>
+              <span class="badge badge-ghost ml-2">{{ proficiencyLabels[item.proficiency] }}</span>
+            </div>
+            <div class="flex gap-1 shrink-0">
+              @if (deletingId() === item.id) {
+                <button class="btn btn-error btn-xs" (click)="onDeleteConfirm(item.id)">Delete</button>
+                <button class="btn btn-ghost btn-xs" (click)="onDeleteCancel()">Cancel</button>
+              } @else {
+                <button class="btn btn-ghost btn-xs" (click)="onEdit(item)">Edit</button>
+                <button class="btn btn-ghost btn-xs text-error" (click)="onDeleteStart(item.id)">Delete</button>
+              }
+            </div>
           </li>
         }
       </ul>
     } @else {
-      <p class="text-base-content/40 italic">No languages added yet.</p>
+      <p class="text-base-content/40 italic mt-2">No languages added yet.</p>
     }
   </div>
 </div>
+
+<app-language-modal
+  [open]="modalOpen()"
+  [item]="editingItem()"
+  (saved)="onSaved($event)"
+  (dismissed)="onModalDismissed()" />
