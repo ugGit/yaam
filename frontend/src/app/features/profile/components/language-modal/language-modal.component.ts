@@ -1,6 +1,6 @@
 import { Component, input, linkedSignal, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormField, FormRoot, form, required, submit } from '@angular/forms/signals';
+import { FormField, form, required, submit } from '@angular/forms/signals';
 import { LanguageDto, LanguageProficiency } from '../../../../generated/api';
 
 export interface LanguageFormData {
@@ -25,7 +25,7 @@ export const LANGUAGE_PROFICIENCY_LABELS: Record<LanguageProficiency, string> = 
 @Component({
   selector: 'app-language-modal',
   standalone: true,
-  imports: [CommonModule, FormField, FormRoot],
+  imports: [CommonModule, FormField],
   templateUrl: './language-modal.component.html',
 })
 export class LanguageModalComponent {

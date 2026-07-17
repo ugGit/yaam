@@ -1,6 +1,6 @@
 import { Component, input, linkedSignal, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormField, FormRoot, form, required, submit } from '@angular/forms/signals';
+import { FormField, form, required, submit } from '@angular/forms/signals';
 import { EducationDto } from '../../../../generated/api';
 
 export interface EducationFormData {
@@ -14,7 +14,7 @@ export interface EducationFormData {
 @Component({
   selector: 'app-education-modal',
   standalone: true,
-  imports: [CommonModule, FormField, FormRoot],
+  imports: [CommonModule, FormField],
   templateUrl: './education-modal.component.html',
 })
 export class EducationModalComponent {

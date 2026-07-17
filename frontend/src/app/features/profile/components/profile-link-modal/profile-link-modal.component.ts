@@ -1,35 +1,33 @@
 import { Component, input, linkedSignal, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormField, form, required, submit } from '@angular/forms/signals';
-import { CertificationDto } from '../../../../generated/api';
+import { ProfileLinkDto } from '../../../../generated/api';
 
-export interface CertificationFormData {
-  name: string;
-  issuer: string;
-  date: string;
+export interface ProfileLinkFormData {
+  label: string;
+  url: string;
 }
 
 @Component({
-  selector: 'app-certification-modal',
+  selector: 'app-profile-link-modal',
   standalone: true,
   imports: [CommonModule, FormField],
-  templateUrl: './certification-modal.component.html',
+  templateUrl: './profile-link-modal.component.html',
 })
-export class CertificationModalComponent {
+export class ProfileLinkModalComponent {
   readonly open = input.required<boolean>();
-  readonly item = input<CertificationDto | null>(null);
-  readonly saved = output<CertificationFormData>();
+  readonly item = input<ProfileLinkDto | null>(null);
+  readonly saved = output<ProfileLinkFormData>();
   readonly dismissed = output<void>();
 
-  protected readonly formModel = linkedSignal<CertificationFormData>(() => ({
-    name: this.item()?.name ?? '',
-    issuer: this.item()?.issuer ?? '',
-    date: this.item()?.date ?? '',
+  protected readonly formModel = linkedSignal<ProfileLinkFormData>(() => ({
+    label: this.item()?.label ?? '',
+    url: this.item()?.url ?? '',
   }));
 
   protected readonly fields = form(this.formModel, (f) => {
-    required(f.name, { message: 'Certification name is required.' });
-    required(f.date, { message: 'Date is required.' });
+    required(f.label, { message: 'Label is required.' });
+    required(f.url, { message: 'URL is required.' });
   });
 
   protected async onSubmit(): Promise<void> {
