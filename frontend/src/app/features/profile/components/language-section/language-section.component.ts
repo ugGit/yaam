@@ -19,7 +19,6 @@ export class LanguageSectionComponent {
   protected readonly modalOpen = signal(false);
   protected readonly editingItem = signal<LanguageDto | null>(null);
   protected readonly deletingId = signal<string | null>(null);
-  protected readonly saving = signal(false);
   protected readonly proficiencyLabels = LANGUAGE_PROFICIENCY_LABELS;
 
   protected onAdd(): void {
@@ -39,23 +38,18 @@ export class LanguageSectionComponent {
 
   protected async onSaved(data: LanguageFormData): Promise<void> {
     const id = this.editingItem()?.id;
-    this.saving.set(true);
-    try {
-      const payload = {
-        name: data.name,
-        proficiency: data.proficiency as LanguageDto['proficiency'],
-      };
-      if (id) {
-        await firstValueFrom(this.profileService.updateLanguage(id, payload));
-      } else {
-        await firstValueFrom(this.profileService.addLanguage(payload));
-      }
-      this.modalOpen.set(false);
-      this.editingItem.set(null);
-      this.changed.emit();
-    } finally {
-      this.saving.set(false);
+    const payload = {
+      name: data.name,
+      proficiency: data.proficiency as LanguageDto['proficiency'],
+    };
+    if (id) {
+      await firstValueFrom(this.profileService.updateLanguage(id, payload));
+    } else {
+      await firstValueFrom(this.profileService.addLanguage(payload));
     }
+    this.modalOpen.set(false);
+    this.editingItem.set(null);
+    this.changed.emit();
   }
 
   protected onDeleteStart(id: string): void {

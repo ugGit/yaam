@@ -14,20 +14,18 @@
           }
         </div>
 
-        <div class="form-control" [formField]="fields.proficiency">
-          <label class="label"><span class="label-text">Proficiency *</span></label>
-          <select class="select select-bordered w-full"
-            [value]="formModel().proficiency"
-            (change)="formModel.update(m => ({ ...m, proficiency: $any($event.target).value }))">
+        <div class="form-control">
+          <label class="label" for="proficiency"><span class="label-text">Proficiency *</span></label>
+          <select id="proficiency" class="select select-bordered w-full" [formField]="fields.proficiency">
             <option value="">Select proficiency</option>
             @for (p of allProficiencies; track p) {
               <option [value]="p">{{ proficiencyLabels[p] }}</option>
             }
           </select>
           @if (fields.proficiency().touched() && fields.proficiency().errors().length) {
-            <div class="label">
+            <label class="label">
               <span class="label-text-alt text-error">{{ fields.proficiency().errors()[0].message }}</span>
-            </div>
+            </label>
           }
         </div>
       </div>

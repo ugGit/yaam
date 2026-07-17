@@ -19,7 +19,6 @@ export class ProfileLinkSectionComponent {
   protected readonly modalOpen = signal(false);
   protected readonly editingItem = signal<ProfileLinkDto | null>(null);
   protected readonly deletingId = signal<string | null>(null);
-  protected readonly saving = signal(false);
 
   protected onAdd(): void {
     this.editingItem.set(null);
@@ -38,23 +37,18 @@ export class ProfileLinkSectionComponent {
 
   protected async onSaved(data: ProfileLinkFormData): Promise<void> {
     const id = this.editingItem()?.id;
-    this.saving.set(true);
-    try {
-      const payload = {
-        label: data.label,
-        url: data.url,
-      };
-      if (id) {
-        await firstValueFrom(this.profileService.updateProfileLink(id, payload));
-      } else {
-        await firstValueFrom(this.profileService.addProfileLink(payload));
-      }
-      this.modalOpen.set(false);
-      this.editingItem.set(null);
-      this.changed.emit();
-    } finally {
-      this.saving.set(false);
+    const payload = {
+      label: data.label,
+      url: data.url,
+    };
+    if (id) {
+      await firstValueFrom(this.profileService.updateProfileLink(id, payload));
+    } else {
+      await firstValueFrom(this.profileService.addProfileLink(payload));
     }
+    this.modalOpen.set(false);
+    this.editingItem.set(null);
+    this.changed.emit();
   }
 
   protected onDeleteStart(id: string): void {

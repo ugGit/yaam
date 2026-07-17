@@ -19,7 +19,6 @@ export class WorkExperienceSectionComponent {
   protected readonly modalOpen = signal(false);
   protected readonly editingItem = signal<WorkExperienceDto | null>(null);
   protected readonly deletingId = signal<string | null>(null);
-  protected readonly saving = signal(false);
 
   protected onAdd(): void {
     this.editingItem.set(null);
@@ -38,26 +37,21 @@ export class WorkExperienceSectionComponent {
 
   protected async onSaved(data: WorkExperienceFormData): Promise<void> {
     const id = this.editingItem()?.id;
-    this.saving.set(true);
-    try {
-      const payload = {
-        company: data.company,
-        title: data.title,
-        startDate: data.startDate,
-        endDate: data.endDate || null,
-        description: data.description || null,
-      };
-      if (id) {
-        await firstValueFrom(this.profileService.updateWorkExperience(id, payload));
-      } else {
-        await firstValueFrom(this.profileService.addWorkExperience(payload));
-      }
-      this.modalOpen.set(false);
-      this.editingItem.set(null);
-      this.changed.emit();
-    } finally {
-      this.saving.set(false);
+    const payload = {
+      company: data.company,
+      title: data.title,
+      startDate: data.startDate,
+      endDate: data.endDate || null,
+      description: data.description || null,
+    };
+    if (id) {
+      await firstValueFrom(this.profileService.updateWorkExperience(id, payload));
+    } else {
+      await firstValueFrom(this.profileService.addWorkExperience(payload));
     }
+    this.modalOpen.set(false);
+    this.editingItem.set(null);
+    this.changed.emit();
   }
 
   protected onDeleteStart(id: string): void {
@@ -69,8 +63,11 @@ export class WorkExperienceSectionComponent {
   }
 
   protected async onDeleteConfirm(id: string): Promise<void> {
-    await firstValueFrom(this.profileService.deleteWorkExperience(id));
-    this.deletingId.set(null);
-    this.changed.emit();
+    try {
+      await firstValueFrom(this.profileService.deleteWorkExperience(id));
+      this.changed.emit();
+    } finally {
+      this.deletingId.set(null);
+    }
   }
 }

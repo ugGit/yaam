@@ -47,7 +47,7 @@ export class WorkExperienceModalComponent {
     this.dismissed.emit();
   }
 
-  get isEditMode(): boolean {
+  protected get isEditMode(): boolean {
     return this.item() !== null;
   }
 }
