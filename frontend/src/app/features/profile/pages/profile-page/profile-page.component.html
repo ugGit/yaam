@@ -7,8 +7,7 @@
     </div>
   } @else if (profileResource.error()) {
     <div class="alert alert-error mb-4">Failed to load profile. Please try again.</div>
-  } @else {
-    @let profile = profileResource.value()!;
+  } @else if (profileResource.value(); as profile) {
     <div class="flex flex-col gap-6">
       <app-profile-info-section [profile]="profile" />
       <app-work-experience-section [items]="profile.workExperiences" />

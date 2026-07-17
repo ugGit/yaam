@@ -32,7 +32,6 @@ export class ProfilePageComponent {
   private readonly profileService = inject(ProfileService);
 
   protected readonly profileResource = resource<ProfileDto, void>({
-    params: () => undefined,
     loader: () => firstValueFrom(this.profileService.getProfile()),
   });
 }
