@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Yaam.Domain.Enums;
 using Yaam.UseCases.Profile.Commands;
 using Yaam.UseCases.Profile.Commands.Education;
+using Yaam.UseCases.Profile.Commands.Certifications;
 using Yaam.UseCases.Profile.Commands.Languages;
 using Yaam.UseCases.Profile.Commands.WorkExperiences;
 using Yaam.UseCases.Profile.Dtos;
@@ -151,6 +152,38 @@ public class ProfileController(IMediator mediator) : ControllerBase
             cancellationToken);
         return NoContent();
     }
+
+    [HttpPost("certifications")]
+    [EndpointName("AddCertification")]
+    public async Task<IActionResult> AddCertification(
+        [FromBody] CertificationInputModel input, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new AddCertificationCommand(input.Name, input.Issuer, input.Date),
+            cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpPut("certifications/{id:guid}")]
+    [EndpointName("UpdateCertification")]
+    public async Task<IActionResult> UpdateCertification(
+        Guid id, [FromBody] CertificationInputModel input, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new UpdateCertificationCommand(id, input.Name, input.Issuer, input.Date),
+            cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpDelete("certifications/{id:guid}")]
+    [EndpointName("DeleteCertification")]
+    public async Task<IActionResult> DeleteCertification(Guid id, CancellationToken cancellationToken)
+    {
+        await mediator.Send(
+            new DeleteCertificationCommand(id),
+            cancellationToken);
+        return NoContent();
+    }
 }
 
 public record UpdateProfileInfoInputModel(
@@ -178,3 +211,5 @@ public record EducationInputModel(
     DateOnly? EndDate);
 
 public record LanguageInputModel(string Name, LanguageProficiency Proficiency);
+
+public record CertificationInputModel(string Name, string? Issuer, DateOnly Date);

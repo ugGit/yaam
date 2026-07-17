@@ -181,4 +181,23 @@ public class ProfileEndpointsTests(ApiFactory factory)
         var deleteResponse = await _client.DeleteAsync($"/api/profile/languages/{added.Id}");
         deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }
+
+    [Fact]
+    public async Task CertificationCrudFlow()
+    {
+        var addPayload = new { name = "AWS Solutions Architect", issuer = "Amazon", date = "2023-06-15" };
+        var addResponse = await _client.PostAsJsonAsync("/api/profile/certifications", addPayload);
+        addResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var added = await addResponse.Content.ReadFromJsonAsync<CertificationDto>();
+        added!.Name.Should().Be("AWS Solutions Architect");
+
+        var updatePayload = new { name = "AWS Solutions Architect Professional", issuer = "Amazon", date = "2024-01-01" };
+        var updateResponse = await _client.PutAsJsonAsync($"/api/profile/certifications/{added.Id}", updatePayload);
+        updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var updated = await updateResponse.Content.ReadFromJsonAsync<CertificationDto>();
+        updated!.Name.Should().Be("AWS Solutions Architect Professional");
+
+        var deleteResponse = await _client.DeleteAsync($"/api/profile/certifications/{added.Id}");
+        deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
+    }
 }
