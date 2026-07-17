@@ -1,6 +1,5 @@
 using FluentValidation;
 using MediatR;
-using Yaam.Domain.Entities;
 using Yaam.Domain.Repositories;
 using Yaam.UseCases.Profile.Dtos;
 
