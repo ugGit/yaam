@@ -30,6 +30,11 @@ public class ProfileRepository(AppDbContext context) : IProfileRepository
         return profile;
     }
 
+    public void Add<TEntity>(TEntity entity) where TEntity : Entity
+    {
+        context.Add(entity);
+    }
+
     public async Task UpdateAsync(CancellationToken cancellationToken)
     {
         await context.SaveChangesAsync(cancellationToken);

@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Yaam.UseCases.Profile.Commands;
+using Yaam.UseCases.Profile.Commands.WorkExperiences;
 using Yaam.UseCases.Profile.Dtos;
 using Yaam.UseCases.Profile.Queries;
 
@@ -47,6 +48,40 @@ public class ProfileController(IMediator mediator) : ControllerBase
             cancellationToken);
         return Ok(result);
     }
+
+    [HttpPost("work-experiences")]
+    [EndpointName("AddWorkExperience")]
+    public async Task<IActionResult> AddWorkExperience(
+        [FromBody] WorkExperienceInputModel input, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new AddWorkExperienceCommand(
+                input.Company, input.Title, input.StartDate, input.EndDate, input.Description),
+            cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpPut("work-experiences/{id:guid}")]
+    [EndpointName("UpdateWorkExperience")]
+    public async Task<IActionResult> UpdateWorkExperience(
+        Guid id, [FromBody] WorkExperienceInputModel input, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new UpdateWorkExperienceCommand(
+                id, input.Company, input.Title, input.StartDate, input.EndDate, input.Description),
+            cancellationToken);
+        return Ok(result);
+    }
+
+    [HttpDelete("work-experiences/{id:guid}")]
+    [EndpointName("DeleteWorkExperience")]
+    public async Task<IActionResult> DeleteWorkExperience(Guid id, CancellationToken cancellationToken)
+    {
+        await mediator.Send(
+            new DeleteWorkExperienceCommand(id),
+            cancellationToken);
+        return NoContent();
+    }
 }
 
 public record UpdateProfileInfoInputModel(
@@ -58,3 +93,10 @@ public record UpdateProfileInfoInputModel(
     string? Summary);
 
 public record UpdateProfileSkillsInputModel(List<string> Skills);
+
+public record WorkExperienceInputModel(
+    string Company,
+    string Title,
+    DateOnly StartDate,
+    DateOnly? EndDate,
+    string? Description);

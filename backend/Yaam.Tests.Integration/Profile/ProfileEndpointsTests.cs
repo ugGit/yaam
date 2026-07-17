@@ -84,4 +84,54 @@ public class ProfileEndpointsTests(ApiFactory factory)
         var profile = await response.Content.ReadFromJsonAsync<ProfileDto>();
         profile!.Skills.Should().BeEquivalentTo(new[] { "C#", "Angular", "PostgreSQL" });
     }
+
+    [Fact]
+    public async Task WorkExperienceCrudFlow()
+    {
+        // Add
+        var addPayload = new
+        {
+            company = "ACME Corp",
+            title = "Software Engineer",
+            startDate = "2022-01-01",
+            endDate = (string?)null,
+            description = "Built things."
+        };
+        var addResponse = await _client.PostAsJsonAsync("/api/profile/work-experiences", addPayload);
+        addResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var added = await addResponse.Content.ReadFromJsonAsync<WorkExperienceDto>();
+        added!.Company.Should().Be("ACME Corp");
+
+        // Update
+        var updatePayload = new
+        {
+            company = "ACME Corp",
+            title = "Senior Software Engineer",
+            startDate = "2022-01-01",
+            endDate = "2024-12-31",
+            description = "Built more things."
+        };
+        var updateResponse = await _client.PutAsJsonAsync(
+            $"/api/profile/work-experiences/{added.Id}", updatePayload);
+        updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var updated = await updateResponse.Content.ReadFromJsonAsync<WorkExperienceDto>();
+        updated!.Title.Should().Be("Senior Software Engineer");
+
+        // Delete
+        var deleteResponse = await _client.DeleteAsync($"/api/profile/work-experiences/{added.Id}");
+        deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
+
+        // Verify gone
+        var profile = await (await _client.GetAsync("/api/profile"))
+            .Content.ReadFromJsonAsync<ProfileDto>();
+        profile!.WorkExperiences.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task POST_WorkExperience_Returns400_WhenRequiredFieldsMissing()
+    {
+        var payload = new { description = "No company or title" };
+        var response = await _client.PostAsJsonAsync("/api/profile/work-experiences", payload);
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    }
 }
