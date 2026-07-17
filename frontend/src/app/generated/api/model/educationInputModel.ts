@@ -9,8 +9,7 @@
  */
 
 
-export interface EducationDto { 
-    id: string;
+export interface EducationInputModel { 
     institution: string;
     degree: string | null;
     fieldOfStudy: string | null;

@@ -7,14 +7,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { LanguageProficiency } from './languageProficiency';
 
 
-export interface EducationDto { 
-    id: string;
-    institution: string;
-    degree: string | null;
-    fieldOfStudy: string | null;
-    startDate: string | null;
-    endDate: string | null;
+export interface LanguageInputModel { 
+    name: string;
+    proficiency: LanguageProficiency;
 }
+export namespace LanguageInputModel {
+}
+
 

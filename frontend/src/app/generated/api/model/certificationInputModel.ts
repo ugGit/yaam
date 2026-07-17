@@ -9,12 +9,9 @@
  */
 
 
-export interface EducationDto { 
-    id: string;
-    institution: string;
-    degree: string | null;
-    fieldOfStudy: string | null;
-    startDate: string | null;
-    endDate: string | null;
+export interface CertificationInputModel { 
+    name: string;
+    issuer: string | null;
+    date: string;
 }
 

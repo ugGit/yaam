@@ -9,12 +9,11 @@
  */
 
 
-export interface EducationDto { 
-    id: string;
-    institution: string;
-    degree: string | null;
-    fieldOfStudy: string | null;
-    startDate: string | null;
+export interface WorkExperienceInputModel { 
+    company: string;
+    title: string;
+    startDate: string;
     endDate: string | null;
+    description: string | null;
 }
 

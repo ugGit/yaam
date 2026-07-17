@@ -9,12 +9,12 @@
  */
 
 
-export interface EducationDto { 
-    id: string;
-    institution: string;
-    degree: string | null;
-    fieldOfStudy: string | null;
-    startDate: string | null;
-    endDate: string | null;
+export interface UpdateProfileInfoInputModel { 
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    location: string | null;
+    summary: string | null;
 }
 
