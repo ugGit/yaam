@@ -39,7 +39,7 @@ public class AddWorkExperienceCommandHandler(IProfileRepository repository)
             EndDate = command.EndDate,
             Description = command.Description,
         };
-        repository.Add(entry);
+        profile.WorkExperiences.Add(entry);
         await repository.UpdateAsync(cancellationToken);
         return ProfileMapper.ToDto(entry);
     }

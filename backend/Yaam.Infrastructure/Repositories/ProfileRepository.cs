@@ -30,13 +30,16 @@ public class ProfileRepository(AppDbContext context) : IProfileRepository
         return profile;
     }
 
-    public void Add<TEntity>(TEntity entity) where TEntity : Entity
-    {
-        context.Add(entity);
-    }
-
     public async Task UpdateAsync(CancellationToken cancellationToken)
     {
+        foreach (var entry in context.ChangeTracker.Entries<Entity>()
+                     .Where(e => e.State == EntityState.Modified))
+        {
+            var isNew = entry.Properties.All(p => Equals(p.OriginalValue, p.CurrentValue));
+            if (isNew)
+                entry.State = EntityState.Added;
+        }
+
         await context.SaveChangesAsync(cancellationToken);
     }
 }
