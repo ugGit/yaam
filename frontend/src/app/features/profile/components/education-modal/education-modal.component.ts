@@ -1,4 +1,12 @@
-import { Component, ElementRef, effect, input, linkedSignal, output, viewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  effect,
+  input,
+  linkedSignal,
+  output,
+  viewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormField, form, required, submit } from '@angular/forms/signals';
 import { EducationDto } from '../../../../generated/api';

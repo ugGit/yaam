@@ -1,4 +1,13 @@
-import { Component, ElementRef, effect, input, linkedSignal, output, signal, viewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  effect,
+  input,
+  linkedSignal,
+  output,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormField, form } from '@angular/forms/signals';
 

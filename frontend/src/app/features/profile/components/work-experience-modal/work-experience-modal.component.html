@@ -13,7 +13,9 @@
         />
         @if (fields.company().touched() && fields.company().errors().length) {
           <div class="label">
-            <span class="label-text-alt text-error">{{ fields.company().errors()[0].message }}</span>
+            <span class="label-text-alt text-error">{{
+              fields.company().errors()[0].message
+            }}</span>
           </div>
         }
       </div>

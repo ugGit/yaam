@@ -20,12 +20,7 @@
 
       <div class="form-control">
         <label class="label" for="url"><span class="label-text">URL *</span></label>
-        <input
-          id="url"
-          [formField]="fields.url"
-          type="text"
-          class="input input-bordered w-full"
-        />
+        <input id="url" [formField]="fields.url" type="text" class="input input-bordered w-full" />
         @if (fields.url().touched() && fields.url().errors().length) {
           <div class="label">
             <span class="label-text-alt text-error">{{ fields.url().errors()[0].message }}</span>
