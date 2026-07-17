@@ -23,9 +23,9 @@
             }
           </select>
           @if (fields.proficiency().touched() && fields.proficiency().errors().length) {
-            <label class="label">
+            <div class="label">
               <span class="label-text-alt text-error">{{ fields.proficiency().errors()[0].message }}</span>
-            </label>
+            </div>
           }
         </div>
       </div>
@@ -35,6 +35,6 @@
         <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
       </div>
     </div>
-    <div class="modal-backdrop" (click)="onDismiss()"></div>
+    <button type="button" class="modal-backdrop" (click)="onDismiss()" aria-label="Close modal"></button>
   </div>
 }
