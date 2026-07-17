@@ -79,7 +79,11 @@ export class ApplicationDetailComponent {
     const status = (event.target as HTMLSelectElement).value;
     this.statusSaving.set(true);
     try {
-      await firstValueFrom(this.api.patchApplicationStatus(this.applicationId()!, { status: status as ApplicationStatus }));
+      await firstValueFrom(
+        this.api.patchApplicationStatus(this.applicationId()!, {
+          status: status as ApplicationStatus,
+        }),
+      );
       this.applicationResource.reload();
     } finally {
       this.statusSaving.set(false);

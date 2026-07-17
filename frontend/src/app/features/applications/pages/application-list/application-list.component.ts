@@ -38,7 +38,11 @@ export class ApplicationListComponent {
     }),
     loader: ({ params }) =>
       firstValueFrom(
-        this.api.listApplications(params.status ? (params.status as ApplicationStatus) : undefined, params.sort, params.order),
+        this.api.listApplications(
+          params.status ? (params.status as ApplicationStatus) : undefined,
+          params.sort,
+          params.order,
+        ),
       ),
   });
 
