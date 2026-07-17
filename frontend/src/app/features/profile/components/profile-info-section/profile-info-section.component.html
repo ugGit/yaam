@@ -1,55 +1,105 @@
 <div class="card bg-base-100 shadow">
   <div class="card-body">
-    <h2 class="card-title text-lg">Contact Info</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
-      <div>
-        <p class="text-xs text-base-content/50 uppercase tracking-wide mb-1">First name</p>
-        @if (profile().firstName) {
-          <p>{{ profile().firstName }}</p>
-        } @else {
-          <p class="text-base-content/40 italic">Not set</p>
-        }
-      </div>
-      <div>
-        <p class="text-xs text-base-content/50 uppercase tracking-wide mb-1">Last name</p>
-        @if (profile().lastName) {
-          <p>{{ profile().lastName }}</p>
-        } @else {
-          <p class="text-base-content/40 italic">Not set</p>
-        }
-      </div>
-      <div>
-        <p class="text-xs text-base-content/50 uppercase tracking-wide mb-1">Email</p>
-        @if (profile().email) {
-          <p>{{ profile().email }}</p>
-        } @else {
-          <p class="text-base-content/40 italic">Not set</p>
-        }
-      </div>
-      <div>
-        <p class="text-xs text-base-content/50 uppercase tracking-wide mb-1">Phone</p>
-        @if (profile().phone) {
-          <p>{{ profile().phone }}</p>
-        } @else {
-          <p class="text-base-content/40 italic">Not set</p>
-        }
-      </div>
-      <div class="sm:col-span-2">
-        <p class="text-xs text-base-content/50 uppercase tracking-wide mb-1">Location</p>
-        @if (profile().location) {
-          <p>{{ profile().location }}</p>
-        } @else {
-          <p class="text-base-content/40 italic">Not set</p>
-        }
-      </div>
+    <div class="flex items-center justify-between">
+      <h2 class="card-title text-lg">Contact Info</h2>
+      @if (!editMode()) {
+        <button class="btn btn-ghost btn-sm" (click)="onEdit()">Edit</button>
+      }
     </div>
 
-    <div class="divider my-2"></div>
-    <h2 class="card-title text-lg">Summary</h2>
-    @if (profile().summary) {
-      <p class="whitespace-pre-wrap">{{ profile().summary }}</p>
+    @if (editMode()) {
+      <form (ngSubmit)="onSave()" FormRoot [formModel]="fields">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
+          <div FormField="firstName">
+            <label class="label"><span class="label-text">First name *</span></label>
+            <input type="text" class="input input-bordered w-full" required
+              [value]="formModel().firstName"
+              (input)="formModel.update(m => ({ ...m, firstName: $any($event.target).value }))" />
+          </div>
+          <div FormField="lastName">
+            <label class="label"><span class="label-text">Last name *</span></label>
+            <input type="text" class="input input-bordered w-full" required
+              [value]="formModel().lastName"
+              (input)="formModel.update(m => ({ ...m, lastName: $any($event.target).value }))" />
+          </div>
+          <div FormField="email">
+            <label class="label"><span class="label-text">Email *</span></label>
+            <input type="email" class="input input-bordered w-full" required
+              [value]="formModel().email"
+              (input)="formModel.update(m => ({ ...m, email: $any($event.target).value }))" />
+          </div>
+          <div FormField="phone">
+            <label class="label"><span class="label-text">Phone *</span></label>
+            <input type="text" class="input input-bordered w-full" required
+              [value]="formModel().phone"
+              (input)="formModel.update(m => ({ ...m, phone: $any($event.target).value }))" />
+          </div>
+          <div class="sm:col-span-2" FormField="location">
+            <label class="label"><span class="label-text">Location</span></label>
+            <input type="text" class="input input-bordered w-full"
+              [value]="formModel().location"
+              (input)="formModel.update(m => ({ ...m, location: $any($event.target).value }))" />
+          </div>
+        </div>
+
+        <div class="divider my-2"></div>
+        <h2 class="font-semibold mb-1">Summary</h2>
+        <div FormField="summary">
+          <textarea class="textarea textarea-bordered w-full" rows="4"
+            [value]="formModel().summary"
+            (input)="formModel.update(m => ({ ...m, summary: $any($event.target).value }))"></textarea>
+        </div>
+
+        @if (serverErrors() | keyvalue; as errors) {
+          @if (errors.length > 0) {
+            <div class="alert alert-error mt-2">
+              @for (e of errors; track e.key) {
+                <p>{{ e.value.join(', ') }}</p>
+              }
+            </div>
+          }
+        }
+
+        <div class="flex gap-2 justify-end mt-4">
+          <button type="button" class="btn btn-ghost" (click)="onCancel()">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="saving()">
+            @if (saving()) { <span class="loading loading-spinner loading-sm"></span> }
+            Save
+          </button>
+        </div>
+      </form>
     } @else {
-      <p class="text-base-content/40 italic">No summary yet. Add a brief professional summary.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
+        <div>
+          <p class="text-xs text-base-content/50 uppercase tracking-wide mb-1">First name</p>
+          @if (profile().firstName) { <p>{{ profile().firstName }}</p> }
+          @else { <p class="text-base-content/40 italic">Not set</p> }
+        </div>
+        <div>
+          <p class="text-xs text-base-content/50 uppercase tracking-wide mb-1">Last name</p>
+          @if (profile().lastName) { <p>{{ profile().lastName }}</p> }
+          @else { <p class="text-base-content/40 italic">Not set</p> }
+        </div>
+        <div>
+          <p class="text-xs text-base-content/50 uppercase tracking-wide mb-1">Email</p>
+          @if (profile().email) { <p>{{ profile().email }}</p> }
+          @else { <p class="text-base-content/40 italic">Not set</p> }
+        </div>
+        <div>
+          <p class="text-xs text-base-content/50 uppercase tracking-wide mb-1">Phone</p>
+          @if (profile().phone) { <p>{{ profile().phone }}</p> }
+          @else { <p class="text-base-content/40 italic">Not set</p> }
+        </div>
+        <div class="sm:col-span-2">
+          <p class="text-xs text-base-content/50 uppercase tracking-wide mb-1">Location</p>
+          @if (profile().location) { <p>{{ profile().location }}</p> }
+          @else { <p class="text-base-content/40 italic">Not set</p> }
+        </div>
+      </div>
+      <div class="divider my-2"></div>
+      <h2 class="font-semibold mb-1">Summary</h2>
+      @if (profile().summary) { <p class="whitespace-pre-wrap">{{ profile().summary }}</p> }
+      @else { <p class="text-base-content/40 italic">No summary yet.</p> }
     }
   </div>
 </div>
