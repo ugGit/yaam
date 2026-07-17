@@ -1,7 +1,7 @@
 import { Component, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
-import { ProfileService, EducationDto } from '../../../../generated/api';
+import { ProfileDto, ProfileService, EducationDto } from '../../../../generated/api';
 import {
   EducationModalComponent,
   EducationFormData,
@@ -15,7 +15,7 @@ import {
 })
 export class EducationSectionComponent {
   readonly items = input.required<EducationDto[]>();
-  readonly changed = output<void>();
+  readonly changed = output<ProfileDto>();
 
   private readonly profileService = inject(ProfileService);
 
@@ -54,7 +54,8 @@ export class EducationSectionComponent {
     }
     this.modalOpen.set(false);
     this.editingItem.set(null);
-    this.changed.emit();
+    const profile = await firstValueFrom(this.profileService.getProfile());
+    this.changed.emit(profile);
   }
 
   protected onDeleteStart(id: string): void {
@@ -68,13 +69,14 @@ export class EducationSectionComponent {
   protected async onDeleteConfirm(id: string): Promise<void> {
     try {
       await firstValueFrom(this.profileService.deleteEducation(id));
-      this.changed.emit();
+      const profile = await firstValueFrom(this.profileService.getProfile());
+      this.changed.emit(profile);
     } finally {
       this.deletingId.set(null);
     }
   }
 
   protected degreeAndField(item: EducationDto): string {
-    return [item.degree, item.fieldOfStudy].filter((v): v is string => !!v).join(', ');
+    return [item.degree, item.fieldOfStudy].filter((value): value is string => !!value).join(', ');
   }
 }

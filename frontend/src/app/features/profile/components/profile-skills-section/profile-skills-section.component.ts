@@ -1,56 +1,35 @@
-import { Component, inject, input, linkedSignal, output, signal } from '@angular/core';
+import { Component, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
-import { ProfileService } from '../../../../generated/api';
+import { ProfileDto, ProfileService } from '../../../../generated/api';
+import { ProfileSkillsModalComponent } from '../profile-skills-modal/profile-skills-modal.component';
 
 @Component({
   selector: 'app-profile-skills-section',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ProfileSkillsModalComponent],
   templateUrl: './profile-skills-section.component.html',
 })
 export class ProfileSkillsSectionComponent {
   readonly skills = input.required<string[]>();
-  readonly changed = output<void>();
+  readonly changed = output<ProfileDto>();
 
   private readonly profileService = inject(ProfileService);
 
-  protected readonly editMode = signal(false);
-  protected readonly saving = signal(false);
-  protected readonly skillInput = signal('');
-  protected readonly editingSkills = linkedSignal(() => [...this.skills()]);
+  protected readonly modalOpen = signal(false);
 
   protected onEdit(): void {
-    this.editMode.set(true);
+    this.modalOpen.set(true);
   }
 
-  protected onCancel(): void {
-    this.editMode.set(false);
+  protected onModalDismissed(): void {
+    this.modalOpen.set(false);
   }
 
-  protected addSkill(event: Event): void {
-    event.preventDefault();
-    const value = this.skillInput().trim().replace(/,$/, '');
-    if (value && !this.editingSkills().includes(value)) {
-      this.editingSkills.update((s) => [...s, value]);
-    }
-    this.skillInput.set('');
-  }
-
-  protected removeSkill(skill: string): void {
-    this.editingSkills.update((s) => s.filter((x) => x !== skill));
-  }
-
-  protected async onSave(): Promise<void> {
-    this.saving.set(true);
-    try {
-      await firstValueFrom(
-        this.profileService.updateProfileSkills({ skills: this.editingSkills() }),
-      );
-      this.editMode.set(false);
-      this.changed.emit();
-    } finally {
-      this.saving.set(false);
-    }
+  protected async onSaved(skills: string[]): Promise<void> {
+    await firstValueFrom(this.profileService.updateProfileSkills({ skills }));
+    this.modalOpen.set(false);
+    const profile = await firstValueFrom(this.profileService.getProfile());
+    this.changed.emit(profile);
   }
 }

@@ -2,7 +2,7 @@ import { Component, inject, input, linkedSignal, output, signal } from '@angular
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { FormField, FormRoot, form, required, submit } from '@angular/forms/signals';
-import { ProfileDto, ProfileService } from '../../../../generated/api';
+import { ProfileDto, ProfileService } from '../../../../generated/api/index';
 
 @Component({
   selector: 'app-profile-info-section',
@@ -12,7 +12,7 @@ import { ProfileDto, ProfileService } from '../../../../generated/api';
 })
 export class ProfileInfoSectionComponent {
   readonly profile = input.required<ProfileDto>();
-  readonly changed = output<void>();
+  readonly changed = output<ProfileDto>();
 
   private readonly profileService = inject(ProfileService);
 
@@ -61,7 +61,8 @@ export class ProfileInfoSectionComponent {
           }),
         );
         this.editMode.set(false);
-        this.changed.emit();
+        const profile = await firstValueFrom(this.profileService.getProfile());
+        this.changed.emit(profile);
       } catch (err: unknown) {
         const apiErr = err as { errors?: Record<string, string[]> };
         this.serverErrors.set(apiErr?.errors ?? {});

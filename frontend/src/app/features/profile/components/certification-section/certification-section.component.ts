@@ -1,7 +1,7 @@
 import { Component, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
-import { ProfileService, CertificationDto } from '../../../../generated/api';
+import { ProfileDto, ProfileService, CertificationDto } from '../../../../generated/api';
 import {
   CertificationModalComponent,
   CertificationFormData,
@@ -15,7 +15,7 @@ import {
 })
 export class CertificationSectionComponent {
   readonly items = input.required<CertificationDto[]>();
-  readonly changed = output<void>();
+  readonly changed = output<ProfileDto>();
 
   private readonly profileService = inject(ProfileService);
 
@@ -52,7 +52,8 @@ export class CertificationSectionComponent {
     }
     this.modalOpen.set(false);
     this.editingItem.set(null);
-    this.changed.emit();
+    const profile = await firstValueFrom(this.profileService.getProfile());
+    this.changed.emit(profile);
   }
 
   protected onDeleteStart(id: string): void {
@@ -66,7 +67,8 @@ export class CertificationSectionComponent {
   protected async onDeleteConfirm(id: string): Promise<void> {
     try {
       await firstValueFrom(this.profileService.deleteCertification(id));
-      this.changed.emit();
+      const profile = await firstValueFrom(this.profileService.getProfile());
+      this.changed.emit(profile);
     } finally {
       this.deletingId.set(null);
     }

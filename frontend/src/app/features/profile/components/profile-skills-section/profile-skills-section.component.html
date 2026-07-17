@@ -2,64 +2,24 @@
   <div class="card-body">
     <div class="flex items-center justify-between">
       <h2 class="card-title text-lg">Skills</h2>
-      @if (!editMode()) {
-        <button class="btn btn-ghost btn-sm" (click)="onEdit()">Edit</button>
-      }
+      <button class="btn btn-ghost btn-sm" (click)="onEdit()">Edit</button>
     </div>
 
-    @if (editMode()) {
-      <div class="mt-2">
-        <div class="flex flex-wrap gap-2 mb-3">
-          @for (skill of editingSkills(); track skill) {
-            <span class="badge badge-outline gap-1">
-              {{ skill }}
-              <button
-                type="button"
-                class="btn btn-ghost btn-xs p-0 min-h-0 h-auto"
-                (click)="removeSkill(skill)"
-              >
-                ✕
-              </button>
-            </span>
-          }
-          @if (editingSkills().length === 0) {
-            <p class="text-base-content/40 italic text-sm">No skills yet — type one below.</p>
-          }
-        </div>
-        <input
-          type="text"
-          class="input input-sm w-full"
-          placeholder="Type a skill and press Enter"
-          [value]="skillInput()"
-          (input)="skillInput.set($any($event.target).value)"
-          (keydown.enter)="addSkill($event)"
-          (keydown.comma)="addSkill($event)"
-        />
-        <div class="flex gap-2 justify-end mt-3">
-          <button type="button" class="btn btn-ghost btn-sm" (click)="onCancel()">Cancel</button>
-          <button
-            type="button"
-            class="btn btn-primary btn-sm"
-            [disabled]="saving()"
-            (click)="onSave()"
-          >
-            @if (saving()) {
-              <span class="loading loading-spinner loading-sm"></span>
-            }
-            Save
-          </button>
-        </div>
+    @if (skills().length > 0) {
+      <div class="flex flex-wrap gap-2 mt-2">
+        @for (skill of skills(); track skill) {
+          <span class="badge badge-outline">{{ skill }}</span>
+        }
       </div>
     } @else {
-      @if (skills().length > 0) {
-        <div class="flex flex-wrap gap-2 mt-2">
-          @for (skill of skills(); track skill) {
-            <span class="badge badge-outline">{{ skill }}</span>
-          }
-        </div>
-      } @else {
-        <p class="text-base-content/40 italic">No skills added yet.</p>
-      }
+      <p class="text-base-content/40 italic">No skills added yet.</p>
     }
   </div>
 </div>
+
+<app-profile-skills-modal
+  [open]="modalOpen()"
+  [items]="skills()"
+  (saved)="onSaved($event)"
+  (dismissed)="onModalDismissed()"
+/>

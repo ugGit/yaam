@@ -10,13 +10,16 @@
         @for (item of items(); track item.id) {
           <li>
             <div class="flex items-center justify-between gap-2">
-              <a
-                [href]="item.url"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link link-primary"
-                >{{ item.label }}</a
-              >
+              <div class="flex flex-col min-w-0">
+                <a
+                  [href]="item.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="link link-primary font-medium"
+                  >{{ item.label }}</a
+                >
+                <span class="text-base-content/50 text-sm truncate">{{ item.url }}</span>
+              </div>
               <div class="flex gap-1 shrink-0">
                 @if (deletingId() === item.id) {
                   <button class="btn btn-error btn-xs" (click)="onDeleteConfirm(item.id)">

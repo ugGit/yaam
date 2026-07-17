@@ -1,7 +1,7 @@
 import { Component, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
-import { ProfileService, ProfileLinkDto } from '../../../../generated/api';
+import { ProfileDto, ProfileService, ProfileLinkDto } from '../../../../generated/api';
 import {
   ProfileLinkModalComponent,
   ProfileLinkFormData,
@@ -15,7 +15,7 @@ import {
 })
 export class ProfileLinkSectionComponent {
   readonly items = input.required<ProfileLinkDto[]>();
-  readonly changed = output<void>();
+  readonly changed = output<ProfileDto>();
 
   private readonly profileService = inject(ProfileService);
 
@@ -51,7 +51,8 @@ export class ProfileLinkSectionComponent {
     }
     this.modalOpen.set(false);
     this.editingItem.set(null);
-    this.changed.emit();
+    const profile = await firstValueFrom(this.profileService.getProfile());
+    this.changed.emit(profile);
   }
 
   protected onDeleteStart(id: string): void {
@@ -65,7 +66,8 @@ export class ProfileLinkSectionComponent {
   protected async onDeleteConfirm(id: string): Promise<void> {
     try {
       await firstValueFrom(this.profileService.deleteProfileLink(id));
-      this.changed.emit();
+      const profile = await firstValueFrom(this.profileService.getProfile());
+      this.changed.emit(profile);
     } finally {
       this.deletingId.set(null);
     }

@@ -1,7 +1,7 @@
 import { Component, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
-import { ProfileService, WorkExperienceDto } from '../../../../generated/api';
+import { ProfileDto, ProfileService, WorkExperienceDto } from '../../../../generated/api';
 import {
   WorkExperienceModalComponent,
   WorkExperienceFormData,
@@ -15,7 +15,7 @@ import {
 })
 export class WorkExperienceSectionComponent {
   readonly items = input.required<WorkExperienceDto[]>();
-  readonly changed = output<void>();
+  readonly changed = output<ProfileDto>();
 
   private readonly profileService = inject(ProfileService);
 
@@ -54,7 +54,8 @@ export class WorkExperienceSectionComponent {
     }
     this.modalOpen.set(false);
     this.editingItem.set(null);
-    this.changed.emit();
+    const profile = await firstValueFrom(this.profileService.getProfile());
+    this.changed.emit(profile);
   }
 
   protected onDeleteStart(id: string): void {
@@ -68,7 +69,8 @@ export class WorkExperienceSectionComponent {
   protected async onDeleteConfirm(id: string): Promise<void> {
     try {
       await firstValueFrom(this.profileService.deleteWorkExperience(id));
-      this.changed.emit();
+      const profile = await firstValueFrom(this.profileService.getProfile());
+      this.changed.emit(profile);
     } finally {
       this.deletingId.set(null);
     }

@@ -1,7 +1,7 @@
 import { Component, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
-import { ProfileService, LanguageDto } from '../../../../generated/api';
+import { ProfileDto, ProfileService, LanguageDto } from '../../../../generated/api';
 import {
   LanguageModalComponent,
   LanguageFormData,
@@ -16,7 +16,7 @@ import {
 })
 export class LanguageSectionComponent {
   readonly items = input.required<LanguageDto[]>();
-  readonly changed = output<void>();
+  readonly changed = output<ProfileDto>();
 
   private readonly profileService = inject(ProfileService);
 
@@ -53,7 +53,8 @@ export class LanguageSectionComponent {
     }
     this.modalOpen.set(false);
     this.editingItem.set(null);
-    this.changed.emit();
+    const profile = await firstValueFrom(this.profileService.getProfile());
+    this.changed.emit(profile);
   }
 
   protected onDeleteStart(id: string): void {
@@ -67,7 +68,8 @@ export class LanguageSectionComponent {
   protected async onDeleteConfirm(id: string): Promise<void> {
     try {
       await firstValueFrom(this.profileService.deleteLanguage(id));
-      this.changed.emit();
+      const profile = await firstValueFrom(this.profileService.getProfile());
+      this.changed.emit(profile);
     } finally {
       this.deletingId.set(null);
     }
