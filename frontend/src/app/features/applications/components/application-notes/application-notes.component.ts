@@ -2,7 +2,7 @@ import { Component, inject, input, linkedSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormField, FormRoot, form, required, submit } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
-import { ApplicationsService } from '../../../../generated/api';
+import { ApplicationNotesService } from '../../../../generated/api/index';
 import { ApplicationNote } from '../../models/application-note.model';
 
 @Component({
@@ -15,7 +15,7 @@ export class ApplicationNotesComponent {
   readonly applicationId = input.required<string>();
   readonly initialNotes = input<ApplicationNote[]>([]);
 
-  private readonly api = inject(ApplicationsService);
+  private readonly api = inject(ApplicationNotesService);
 
   protected readonly notes = linkedSignal(() => [...this.initialNotes()]);
   protected deleteConfirmId = signal<string | null>(null);

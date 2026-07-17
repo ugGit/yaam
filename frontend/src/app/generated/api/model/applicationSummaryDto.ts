@@ -10,17 +10,14 @@
 import { ApplicationStatus } from './applicationStatus';
 
 
-export interface CreateApplicationInputModel { 
+export interface ApplicationSummaryDto { 
+    id: string;
     companyName: string;
     role: string;
     dateApplied: string | null;
     status: ApplicationStatus;
-    contactName: string | null;
-    contactEmail: string | null;
-    contactPhone: string | null;
-    jobPosting: string | null;
 }
-export namespace CreateApplicationInputModel {
+export namespace ApplicationSummaryDto {
 }
 
 

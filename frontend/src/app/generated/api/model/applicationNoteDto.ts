@@ -9,7 +9,10 @@
  */
 
 
-export interface UpdateApplicationNoteInputModel { 
+export interface ApplicationNoteDto { 
+    id: string;
     body: string;
+    createdAt: string;
+    updatedAt: string;
 }
 

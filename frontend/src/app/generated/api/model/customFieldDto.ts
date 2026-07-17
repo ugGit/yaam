@@ -9,7 +9,9 @@
  */
 
 
-export interface UpdateApplicationNoteInputModel { 
-    body: string;
+export interface CustomFieldDto { 
+    id: string;
+    label: string;
+    value: string;
 }
 

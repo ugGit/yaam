@@ -9,7 +9,12 @@
  */
 
 
-export interface UpdateApplicationNoteInputModel { 
-    body: string;
+export interface WorkExperienceDto { 
+    id: string;
+    company: string;
+    title: string;
+    startDate: string;
+    endDate: string | null;
+    description: string | null;
 }
 

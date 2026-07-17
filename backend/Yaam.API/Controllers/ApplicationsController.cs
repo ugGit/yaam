@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Yaam.Domain.Common;
 using Yaam.Domain.Enums;
 using Yaam.UseCases.Applications.Commands;
+using Yaam.UseCases.Applications.Dtos;
 using Yaam.UseCases.Applications.Queries;
 
 namespace Yaam.API.Controllers;
@@ -13,7 +14,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
     [EndpointName("ListApplications")]
-    public async Task<IActionResult> GetAll(
+    public async Task<ActionResult<List<ApplicationSummaryDto>>> GetAll(
         CancellationToken cancellationToken,
         [FromQuery] ApplicationStatus? status,
         [FromQuery] string sort = ApplicationSortFields.DateApplied,
@@ -30,7 +31,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
 
     [HttpGet("{id:guid}")]
     [EndpointName("GetApplication")]
-    public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
+    public async Task<ActionResult<ApplicationDto>> GetById(Guid id, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
             new GetApplicationByIdQuery(id),
@@ -40,7 +41,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
 
     [HttpPost]
     [EndpointName("CreateApplication")]
-    public async Task<IActionResult> Create(
+    public async Task<ActionResult<ApplicationDto>> Create(
         [FromBody] CreateApplicationInputModel input, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
@@ -59,7 +60,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
 
     [HttpPut("{id:guid}")]
     [EndpointName("UpdateApplication")]
-    public async Task<IActionResult> Update(
+    public async Task<ActionResult<ApplicationDto>> Update(
         Guid id, [FromBody] UpdateApplicationInputModel input, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
@@ -79,7 +80,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
 
     [HttpPatch("{id:guid}/status")]
     [EndpointName("PatchApplicationStatus")]
-    public async Task<IActionResult> UpdateStatus(
+    public async Task<ActionResult<ApplicationDto>> UpdateStatus(
         Guid id, [FromBody] UpdateApplicationStatusInputModel input, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(

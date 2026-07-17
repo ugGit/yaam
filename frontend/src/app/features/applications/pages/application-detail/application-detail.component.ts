@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
-import { ApplicationStatus, ApplicationsService } from '../../../../generated/api';
+import { ApplicationStatus, ApplicationsService } from '../../../../generated/api/index';
 import { Application, STATUS_LABELS, ALL_STATUSES } from '../../models/application.model';
 import {
   ApplicationFormComponent,
@@ -46,11 +46,11 @@ export class ApplicationDetailComponent {
     const payload = {
       ...formData,
       status: formData.status as ApplicationStatus,
-      dateApplied: formData.dateApplied || undefined,
-      contactName: formData.contactName || undefined,
-      contactEmail: formData.contactEmail || undefined,
-      contactPhone: formData.contactPhone || undefined,
-      jobPosting: formData.jobPosting || undefined,
+      dateApplied: formData.dateApplied || null,
+      contactName: formData.contactName || null,
+      contactEmail: formData.contactEmail || null,
+      contactPhone: formData.contactPhone || null,
+      jobPosting: formData.jobPosting || null,
     };
     try {
       if (this.isNew()) {
@@ -79,7 +79,7 @@ export class ApplicationDetailComponent {
     const status = (event.target as HTMLSelectElement).value;
     this.statusSaving.set(true);
     try {
-      await firstValueFrom(this.api.patchApplicationStatus(this.applicationId()!, { status }));
+      await firstValueFrom(this.api.patchApplicationStatus(this.applicationId()!, { status: status as ApplicationStatus }));
       this.applicationResource.reload();
     } finally {
       this.statusSaving.set(false);

@@ -9,7 +9,10 @@
  */
 
 
-export interface UpdateApplicationNoteInputModel { 
-    body: string;
+export interface CertificationDto { 
+    id: string;
+    name: string;
+    issuer: string | null;
+    date: string;
 }
 

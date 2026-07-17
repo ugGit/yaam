@@ -2,7 +2,7 @@ export type {
   ApplicationDto as Application,
   ApplicationSummaryDto as ApplicationSummary,
   ApplicationStatus,
-} from '../../../generated/api';
+} from '../../../generated/api/index';
 
 export const STATUS_LABELS: Record<string, string> = {
   Draft: 'Draft',

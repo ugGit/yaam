@@ -9,7 +9,9 @@
  */
 
 
-export interface UpdateApplicationNoteInputModel { 
-    body: string;
+export interface LanguageDto { 
+    id: string;
+    name: string;
+    proficiency: string;
 }
 
