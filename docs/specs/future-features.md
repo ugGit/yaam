@@ -4,6 +4,7 @@ Rough sketches only — not committed, not scoped. Revisit after MVP.
 
 ## Browser Plugin (Auto-fill)
 - Auto-fill job application forms using profile data
+- One-click job saving from job board pages (LinkedIn, Indeed, jobs.ch, etc.) — saves title, company, URL, and raw job description into a new application draft; standard feature in Teal, Prentus, Simplify, and JobOps
 - Key question: how to test across different ATS platforms (Workday, Greenhouse, Lever, etc.)
 - Significant complexity — treat as a separate product phase
 
@@ -22,9 +23,17 @@ Rough sketches only — not committed, not scoped. Revisit after MVP.
 - AI fills it with generated content
 - Nice-to-have for users with established personal branding
 
+## CV Export via Reactive Resume
+- Use [Reactive Resume](https://rxresu.me) (MIT, self-hostable) as the PDF rendering and CV editing backend rather than building a CV editor from scratch
+- YAAM maps its `Profile` entity to the rxresume JSON schema; rxresume handles templates, drag-and-drop, and PDF generation
+- User-facing CV editing links to a YAAM-hosted rxresume instance; AI fills content; rxresume handles presentation
+- JobOps already uses this pattern — validated approach
+- Eliminates need to build a headless PDF renderer (Browserless/puppeteer) in-house
+
 ## i18n / Multi-language
 - Translate UI to German, French, Italian (Swiss market)
 - AI prompts in user's preferred language
+- Per-cover-letter output language override — profile stored in English but letter generated in German/French on request; distinct from UI language; high value for Swiss market (DE/FR/IT applications from an EN-language profile)
 
 ## Analytics
 - Application funnel: applied → interview rate → offer rate
@@ -38,6 +47,12 @@ Rough sketches only — not committed, not scoped. Revisit after MVP.
 
 ## Heavily Personalized Cover Letters
 - Ask personal questions to refine the candidates profile (early experiences in childhood, deeply personal driver, desired impact, longterm vision)
+
+## Writing Style Controls
+- **Tone and formality** — structured settings (e.g., professional / conversational, formal / casual) injected into the prompt as system-level constraints rather than user prose
+- **"Do not use" blacklist** — user defines a list of words/phrases the AI must avoid (e.g., "passionate", "synergy", "leverage", "proactive"); parsed out of user instructions and applied separately; no commercial competitor has this; JobOps has it internally (`chatStyleDoNotUse`)
+- **Constraints free text** — open field for custom writing rules (e.g., "keep under 300 words", "no bullet points"); strip auto-detected directives (language, word count) before passing to the LLM so they drive prompt construction rather than polluting content
+- Structured settings and free-text constraints are additive and compose into `CoverLetterContext` (see ADR 002)
 
 ## Cover Letter Style Selection
 - User selects a formulation style before generating (e.g., Humorous, Serious, Honest, Confident, Understated)
