@@ -32,13 +32,13 @@ export class ProfileSkillsSectionComponent {
     event.preventDefault();
     const value = this.skillInput().trim().replace(/,$/, '');
     if (value && !this.editingSkills().includes(value)) {
-      this.editingSkills.update(s => [...s, value]);
+      this.editingSkills.update((s) => [...s, value]);
     }
     this.skillInput.set('');
   }
 
   protected removeSkill(skill: string): void {
-    this.editingSkills.update(s => s.filter(x => x !== skill));
+    this.editingSkills.update((s) => s.filter((x) => x !== skill));
   }
 
   protected async onSave(): Promise<void> {

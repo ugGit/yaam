@@ -6,7 +6,12 @@
       <div class="flex flex-col gap-3">
         <div class="form-control">
           <label class="label" for="name"><span class="label-text">Language *</span></label>
-          <input id="name" [formField]="fields.name" type="text" class="input input-bordered w-full" />
+          <input
+            id="name"
+            [formField]="fields.name"
+            type="text"
+            class="input input-bordered w-full"
+          />
           @if (fields.name().touched() && fields.name().errors().length) {
             <div class="label">
               <span class="label-text-alt text-error">{{ fields.name().errors()[0].message }}</span>
@@ -15,8 +20,14 @@
         </div>
 
         <div class="form-control">
-          <label class="label" for="proficiency"><span class="label-text">Proficiency *</span></label>
-          <select id="proficiency" class="select select-bordered w-full" [formField]="fields.proficiency">
+          <label class="label" for="proficiency"
+            ><span class="label-text">Proficiency *</span></label
+          >
+          <select
+            id="proficiency"
+            class="select select-bordered w-full"
+            [formField]="fields.proficiency"
+          >
             <option value="">Select proficiency</option>
             @for (p of allProficiencies; track p) {
               <option [value]="p">{{ proficiencyLabels[p] }}</option>
@@ -24,7 +35,9 @@
           </select>
           @if (fields.proficiency().touched() && fields.proficiency().errors().length) {
             <div class="label">
-              <span class="label-text-alt text-error">{{ fields.proficiency().errors()[0].message }}</span>
+              <span class="label-text-alt text-error">{{
+                fields.proficiency().errors()[0].message
+              }}</span>
             </div>
           }
         </div>
@@ -35,6 +48,11 @@
         <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
       </div>
     </div>
-    <button type="button" class="modal-backdrop" (click)="onDismiss()" aria-label="Close modal"></button>
+    <button
+      type="button"
+      class="modal-backdrop"
+      (click)="onDismiss()"
+      aria-label="Close modal"
+    ></button>
   </div>
 }

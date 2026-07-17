@@ -2,7 +2,11 @@ import { Component, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { ProfileService, LanguageDto } from '../../../../generated/api';
-import { LanguageModalComponent, LanguageFormData, LANGUAGE_PROFICIENCY_LABELS } from '../language-modal/language-modal.component';
+import {
+  LanguageModalComponent,
+  LanguageFormData,
+  LANGUAGE_PROFICIENCY_LABELS,
+} from '../language-modal/language-modal.component';
 
 @Component({
   selector: 'app-language-section',

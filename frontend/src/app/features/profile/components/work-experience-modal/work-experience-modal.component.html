@@ -6,44 +6,77 @@
       <div class="flex flex-col gap-3">
         <div class="form-control">
           <label class="label" for="company"><span class="label-text">Company *</span></label>
-          <input id="company" [formField]="fields.company" type="text" class="input input-bordered w-full" />
+          <input
+            id="company"
+            [formField]="fields.company"
+            type="text"
+            class="input input-bordered w-full"
+          />
           @if (fields.company().touched() && fields.company().errors().length) {
             <div class="label">
-              <span class="label-text-alt text-error">{{ fields.company().errors()[0].message }}</span>
+              <span class="label-text-alt text-error">{{
+                fields.company().errors()[0].message
+              }}</span>
             </div>
           }
         </div>
 
         <div class="form-control">
           <label class="label" for="title"><span class="label-text">Title *</span></label>
-          <input id="title" [formField]="fields.title" type="text" class="input input-bordered w-full" />
+          <input
+            id="title"
+            [formField]="fields.title"
+            type="text"
+            class="input input-bordered w-full"
+          />
           @if (fields.title().touched() && fields.title().errors().length) {
             <div class="label">
-              <span class="label-text-alt text-error">{{ fields.title().errors()[0].message }}</span>
+              <span class="label-text-alt text-error">{{
+                fields.title().errors()[0].message
+              }}</span>
             </div>
           }
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div class="form-control">
-            <label class="label" for="startDate"><span class="label-text">Start date *</span></label>
-            <input id="startDate" [formField]="fields.startDate" type="date" class="input input-bordered w-full" />
+            <label class="label" for="startDate"
+              ><span class="label-text">Start date *</span></label
+            >
+            <input
+              id="startDate"
+              [formField]="fields.startDate"
+              type="date"
+              class="input input-bordered w-full"
+            />
             @if (fields.startDate().touched() && fields.startDate().errors().length) {
               <div class="label">
-                <span class="label-text-alt text-error">{{ fields.startDate().errors()[0].message }}</span>
+                <span class="label-text-alt text-error">{{
+                  fields.startDate().errors()[0].message
+                }}</span>
               </div>
             }
           </div>
 
           <div class="form-control">
             <label class="label" for="endDate"><span class="label-text">End date</span></label>
-            <input id="endDate" [formField]="fields.endDate" type="date" class="input input-bordered w-full" />
+            <input
+              id="endDate"
+              [formField]="fields.endDate"
+              type="date"
+              class="input input-bordered w-full"
+            />
           </div>
         </div>
 
         <div class="form-control">
           <label class="label" for="description"><span class="label-text">Description</span></label>
-          <textarea id="description" [formField]="fields.description" rows="3" class="textarea textarea-bordered w-full"></textarea>
+          <textarea
+            id="description"
+            [formField]="fields.description"
+            rows="3"
+            class="textarea textarea-bordered w-full"
+          ></textarea>
         </div>
       </div>
 
@@ -52,6 +85,11 @@
         <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
       </div>
     </div>
-    <button type="button" class="modal-backdrop" (click)="onDismiss()" aria-label="Close modal"></button>
+    <button
+      type="button"
+      class="modal-backdrop"
+      (click)="onDismiss()"
+      aria-label="Close modal"
+    ></button>
   </div>
 }

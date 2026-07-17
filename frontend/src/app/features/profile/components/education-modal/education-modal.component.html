@@ -5,34 +5,65 @@
 
       <div class="flex flex-col gap-3">
         <div class="form-control">
-          <label class="label" for="institution"><span class="label-text">Institution *</span></label>
-          <input id="institution" [formField]="fields.institution" type="text" class="input input-bordered w-full" />
+          <label class="label" for="institution"
+            ><span class="label-text">Institution *</span></label
+          >
+          <input
+            id="institution"
+            [formField]="fields.institution"
+            type="text"
+            class="input input-bordered w-full"
+          />
           @if (fields.institution().touched() && fields.institution().errors().length) {
             <div class="label">
-              <span class="label-text-alt text-error">{{ fields.institution().errors()[0].message }}</span>
+              <span class="label-text-alt text-error">{{
+                fields.institution().errors()[0].message
+              }}</span>
             </div>
           }
         </div>
 
         <div class="form-control">
           <label class="label" for="degree"><span class="label-text">Degree</span></label>
-          <input id="degree" [formField]="fields.degree" type="text" class="input input-bordered w-full" />
+          <input
+            id="degree"
+            [formField]="fields.degree"
+            type="text"
+            class="input input-bordered w-full"
+          />
         </div>
 
         <div class="form-control">
-          <label class="label" for="fieldOfStudy"><span class="label-text">Field of Study</span></label>
-          <input id="fieldOfStudy" [formField]="fields.fieldOfStudy" type="text" class="input input-bordered w-full" />
+          <label class="label" for="fieldOfStudy"
+            ><span class="label-text">Field of Study</span></label
+          >
+          <input
+            id="fieldOfStudy"
+            [formField]="fields.fieldOfStudy"
+            type="text"
+            class="input input-bordered w-full"
+          />
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div class="form-control">
             <label class="label" for="startDate"><span class="label-text">Start date</span></label>
-            <input id="startDate" [formField]="fields.startDate" type="date" class="input input-bordered w-full" />
+            <input
+              id="startDate"
+              [formField]="fields.startDate"
+              type="date"
+              class="input input-bordered w-full"
+            />
           </div>
 
           <div class="form-control">
             <label class="label" for="endDate"><span class="label-text">End date</span></label>
-            <input id="endDate" [formField]="fields.endDate" type="date" class="input input-bordered w-full" />
+            <input
+              id="endDate"
+              [formField]="fields.endDate"
+              type="date"
+              class="input input-bordered w-full"
+            />
           </div>
         </div>
       </div>
@@ -42,6 +73,11 @@
         <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
       </div>
     </div>
-    <button type="button" class="modal-backdrop" (click)="onDismiss()" aria-label="Close modal"></button>
+    <button
+      type="button"
+      class="modal-backdrop"
+      (click)="onDismiss()"
+      aria-label="Close modal"
+    ></button>
   </div>
 }

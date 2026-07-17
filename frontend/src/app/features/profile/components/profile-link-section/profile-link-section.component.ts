@@ -2,7 +2,10 @@ import { Component, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { ProfileService, ProfileLinkDto } from '../../../../generated/api';
-import { ProfileLinkModalComponent, ProfileLinkFormData } from '../profile-link-modal/profile-link-modal.component';
+import {
+  ProfileLinkModalComponent,
+  ProfileLinkFormData,
+} from '../profile-link-modal/profile-link-modal.component';
 
 @Component({
   selector: 'app-profile-link-section',

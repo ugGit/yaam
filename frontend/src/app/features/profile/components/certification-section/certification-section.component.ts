@@ -2,7 +2,10 @@ import { Component, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { ProfileService, CertificationDto } from '../../../../generated/api';
-import { CertificationModalComponent, CertificationFormData } from '../certification-modal/certification-modal.component';
+import {
+  CertificationModalComponent,
+  CertificationFormData,
+} from '../certification-modal/certification-modal.component';
 
 @Component({
   selector: 'app-certification-section',

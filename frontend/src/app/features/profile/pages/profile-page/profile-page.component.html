@@ -10,7 +10,10 @@
   } @else if (profileResource.value(); as profile) {
     <div class="flex flex-col gap-6">
       <app-profile-info-section [profile]="profile" (changed)="onProfileChanged()" />
-      <app-work-experience-section [items]="profile.workExperiences" (changed)="onProfileChanged()" />
+      <app-work-experience-section
+        [items]="profile.workExperiences"
+        (changed)="onProfileChanged()"
+      />
       <app-education-section [items]="profile.educations" (changed)="onProfileChanged()" />
       <app-profile-skills-section [skills]="profile.skills" (changed)="onProfileChanged()" />
       <app-language-section [items]="profile.languages" (changed)="onProfileChanged()" />

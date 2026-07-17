@@ -2,7 +2,10 @@ import { Component, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { ProfileService, EducationDto } from '../../../../generated/api';
-import { EducationModalComponent, EducationFormData } from '../education-modal/education-modal.component';
+import {
+  EducationModalComponent,
+  EducationFormData,
+} from '../education-modal/education-modal.component';
 
 @Component({
   selector: 'app-education-section',

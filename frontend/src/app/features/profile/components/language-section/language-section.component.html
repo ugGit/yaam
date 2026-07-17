@@ -15,11 +15,15 @@
             </div>
             <div class="flex gap-1 shrink-0">
               @if (deletingId() === item.id) {
-                <button class="btn btn-error btn-xs" (click)="onDeleteConfirm(item.id)">Delete</button>
+                <button class="btn btn-error btn-xs" (click)="onDeleteConfirm(item.id)">
+                  Delete
+                </button>
                 <button class="btn btn-ghost btn-xs" (click)="onDeleteCancel()">Cancel</button>
               } @else {
                 <button class="btn btn-ghost btn-xs" (click)="onEdit(item)">Edit</button>
-                <button class="btn btn-ghost btn-xs text-error" (click)="onDeleteStart(item.id)">Delete</button>
+                <button class="btn btn-ghost btn-xs text-error" (click)="onDeleteStart(item.id)">
+                  Delete
+                </button>
               }
             </div>
           </li>
@@ -35,4 +39,5 @@
   [open]="modalOpen()"
   [item]="editingItem()"
   (saved)="onSaved($event)"
-  (dismissed)="onModalDismissed()" />
+  (dismissed)="onModalDismissed()"
+/>

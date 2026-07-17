@@ -2,7 +2,10 @@ import { Component, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { ProfileService, WorkExperienceDto } from '../../../../generated/api';
-import { WorkExperienceModalComponent, WorkExperienceFormData } from '../work-experience-modal/work-experience-modal.component';
+import {
+  WorkExperienceModalComponent,
+  WorkExperienceFormData,
+} from '../work-experience-modal/work-experience-modal.component';
 
 @Component({
   selector: 'app-work-experience-section',

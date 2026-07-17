@@ -13,23 +13,36 @@
           @for (skill of editingSkills(); track skill) {
             <span class="badge badge-outline gap-1">
               {{ skill }}
-              <button type="button" class="btn btn-ghost btn-xs p-0 min-h-0 h-auto"
-                (click)="removeSkill(skill)">✕</button>
+              <button
+                type="button"
+                class="btn btn-ghost btn-xs p-0 min-h-0 h-auto"
+                (click)="removeSkill(skill)"
+              >
+                ✕
+              </button>
             </span>
           }
           @if (editingSkills().length === 0) {
             <p class="text-base-content/40 italic text-sm">No skills yet — type one below.</p>
           }
         </div>
-        <input type="text" class="input input-sm w-full"
+        <input
+          type="text"
+          class="input input-sm w-full"
           placeholder="Type a skill and press Enter"
           [value]="skillInput()"
           (input)="skillInput.set($any($event.target).value)"
           (keydown.enter)="addSkill($event)"
-          (keydown.comma)="addSkill($event)" />
+          (keydown.comma)="addSkill($event)"
+        />
         <div class="flex gap-2 justify-end mt-3">
           <button type="button" class="btn btn-ghost btn-sm" (click)="onCancel()">Cancel</button>
-          <button type="button" class="btn btn-primary btn-sm" [disabled]="saving()" (click)="onSave()">
+          <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            [disabled]="saving()"
+            (click)="onSave()"
+          >
             @if (saving()) {
               <span class="loading loading-spinner loading-sm"></span>
             }
