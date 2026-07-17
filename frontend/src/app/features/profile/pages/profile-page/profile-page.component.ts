@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom, Observable } from 'rxjs';
 import { resource } from '@angular/core';
-import { ProfileService } from '../../../../generated/api/api/profile.service';
+import { ProfileService } from '../../../../generated/api/index';
 import { Profile } from '../../models/profile.model';
 import { ProfileInfoSectionComponent } from '../../components/profile-info-section/profile-info-section.component';
 import { ProfileSkillsSectionComponent } from '../../components/profile-skills-section/profile-skills-section.component';
