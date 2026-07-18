@@ -14,6 +14,10 @@ To regenerate after adding or changing backend endpoints:
 
 The generator pulls the OpenAPI spec from the backend's live `/openapi/v1.json` endpoint and writes the Angular service + model files to `src/app/generated/api/`. All component imports referencing the generated path must be updated after regeneration if the output structure changes.
 
+## Frontend — verify changes in the browser
+
+After implementing any frontend feature or fix, invoke the `verify` skill to confirm the change works at runtime. The `verifier-browser` skill provides the launch recipe; `playwright-cli` (installed) is used for browser interaction.
+
 ## Frontend — use the daisyUI skill
 
 Before writing any frontend HTML or component templates, invoke the `daisyui` skill. daisyUI is the mandatory component library for all UI in this project — never use raw Tailwind utility classes for components that daisyUI covers (buttons, badges, cards, modals, inputs, alerts, etc.).
