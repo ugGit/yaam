@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
+using Yaam.Domain.Enums;
 using Yaam.UseCases.Profile.Dtos;
 
 namespace Yaam.Tests.Integration.Profile;
@@ -83,5 +84,139 @@ public class ProfileEndpointsTests(ApiFactory factory)
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var profile = await response.Content.ReadFromJsonAsync<ProfileDto>();
         profile!.Skills.Should().BeEquivalentTo(new[] { "C#", "Angular", "PostgreSQL" });
+    }
+
+    [Fact]
+    public async Task WorkExperienceCrudFlow()
+    {
+        // Add
+        var addPayload = new
+        {
+            company = "ACME Corp",
+            title = "Software Engineer",
+            startDate = "2022-01-01",
+            endDate = (string?)null,
+            description = "Built things."
+        };
+        var addResponse = await _client.PostAsJsonAsync("/api/profile/work-experiences", addPayload);
+        addResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var added = await addResponse.Content.ReadFromJsonAsync<WorkExperienceDto>();
+        added!.Company.Should().Be("ACME Corp");
+
+        // Update
+        var updatePayload = new
+        {
+            company = "ACME Corp",
+            title = "Senior Software Engineer",
+            startDate = "2022-01-01",
+            endDate = "2024-12-31",
+            description = "Built more things."
+        };
+        var updateResponse = await _client.PutAsJsonAsync(
+            $"/api/profile/work-experiences/{added.Id}", updatePayload);
+        updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var updated = await updateResponse.Content.ReadFromJsonAsync<WorkExperienceDto>();
+        updated!.Title.Should().Be("Senior Software Engineer");
+
+        // Delete
+        var deleteResponse = await _client.DeleteAsync($"/api/profile/work-experiences/{added.Id}");
+        deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
+
+        // Verify gone
+        var profile = await (await _client.GetAsync("/api/profile"))
+            .Content.ReadFromJsonAsync<ProfileDto>();
+        profile!.WorkExperiences.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task POST_WorkExperience_Returns400_WhenRequiredFieldsMissing()
+    {
+        var payload = new { description = "No company or title" };
+        var response = await _client.PostAsJsonAsync("/api/profile/work-experiences", payload);
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    }
+
+    [Fact]
+    public async Task EducationCrudFlow()
+    {
+        var addPayload = new
+        {
+            institution = "ETH Zurich",
+            degree = "MSc",
+            fieldOfStudy = "Computer Science",
+            startDate = "2018-09-01",
+            endDate = "2020-06-30"
+        };
+        var addResponse = await _client.PostAsJsonAsync("/api/profile/education", addPayload);
+        addResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var added = await addResponse.Content.ReadFromJsonAsync<EducationDto>();
+        added!.Institution.Should().Be("ETH Zurich");
+
+        var updatePayload = new { institution = "ETH Zurich", degree = "PhD", fieldOfStudy = "Computer Science", startDate = "2020-09-01", endDate = (string?)null };
+        var updateResponse = await _client.PutAsJsonAsync($"/api/profile/education/{added.Id}", updatePayload);
+        updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var updated = await updateResponse.Content.ReadFromJsonAsync<EducationDto>();
+        updated!.Degree.Should().Be("PhD");
+
+        var deleteResponse = await _client.DeleteAsync($"/api/profile/education/{added.Id}");
+        deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
+    }
+
+    [Fact]
+    public async Task LanguageCrudFlow()
+    {
+        var addPayload = new { name = "German", proficiency = "Fluent" };
+        var addResponse = await _client.PostAsJsonAsync("/api/profile/languages", addPayload);
+        addResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var added = await addResponse.Content.ReadFromJsonAsync<LanguageDto>();
+        added!.Name.Should().Be("German");
+        added.Proficiency.Should().Be(LanguageProficiency.Fluent);
+
+        var updatePayload = new { name = "German", proficiency = "Native" };
+        var updateResponse = await _client.PutAsJsonAsync($"/api/profile/languages/{added.Id}", updatePayload);
+        updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var updated = await updateResponse.Content.ReadFromJsonAsync<LanguageDto>();
+        updated!.Proficiency.Should().Be(LanguageProficiency.Native);
+
+        var deleteResponse = await _client.DeleteAsync($"/api/profile/languages/{added.Id}");
+        deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
+    }
+
+    [Fact]
+    public async Task CertificationCrudFlow()
+    {
+        var addPayload = new { name = "AWS Solutions Architect", issuer = "Amazon", date = "2023-06-15" };
+        var addResponse = await _client.PostAsJsonAsync("/api/profile/certifications", addPayload);
+        addResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var added = await addResponse.Content.ReadFromJsonAsync<CertificationDto>();
+        added!.Name.Should().Be("AWS Solutions Architect");
+
+        var updatePayload = new { name = "AWS Solutions Architect Professional", issuer = "Amazon", date = "2024-01-01" };
+        var updateResponse = await _client.PutAsJsonAsync($"/api/profile/certifications/{added.Id}", updatePayload);
+        updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var updated = await updateResponse.Content.ReadFromJsonAsync<CertificationDto>();
+        updated!.Name.Should().Be("AWS Solutions Architect Professional");
+
+        var deleteResponse = await _client.DeleteAsync($"/api/profile/certifications/{added.Id}");
+        deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
+    }
+
+    [Fact]
+    public async Task ProfileLinkCrudFlow()
+    {
+        var addPayload = new { label = "GitHub", url = "https://github.com/ada" };
+        var addResponse = await _client.PostAsJsonAsync("/api/profile/links", addPayload);
+        addResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var added = await addResponse.Content.ReadFromJsonAsync<ProfileLinkDto>();
+        added!.Label.Should().Be("GitHub");
+
+        var updatePayload = new { label = "GitHub Profile", url = "https://github.com/ada" };
+        var updateResponse = await _client.PutAsJsonAsync($"/api/profile/links/{added.Id}", updatePayload);
+        updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var updated = await updateResponse.Content.ReadFromJsonAsync<ProfileLinkDto>();
+        updated!.Label.Should().Be("GitHub Profile");
+
+        var deleteResponse = await _client.DeleteAsync($"/api/profile/links/{added.Id}");
+        deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }
 }

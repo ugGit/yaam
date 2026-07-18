@@ -11,7 +11,14 @@ import { HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
+import { CertificationInputModel } from '../model/models';
+import { EducationInputModel } from '../model/models';
+import { LanguageInputModel } from '../model/models';
 import { ProfileDto } from '../model/models';
+import { ProfileLinkInputModel } from '../model/models';
+import { UpdateProfileInfoInputModel } from '../model/models';
+import { UpdateProfileSkillsInputModel } from '../model/models';
+import { WorkExperienceInputModel } from '../model/models';
 
 import { Configuration } from '../configuration';
 
@@ -22,6 +29,168 @@ export interface ProfileServiceInterface {
   /**
    *
    *
+   * @param certificationInputModel
+   */
+  addCertification(
+    certificationInputModel: CertificationInputModel,
+    extraHttpRequestParams?: any,
+  ): Observable<{}>;
+
+  /**
+   *
+   *
+   * @param educationInputModel
+   */
+  addEducation(
+    educationInputModel: EducationInputModel,
+    extraHttpRequestParams?: any,
+  ): Observable<{}>;
+
+  /**
+   *
+   *
+   * @param languageInputModel
+   */
+  addLanguage(languageInputModel: LanguageInputModel, extraHttpRequestParams?: any): Observable<{}>;
+
+  /**
+   *
+   *
+   * @param profileLinkInputModel
+   */
+  addProfileLink(
+    profileLinkInputModel: ProfileLinkInputModel,
+    extraHttpRequestParams?: any,
+  ): Observable<{}>;
+
+  /**
+   *
+   *
+   * @param workExperienceInputModel
+   */
+  addWorkExperience(
+    workExperienceInputModel: WorkExperienceInputModel,
+    extraHttpRequestParams?: any,
+  ): Observable<{}>;
+
+  /**
+   *
+   *
+   * @param id
+   */
+  deleteCertification(id: string, extraHttpRequestParams?: any): Observable<{}>;
+
+  /**
+   *
+   *
+   * @param id
+   */
+  deleteEducation(id: string, extraHttpRequestParams?: any): Observable<{}>;
+
+  /**
+   *
+   *
+   * @param id
+   */
+  deleteLanguage(id: string, extraHttpRequestParams?: any): Observable<{}>;
+
+  /**
+   *
+   *
+   * @param id
+   */
+  deleteProfileLink(id: string, extraHttpRequestParams?: any): Observable<{}>;
+
+  /**
+   *
+   *
+   * @param id
+   */
+  deleteWorkExperience(id: string, extraHttpRequestParams?: any): Observable<{}>;
+
+  /**
+   *
+   *
    */
   getProfile(extraHttpRequestParams?: any): Observable<ProfileDto>;
+
+  /**
+   *
+   *
+   * @param id
+   * @param certificationInputModel
+   */
+  updateCertification(
+    id: string,
+    certificationInputModel: CertificationInputModel,
+    extraHttpRequestParams?: any,
+  ): Observable<{}>;
+
+  /**
+   *
+   *
+   * @param id
+   * @param educationInputModel
+   */
+  updateEducation(
+    id: string,
+    educationInputModel: EducationInputModel,
+    extraHttpRequestParams?: any,
+  ): Observable<{}>;
+
+  /**
+   *
+   *
+   * @param id
+   * @param languageInputModel
+   */
+  updateLanguage(
+    id: string,
+    languageInputModel: LanguageInputModel,
+    extraHttpRequestParams?: any,
+  ): Observable<{}>;
+
+  /**
+   *
+   *
+   * @param updateProfileInfoInputModel
+   */
+  updateProfileInfo(
+    updateProfileInfoInputModel: UpdateProfileInfoInputModel,
+    extraHttpRequestParams?: any,
+  ): Observable<{}>;
+
+  /**
+   *
+   *
+   * @param id
+   * @param profileLinkInputModel
+   */
+  updateProfileLink(
+    id: string,
+    profileLinkInputModel: ProfileLinkInputModel,
+    extraHttpRequestParams?: any,
+  ): Observable<{}>;
+
+  /**
+   *
+   *
+   * @param updateProfileSkillsInputModel
+   */
+  updateProfileSkills(
+    updateProfileSkillsInputModel: UpdateProfileSkillsInputModel,
+    extraHttpRequestParams?: any,
+  ): Observable<{}>;
+
+  /**
+   *
+   *
+   * @param id
+   * @param workExperienceInputModel
+   */
+  updateWorkExperience(
+    id: string,
+    workExperienceInputModel: WorkExperienceInputModel,
+    extraHttpRequestParams?: any,
+  ): Observable<{}>;
 }

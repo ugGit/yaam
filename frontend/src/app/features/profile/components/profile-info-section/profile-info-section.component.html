@@ -1,6 +1,10 @@
 <div class="card bg-base-100 shadow">
   <div class="card-body">
-    <h2 class="card-title text-lg">Contact Info</h2>
+    <div class="flex items-center justify-between">
+      <h2 class="card-title text-lg">Contact Info</h2>
+      <button class="btn btn-ghost btn-sm" (click)="onEdit()">Edit</button>
+    </div>
+
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
       <div>
         <p class="text-xs text-base-content/50 uppercase tracking-wide mb-1">First name</p>
@@ -45,11 +49,13 @@
     </div>
 
     <div class="divider my-2"></div>
-    <h2 class="card-title text-lg">Summary</h2>
+    <h2 class="font-semibold mb-1">Summary</h2>
     @if (profile().summary) {
       <p class="whitespace-pre-wrap">{{ profile().summary }}</p>
     } @else {
-      <p class="text-base-content/40 italic">No summary yet. Add a brief professional summary.</p>
+      <p class="text-base-content/40 italic">No summary yet.</p>
     }
   </div>
 </div>
+
+<app-profile-info-modal #modal [profile]="profile()" (saved)="onSaved($event)" />
