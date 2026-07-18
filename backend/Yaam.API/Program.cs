@@ -9,7 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(
     builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' is required."));
+        ?? throw new InvalidOperationException("Connection string 'DefaultConnection' is required."),
+    builder.Configuration);
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
