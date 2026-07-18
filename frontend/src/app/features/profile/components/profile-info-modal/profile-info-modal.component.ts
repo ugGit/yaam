@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
-import { FormField, FormRoot, form, required, submit } from '@angular/forms/signals';
+import { FormField, FormRoot, form, maxLength, required, submit } from '@angular/forms/signals';
 import { ProfileViewModel, ProfileService } from '../../../../generated/api';
 
 @Component({
@@ -41,9 +41,15 @@ export class ProfileInfoModalComponent {
 
   protected readonly fields = form(this.formModel, (f) => {
     required(f.firstName, { message: 'First name is required.' });
+    maxLength(f.firstName, 100, { message: 'First name must be 100 characters or fewer.' });
     required(f.lastName, { message: 'Last name is required.' });
+    maxLength(f.lastName, 100, { message: 'Last name must be 100 characters or fewer.' });
     required(f.email, { message: 'Email is required.' });
+    maxLength(f.email, 250, { message: 'Email must be 250 characters or fewer.' });
     required(f.phone, { message: 'Phone is required.' });
+    maxLength(f.phone, 50, { message: 'Phone must be 50 characters or fewer.' });
+    maxLength(f.location, 250, { message: 'Location must be 250 characters or fewer.' });
+    maxLength(f.summary, 1000, { message: 'Summary must be 1000 characters or fewer.' });
   });
 
   show(): void {

@@ -1,6 +1,6 @@
 import { Component, ElementRef, input, linkedSignal, output, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormField, form, required, submit } from '@angular/forms/signals';
+import { FormField, form, maxLength, required, submit } from '@angular/forms/signals';
 import { LanguageViewModel, LanguageProficiency } from '../../../../generated/api';
 
 export interface LanguageFormData {
@@ -42,6 +42,7 @@ export class LanguageModalComponent {
 
   protected readonly fields = form(this.formModel, (f) => {
     required(f.name, { message: 'Language name is required.' });
+    maxLength(f.name, 250, { message: 'Language name must be 250 characters or fewer.' });
     required(f.proficiency, { message: 'Proficiency is required.' });
   });
 

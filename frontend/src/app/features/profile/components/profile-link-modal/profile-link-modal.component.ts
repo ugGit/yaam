@@ -1,6 +1,6 @@
 import { Component, ElementRef, input, linkedSignal, output, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormField, form, required, submit } from '@angular/forms/signals';
+import { FormField, form, maxLength, required, submit } from '@angular/forms/signals';
 import { ProfileLinkViewModel } from '../../../../generated/api';
 
 export interface ProfileLinkFormData {
@@ -28,7 +28,9 @@ export class ProfileLinkModalComponent {
 
   protected readonly fields = form(this.formModel, (f) => {
     required(f.label, { message: 'Label is required.' });
+    maxLength(f.label, 250, { message: 'Label must be 250 characters or fewer.' });
     required(f.url, { message: 'URL is required.' });
+    maxLength(f.url, 2000, { message: 'URL must be 2000 characters or fewer.' });
   });
 
   show(): void {

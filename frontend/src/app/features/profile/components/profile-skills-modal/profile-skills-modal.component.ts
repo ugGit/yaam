@@ -8,7 +8,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormField, form } from '@angular/forms/signals';
+import { FormField, form, maxLength } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-profile-skills-modal',
@@ -26,7 +26,9 @@ export class ProfileSkillsModalComponent {
   protected readonly editingSkills = linkedSignal<string[]>(() => [...this.items()]);
 
   protected readonly newSkillModel = signal({ newSkill: '' });
-  protected readonly newSkillFields = form(this.newSkillModel);
+  protected readonly newSkillFields = form(this.newSkillModel, (f) => {
+    maxLength(f.newSkill, 100, { message: 'Skill must be 100 characters or fewer.' });
+  });
 
   show(): void {
     this.dialogEl().nativeElement.showModal();
