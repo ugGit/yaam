@@ -7,11 +7,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { LanguageProficiency } from './languageProficiency';
 
 
-export interface CertificationInputModel { 
+export interface LanguageViewModel { 
+    id: string;
     name: string;
-    issuer: string | null;
-    date: string;
+    proficiency: LanguageProficiency;
 }
+export namespace LanguageViewModel {
+}
+
 

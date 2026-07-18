@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CustomFieldDto } from '../../../../generated/api';
+import { CustomFieldViewModel } from '../../../../generated/api';
 
 @Component({
   selector: 'app-custom-fields-section',
@@ -9,5 +9,5 @@ import { CustomFieldDto } from '../../../../generated/api';
   templateUrl: './custom-fields-section.component.html',
 })
 export class CustomFieldsSectionComponent {
-  readonly fields = input.required<CustomFieldDto[]>();
+  readonly fields = input.required<CustomFieldViewModel[]>();
 }

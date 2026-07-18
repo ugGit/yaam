@@ -1,7 +1,7 @@
 import { Component, inject, input, output, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
-import { ProfileDto, ProfileService, ProfileLinkDto } from '../../../../generated/api';
+import { ProfileViewModel, ProfileService, ProfileLinkViewModel } from '../../../../generated/api';
 import {
   ProfileLinkModalComponent,
   ProfileLinkFormData,
@@ -14,13 +14,13 @@ import {
   templateUrl: './profile-link-section.component.html',
 })
 export class ProfileLinkSectionComponent {
-  readonly items = input.required<ProfileLinkDto[]>();
-  readonly changed = output<ProfileDto>();
+  readonly items = input.required<ProfileLinkViewModel[]>();
+  readonly changed = output<ProfileViewModel>();
 
   private readonly profileService = inject(ProfileService);
   private readonly modal = viewChild.required<ProfileLinkModalComponent>('modal');
 
-  protected readonly editingItem = signal<ProfileLinkDto | null>(null);
+  protected readonly editingItem = signal<ProfileLinkViewModel | null>(null);
   protected readonly deletingId = signal<string | null>(null);
 
   protected onAdd(): void {
@@ -28,7 +28,7 @@ export class ProfileLinkSectionComponent {
     this.modal().show();
   }
 
-  protected onEdit(item: ProfileLinkDto): void {
+  protected onEdit(item: ProfileLinkViewModel): void {
     this.editingItem.set(item);
     this.modal().show();
   }

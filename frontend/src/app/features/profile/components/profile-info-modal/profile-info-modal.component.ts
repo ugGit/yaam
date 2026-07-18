@@ -11,7 +11,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { FormField, FormRoot, form, required, submit } from '@angular/forms/signals';
-import { ProfileDto, ProfileService } from '../../../../generated/api';
+import { ProfileViewModel, ProfileService } from '../../../../generated/api';
 
 @Component({
   selector: 'app-profile-info-modal',
@@ -20,8 +20,8 @@ import { ProfileDto, ProfileService } from '../../../../generated/api';
   templateUrl: './profile-info-modal.component.html',
 })
 export class ProfileInfoModalComponent {
-  readonly profile = input.required<ProfileDto>();
-  readonly saved = output<ProfileDto>();
+  readonly profile = input.required<ProfileViewModel>();
+  readonly saved = output<ProfileViewModel>();
   readonly dismissed = output<void>();
 
   private readonly profileService = inject(ProfileService);

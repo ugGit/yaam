@@ -1,7 +1,7 @@
 import { Component, inject, input, output, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
-import { ProfileDto, ProfileService } from '../../../../generated/api';
+import { ProfileViewModel, ProfileService } from '../../../../generated/api';
 import { ProfileSkillsModalComponent } from '../profile-skills-modal/profile-skills-modal.component';
 
 @Component({
@@ -12,7 +12,7 @@ import { ProfileSkillsModalComponent } from '../profile-skills-modal/profile-ski
 })
 export class ProfileSkillsSectionComponent {
   readonly skills = input.required<string[]>();
-  readonly changed = output<ProfileDto>();
+  readonly changed = output<ProfileViewModel>();
 
   private readonly profileService = inject(ProfileService);
   private readonly modal = viewChild.required<ProfileSkillsModalComponent>('modal');

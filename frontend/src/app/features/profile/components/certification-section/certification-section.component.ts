@@ -1,7 +1,7 @@
 import { Component, inject, input, output, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
-import { ProfileDto, ProfileService, CertificationDto } from '../../../../generated/api';
+import { ProfileViewModel, ProfileService, CertificationViewModel } from '../../../../generated/api';
 import {
   CertificationModalComponent,
   CertificationFormData,
@@ -14,13 +14,13 @@ import {
   templateUrl: './certification-section.component.html',
 })
 export class CertificationSectionComponent {
-  readonly items = input.required<CertificationDto[]>();
-  readonly changed = output<ProfileDto>();
+  readonly items = input.required<CertificationViewModel[]>();
+  readonly changed = output<ProfileViewModel>();
 
   private readonly profileService = inject(ProfileService);
   private readonly modal = viewChild.required<CertificationModalComponent>('modal');
 
-  protected readonly editingItem = signal<CertificationDto | null>(null);
+  protected readonly editingItem = signal<CertificationViewModel | null>(null);
   protected readonly deletingId = signal<string | null>(null);
 
   protected onAdd(): void {
@@ -28,7 +28,7 @@ export class CertificationSectionComponent {
     this.modal().show();
   }
 
-  protected onEdit(item: CertificationDto): void {
+  protected onEdit(item: CertificationViewModel): void {
     this.editingItem.set(item);
     this.modal().show();
   }
