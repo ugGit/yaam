@@ -9,13 +9,19 @@
     <div class="alert alert-error mb-4">Failed to load profile. Please try again.</div>
   } @else if (profileResource.value(); as profile) {
     <div class="flex flex-col gap-6">
-      <app-profile-info-section [profile]="profile" />
-      <app-work-experience-section [items]="profile.workExperiences" />
-      <app-education-section [items]="profile.educations" />
-      <app-profile-skills-section [skills]="profile.skills" />
-      <app-language-section [items]="profile.languages" />
-      <app-certification-section [items]="profile.certifications" />
-      <app-profile-link-section [items]="profile.links" />
+      <app-profile-info-section [profile]="profile" (changed)="onProfileChanged($event)" />
+      <app-work-experience-section
+        [items]="profile.workExperiences"
+        (changed)="onProfileChanged($event)"
+      />
+      <app-education-section [items]="profile.educations" (changed)="onProfileChanged($event)" />
+      <app-profile-skills-section [skills]="profile.skills" (changed)="onProfileChanged($event)" />
+      <app-language-section [items]="profile.languages" (changed)="onProfileChanged($event)" />
+      <app-certification-section
+        [items]="profile.certifications"
+        (changed)="onProfileChanged($event)"
+      />
+      <app-profile-link-section [items]="profile.links" (changed)="onProfileChanged($event)" />
       <app-custom-fields-section [fields]="profile.customFields" />
     </div>
   }

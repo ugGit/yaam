@@ -23,7 +23,21 @@ import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
 // @ts-ignore
+import { CertificationInputModel } from '../model/certificationInputModel';
+// @ts-ignore
+import { EducationInputModel } from '../model/educationInputModel';
+// @ts-ignore
+import { LanguageInputModel } from '../model/languageInputModel';
+// @ts-ignore
 import { ProfileDto } from '../model/profileDto';
+// @ts-ignore
+import { ProfileLinkInputModel } from '../model/profileLinkInputModel';
+// @ts-ignore
+import { UpdateProfileInfoInputModel } from '../model/updateProfileInfoInputModel';
+// @ts-ignore
+import { UpdateProfileSkillsInputModel } from '../model/updateProfileSkillsInputModel';
+// @ts-ignore
+import { WorkExperienceInputModel } from '../model/workExperienceInputModel';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
@@ -41,6 +55,757 @@ export class ProfileService extends BaseService implements ProfileServiceInterfa
     @Optional() configuration?: Configuration,
   ) {
     super(basePath, configuration);
+  }
+
+  /**
+   * @param certificationInputModel
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public addCertification(
+    certificationInputModel: CertificationInputModel,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any>;
+  public addCertification(
+    certificationInputModel: CertificationInputModel,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpResponse<any>>;
+  public addCertification(
+    certificationInputModel: CertificationInputModel,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpEvent<any>>;
+  public addCertification(
+    certificationInputModel: CertificationInputModel,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any> {
+    if (certificationInputModel === null || certificationInputModel === undefined) {
+      throw new Error(
+        'Required parameter certificationInputModel was null or undefined when calling addCertification.',
+      );
+    }
+
+    let localVarHeaders = this.defaultHeaders;
+
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([]);
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+    }
+
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json', 'text/json', 'application/*+json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+    }
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/api/profile/certifications`;
+    const { basePath, withCredentials } = this.configuration;
+    return this.httpClient.request<any>('post', `${basePath}${localVarPath}`, {
+      context: localVarHttpContext,
+      body: certificationInputModel,
+      responseType: <any>responseType_,
+      ...(withCredentials ? { withCredentials } : {}),
+      headers: localVarHeaders,
+      observe: observe,
+      transferCache: localVarTransferCache,
+      reportProgress: reportProgress,
+    });
+  }
+
+  /**
+   * @param educationInputModel
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public addEducation(
+    educationInputModel: EducationInputModel,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any>;
+  public addEducation(
+    educationInputModel: EducationInputModel,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpResponse<any>>;
+  public addEducation(
+    educationInputModel: EducationInputModel,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpEvent<any>>;
+  public addEducation(
+    educationInputModel: EducationInputModel,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any> {
+    if (educationInputModel === null || educationInputModel === undefined) {
+      throw new Error(
+        'Required parameter educationInputModel was null or undefined when calling addEducation.',
+      );
+    }
+
+    let localVarHeaders = this.defaultHeaders;
+
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([]);
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+    }
+
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json', 'text/json', 'application/*+json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+    }
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/api/profile/education`;
+    const { basePath, withCredentials } = this.configuration;
+    return this.httpClient.request<any>('post', `${basePath}${localVarPath}`, {
+      context: localVarHttpContext,
+      body: educationInputModel,
+      responseType: <any>responseType_,
+      ...(withCredentials ? { withCredentials } : {}),
+      headers: localVarHeaders,
+      observe: observe,
+      transferCache: localVarTransferCache,
+      reportProgress: reportProgress,
+    });
+  }
+
+  /**
+   * @param languageInputModel
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public addLanguage(
+    languageInputModel: LanguageInputModel,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any>;
+  public addLanguage(
+    languageInputModel: LanguageInputModel,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpResponse<any>>;
+  public addLanguage(
+    languageInputModel: LanguageInputModel,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpEvent<any>>;
+  public addLanguage(
+    languageInputModel: LanguageInputModel,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any> {
+    if (languageInputModel === null || languageInputModel === undefined) {
+      throw new Error(
+        'Required parameter languageInputModel was null or undefined when calling addLanguage.',
+      );
+    }
+
+    let localVarHeaders = this.defaultHeaders;
+
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([]);
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+    }
+
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json', 'text/json', 'application/*+json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+    }
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/api/profile/languages`;
+    const { basePath, withCredentials } = this.configuration;
+    return this.httpClient.request<any>('post', `${basePath}${localVarPath}`, {
+      context: localVarHttpContext,
+      body: languageInputModel,
+      responseType: <any>responseType_,
+      ...(withCredentials ? { withCredentials } : {}),
+      headers: localVarHeaders,
+      observe: observe,
+      transferCache: localVarTransferCache,
+      reportProgress: reportProgress,
+    });
+  }
+
+  /**
+   * @param profileLinkInputModel
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public addProfileLink(
+    profileLinkInputModel: ProfileLinkInputModel,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any>;
+  public addProfileLink(
+    profileLinkInputModel: ProfileLinkInputModel,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpResponse<any>>;
+  public addProfileLink(
+    profileLinkInputModel: ProfileLinkInputModel,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpEvent<any>>;
+  public addProfileLink(
+    profileLinkInputModel: ProfileLinkInputModel,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any> {
+    if (profileLinkInputModel === null || profileLinkInputModel === undefined) {
+      throw new Error(
+        'Required parameter profileLinkInputModel was null or undefined when calling addProfileLink.',
+      );
+    }
+
+    let localVarHeaders = this.defaultHeaders;
+
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([]);
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+    }
+
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json', 'text/json', 'application/*+json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+    }
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/api/profile/links`;
+    const { basePath, withCredentials } = this.configuration;
+    return this.httpClient.request<any>('post', `${basePath}${localVarPath}`, {
+      context: localVarHttpContext,
+      body: profileLinkInputModel,
+      responseType: <any>responseType_,
+      ...(withCredentials ? { withCredentials } : {}),
+      headers: localVarHeaders,
+      observe: observe,
+      transferCache: localVarTransferCache,
+      reportProgress: reportProgress,
+    });
+  }
+
+  /**
+   * @param workExperienceInputModel
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public addWorkExperience(
+    workExperienceInputModel: WorkExperienceInputModel,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any>;
+  public addWorkExperience(
+    workExperienceInputModel: WorkExperienceInputModel,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpResponse<any>>;
+  public addWorkExperience(
+    workExperienceInputModel: WorkExperienceInputModel,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpEvent<any>>;
+  public addWorkExperience(
+    workExperienceInputModel: WorkExperienceInputModel,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any> {
+    if (workExperienceInputModel === null || workExperienceInputModel === undefined) {
+      throw new Error(
+        'Required parameter workExperienceInputModel was null or undefined when calling addWorkExperience.',
+      );
+    }
+
+    let localVarHeaders = this.defaultHeaders;
+
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([]);
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+    }
+
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json', 'text/json', 'application/*+json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+    }
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/api/profile/work-experiences`;
+    const { basePath, withCredentials } = this.configuration;
+    return this.httpClient.request<any>('post', `${basePath}${localVarPath}`, {
+      context: localVarHttpContext,
+      body: workExperienceInputModel,
+      responseType: <any>responseType_,
+      ...(withCredentials ? { withCredentials } : {}),
+      headers: localVarHeaders,
+      observe: observe,
+      transferCache: localVarTransferCache,
+      reportProgress: reportProgress,
+    });
+  }
+
+  /**
+   * @param id
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public deleteCertification(
+    id: string,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any>;
+  public deleteCertification(
+    id: string,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpResponse<any>>;
+  public deleteCertification(
+    id: string,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpEvent<any>>;
+  public deleteCertification(
+    id: string,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any> {
+    if (id === null || id === undefined) {
+      throw new Error(
+        'Required parameter id was null or undefined when calling deleteCertification.',
+      );
+    }
+
+    let localVarHeaders = this.defaultHeaders;
+
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([]);
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+    }
+
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/api/profile/certifications/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}`;
+    const { basePath, withCredentials } = this.configuration;
+    return this.httpClient.request<any>('delete', `${basePath}${localVarPath}`, {
+      context: localVarHttpContext,
+      responseType: <any>responseType_,
+      ...(withCredentials ? { withCredentials } : {}),
+      headers: localVarHeaders,
+      observe: observe,
+      transferCache: localVarTransferCache,
+      reportProgress: reportProgress,
+    });
+  }
+
+  /**
+   * @param id
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public deleteEducation(
+    id: string,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any>;
+  public deleteEducation(
+    id: string,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpResponse<any>>;
+  public deleteEducation(
+    id: string,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpEvent<any>>;
+  public deleteEducation(
+    id: string,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any> {
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling deleteEducation.');
+    }
+
+    let localVarHeaders = this.defaultHeaders;
+
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([]);
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+    }
+
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/api/profile/education/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}`;
+    const { basePath, withCredentials } = this.configuration;
+    return this.httpClient.request<any>('delete', `${basePath}${localVarPath}`, {
+      context: localVarHttpContext,
+      responseType: <any>responseType_,
+      ...(withCredentials ? { withCredentials } : {}),
+      headers: localVarHeaders,
+      observe: observe,
+      transferCache: localVarTransferCache,
+      reportProgress: reportProgress,
+    });
+  }
+
+  /**
+   * @param id
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public deleteLanguage(
+    id: string,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any>;
+  public deleteLanguage(
+    id: string,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpResponse<any>>;
+  public deleteLanguage(
+    id: string,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpEvent<any>>;
+  public deleteLanguage(
+    id: string,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any> {
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling deleteLanguage.');
+    }
+
+    let localVarHeaders = this.defaultHeaders;
+
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([]);
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+    }
+
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/api/profile/languages/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}`;
+    const { basePath, withCredentials } = this.configuration;
+    return this.httpClient.request<any>('delete', `${basePath}${localVarPath}`, {
+      context: localVarHttpContext,
+      responseType: <any>responseType_,
+      ...(withCredentials ? { withCredentials } : {}),
+      headers: localVarHeaders,
+      observe: observe,
+      transferCache: localVarTransferCache,
+      reportProgress: reportProgress,
+    });
+  }
+
+  /**
+   * @param id
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public deleteProfileLink(
+    id: string,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any>;
+  public deleteProfileLink(
+    id: string,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpResponse<any>>;
+  public deleteProfileLink(
+    id: string,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpEvent<any>>;
+  public deleteProfileLink(
+    id: string,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any> {
+    if (id === null || id === undefined) {
+      throw new Error(
+        'Required parameter id was null or undefined when calling deleteProfileLink.',
+      );
+    }
+
+    let localVarHeaders = this.defaultHeaders;
+
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([]);
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+    }
+
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/api/profile/links/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}`;
+    const { basePath, withCredentials } = this.configuration;
+    return this.httpClient.request<any>('delete', `${basePath}${localVarPath}`, {
+      context: localVarHttpContext,
+      responseType: <any>responseType_,
+      ...(withCredentials ? { withCredentials } : {}),
+      headers: localVarHeaders,
+      observe: observe,
+      transferCache: localVarTransferCache,
+      reportProgress: reportProgress,
+    });
+  }
+
+  /**
+   * @param id
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public deleteWorkExperience(
+    id: string,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any>;
+  public deleteWorkExperience(
+    id: string,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpResponse<any>>;
+  public deleteWorkExperience(
+    id: string,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpEvent<any>>;
+  public deleteWorkExperience(
+    id: string,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any> {
+    if (id === null || id === undefined) {
+      throw new Error(
+        'Required parameter id was null or undefined when calling deleteWorkExperience.',
+      );
+    }
+
+    let localVarHeaders = this.defaultHeaders;
+
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([]);
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+    }
+
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/api/profile/work-experiences/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}`;
+    const { basePath, withCredentials } = this.configuration;
+    return this.httpClient.request<any>('delete', `${basePath}${localVarPath}`, {
+      context: localVarHttpContext,
+      responseType: <any>responseType_,
+      ...(withCredentials ? { withCredentials } : {}),
+      headers: localVarHeaders,
+      observe: observe,
+      transferCache: localVarTransferCache,
+      reportProgress: reportProgress,
+    });
   }
 
   /**
@@ -111,6 +876,612 @@ export class ProfileService extends BaseService implements ProfileServiceInterfa
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<ProfileDto>('get', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
+      responseType: <any>responseType_,
+      ...(withCredentials ? { withCredentials } : {}),
+      headers: localVarHeaders,
+      observe: observe,
+      transferCache: localVarTransferCache,
+      reportProgress: reportProgress,
+    });
+  }
+
+  /**
+   * @param id
+   * @param certificationInputModel
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public updateCertification(
+    id: string,
+    certificationInputModel: CertificationInputModel,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any>;
+  public updateCertification(
+    id: string,
+    certificationInputModel: CertificationInputModel,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpResponse<any>>;
+  public updateCertification(
+    id: string,
+    certificationInputModel: CertificationInputModel,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpEvent<any>>;
+  public updateCertification(
+    id: string,
+    certificationInputModel: CertificationInputModel,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any> {
+    if (id === null || id === undefined) {
+      throw new Error(
+        'Required parameter id was null or undefined when calling updateCertification.',
+      );
+    }
+    if (certificationInputModel === null || certificationInputModel === undefined) {
+      throw new Error(
+        'Required parameter certificationInputModel was null or undefined when calling updateCertification.',
+      );
+    }
+
+    let localVarHeaders = this.defaultHeaders;
+
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([]);
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+    }
+
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json', 'text/json', 'application/*+json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+    }
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/api/profile/certifications/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}`;
+    const { basePath, withCredentials } = this.configuration;
+    return this.httpClient.request<any>('put', `${basePath}${localVarPath}`, {
+      context: localVarHttpContext,
+      body: certificationInputModel,
+      responseType: <any>responseType_,
+      ...(withCredentials ? { withCredentials } : {}),
+      headers: localVarHeaders,
+      observe: observe,
+      transferCache: localVarTransferCache,
+      reportProgress: reportProgress,
+    });
+  }
+
+  /**
+   * @param id
+   * @param educationInputModel
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public updateEducation(
+    id: string,
+    educationInputModel: EducationInputModel,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any>;
+  public updateEducation(
+    id: string,
+    educationInputModel: EducationInputModel,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpResponse<any>>;
+  public updateEducation(
+    id: string,
+    educationInputModel: EducationInputModel,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpEvent<any>>;
+  public updateEducation(
+    id: string,
+    educationInputModel: EducationInputModel,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any> {
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling updateEducation.');
+    }
+    if (educationInputModel === null || educationInputModel === undefined) {
+      throw new Error(
+        'Required parameter educationInputModel was null or undefined when calling updateEducation.',
+      );
+    }
+
+    let localVarHeaders = this.defaultHeaders;
+
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([]);
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+    }
+
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json', 'text/json', 'application/*+json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+    }
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/api/profile/education/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}`;
+    const { basePath, withCredentials } = this.configuration;
+    return this.httpClient.request<any>('put', `${basePath}${localVarPath}`, {
+      context: localVarHttpContext,
+      body: educationInputModel,
+      responseType: <any>responseType_,
+      ...(withCredentials ? { withCredentials } : {}),
+      headers: localVarHeaders,
+      observe: observe,
+      transferCache: localVarTransferCache,
+      reportProgress: reportProgress,
+    });
+  }
+
+  /**
+   * @param id
+   * @param languageInputModel
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public updateLanguage(
+    id: string,
+    languageInputModel: LanguageInputModel,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any>;
+  public updateLanguage(
+    id: string,
+    languageInputModel: LanguageInputModel,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpResponse<any>>;
+  public updateLanguage(
+    id: string,
+    languageInputModel: LanguageInputModel,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpEvent<any>>;
+  public updateLanguage(
+    id: string,
+    languageInputModel: LanguageInputModel,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any> {
+    if (id === null || id === undefined) {
+      throw new Error('Required parameter id was null or undefined when calling updateLanguage.');
+    }
+    if (languageInputModel === null || languageInputModel === undefined) {
+      throw new Error(
+        'Required parameter languageInputModel was null or undefined when calling updateLanguage.',
+      );
+    }
+
+    let localVarHeaders = this.defaultHeaders;
+
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([]);
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+    }
+
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json', 'text/json', 'application/*+json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+    }
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/api/profile/languages/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}`;
+    const { basePath, withCredentials } = this.configuration;
+    return this.httpClient.request<any>('put', `${basePath}${localVarPath}`, {
+      context: localVarHttpContext,
+      body: languageInputModel,
+      responseType: <any>responseType_,
+      ...(withCredentials ? { withCredentials } : {}),
+      headers: localVarHeaders,
+      observe: observe,
+      transferCache: localVarTransferCache,
+      reportProgress: reportProgress,
+    });
+  }
+
+  /**
+   * @param updateProfileInfoInputModel
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public updateProfileInfo(
+    updateProfileInfoInputModel: UpdateProfileInfoInputModel,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any>;
+  public updateProfileInfo(
+    updateProfileInfoInputModel: UpdateProfileInfoInputModel,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpResponse<any>>;
+  public updateProfileInfo(
+    updateProfileInfoInputModel: UpdateProfileInfoInputModel,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpEvent<any>>;
+  public updateProfileInfo(
+    updateProfileInfoInputModel: UpdateProfileInfoInputModel,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any> {
+    if (updateProfileInfoInputModel === null || updateProfileInfoInputModel === undefined) {
+      throw new Error(
+        'Required parameter updateProfileInfoInputModel was null or undefined when calling updateProfileInfo.',
+      );
+    }
+
+    let localVarHeaders = this.defaultHeaders;
+
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([]);
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+    }
+
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json', 'text/json', 'application/*+json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+    }
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/api/profile/info`;
+    const { basePath, withCredentials } = this.configuration;
+    return this.httpClient.request<any>('put', `${basePath}${localVarPath}`, {
+      context: localVarHttpContext,
+      body: updateProfileInfoInputModel,
+      responseType: <any>responseType_,
+      ...(withCredentials ? { withCredentials } : {}),
+      headers: localVarHeaders,
+      observe: observe,
+      transferCache: localVarTransferCache,
+      reportProgress: reportProgress,
+    });
+  }
+
+  /**
+   * @param id
+   * @param profileLinkInputModel
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public updateProfileLink(
+    id: string,
+    profileLinkInputModel: ProfileLinkInputModel,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any>;
+  public updateProfileLink(
+    id: string,
+    profileLinkInputModel: ProfileLinkInputModel,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpResponse<any>>;
+  public updateProfileLink(
+    id: string,
+    profileLinkInputModel: ProfileLinkInputModel,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpEvent<any>>;
+  public updateProfileLink(
+    id: string,
+    profileLinkInputModel: ProfileLinkInputModel,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any> {
+    if (id === null || id === undefined) {
+      throw new Error(
+        'Required parameter id was null or undefined when calling updateProfileLink.',
+      );
+    }
+    if (profileLinkInputModel === null || profileLinkInputModel === undefined) {
+      throw new Error(
+        'Required parameter profileLinkInputModel was null or undefined when calling updateProfileLink.',
+      );
+    }
+
+    let localVarHeaders = this.defaultHeaders;
+
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([]);
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+    }
+
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json', 'text/json', 'application/*+json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+    }
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/api/profile/links/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}`;
+    const { basePath, withCredentials } = this.configuration;
+    return this.httpClient.request<any>('put', `${basePath}${localVarPath}`, {
+      context: localVarHttpContext,
+      body: profileLinkInputModel,
+      responseType: <any>responseType_,
+      ...(withCredentials ? { withCredentials } : {}),
+      headers: localVarHeaders,
+      observe: observe,
+      transferCache: localVarTransferCache,
+      reportProgress: reportProgress,
+    });
+  }
+
+  /**
+   * @param updateProfileSkillsInputModel
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public updateProfileSkills(
+    updateProfileSkillsInputModel: UpdateProfileSkillsInputModel,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any>;
+  public updateProfileSkills(
+    updateProfileSkillsInputModel: UpdateProfileSkillsInputModel,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpResponse<any>>;
+  public updateProfileSkills(
+    updateProfileSkillsInputModel: UpdateProfileSkillsInputModel,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpEvent<any>>;
+  public updateProfileSkills(
+    updateProfileSkillsInputModel: UpdateProfileSkillsInputModel,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any> {
+    if (updateProfileSkillsInputModel === null || updateProfileSkillsInputModel === undefined) {
+      throw new Error(
+        'Required parameter updateProfileSkillsInputModel was null or undefined when calling updateProfileSkills.',
+      );
+    }
+
+    let localVarHeaders = this.defaultHeaders;
+
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([]);
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+    }
+
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json', 'text/json', 'application/*+json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+    }
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/api/profile/skills`;
+    const { basePath, withCredentials } = this.configuration;
+    return this.httpClient.request<any>('put', `${basePath}${localVarPath}`, {
+      context: localVarHttpContext,
+      body: updateProfileSkillsInputModel,
+      responseType: <any>responseType_,
+      ...(withCredentials ? { withCredentials } : {}),
+      headers: localVarHeaders,
+      observe: observe,
+      transferCache: localVarTransferCache,
+      reportProgress: reportProgress,
+    });
+  }
+
+  /**
+   * @param id
+   * @param workExperienceInputModel
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public updateWorkExperience(
+    id: string,
+    workExperienceInputModel: WorkExperienceInputModel,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any>;
+  public updateWorkExperience(
+    id: string,
+    workExperienceInputModel: WorkExperienceInputModel,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpResponse<any>>;
+  public updateWorkExperience(
+    id: string,
+    workExperienceInputModel: WorkExperienceInputModel,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<HttpEvent<any>>;
+  public updateWorkExperience(
+    id: string,
+    workExperienceInputModel: WorkExperienceInputModel,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
+  ): Observable<any> {
+    if (id === null || id === undefined) {
+      throw new Error(
+        'Required parameter id was null or undefined when calling updateWorkExperience.',
+      );
+    }
+    if (workExperienceInputModel === null || workExperienceInputModel === undefined) {
+      throw new Error(
+        'Required parameter workExperienceInputModel was null or undefined when calling updateWorkExperience.',
+      );
+    }
+
+    let localVarHeaders = this.defaultHeaders;
+
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([]);
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+    }
+
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json', 'text/json', 'application/*+json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+    }
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/api/profile/work-experiences/${this.configuration.encodeParam({ name: 'id', value: id, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}`;
+    const { basePath, withCredentials } = this.configuration;
+    return this.httpClient.request<any>('put', `${basePath}${localVarPath}`, {
+      context: localVarHttpContext,
+      body: workExperienceInputModel,
       responseType: <any>responseType_,
       ...(withCredentials ? { withCredentials } : {}),
       headers: localVarHeaders,

@@ -1,0 +1,122 @@
+<dialog #modal class="modal" (close)="onClose()">
+  <div class="modal-box max-w-2xl">
+    <h3 class="font-bold text-lg mb-4">Edit Contact Info</h3>
+
+    <form [formRoot]="fields">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div class="form-control">
+          <label class="label" for="firstName"><span class="label-text">First name *</span></label>
+          <input
+            id="firstName"
+            [formField]="fields.firstName"
+            type="text"
+            class="input input-bordered w-full"
+          />
+          @if (fields.firstName().touched() && fields.firstName().errors().length) {
+            <div class="label">
+              <span class="label-text-alt text-error">{{
+                fields.firstName().errors()[0].message
+              }}</span>
+            </div>
+          }
+        </div>
+
+        <div class="form-control">
+          <label class="label" for="lastName"><span class="label-text">Last name *</span></label>
+          <input
+            id="lastName"
+            [formField]="fields.lastName"
+            type="text"
+            class="input input-bordered w-full"
+          />
+          @if (fields.lastName().touched() && fields.lastName().errors().length) {
+            <div class="label">
+              <span class="label-text-alt text-error">{{
+                fields.lastName().errors()[0].message
+              }}</span>
+            </div>
+          }
+        </div>
+
+        <div class="form-control">
+          <label class="label" for="email"><span class="label-text">Email *</span></label>
+          <input
+            id="email"
+            [formField]="fields.email"
+            type="email"
+            class="input input-bordered w-full"
+          />
+          @if (fields.email().touched() && fields.email().errors().length) {
+            <div class="label">
+              <span class="label-text-alt text-error">{{
+                fields.email().errors()[0].message
+              }}</span>
+            </div>
+          }
+        </div>
+
+        <div class="form-control">
+          <label class="label" for="phone"><span class="label-text">Phone *</span></label>
+          <input
+            id="phone"
+            [formField]="fields.phone"
+            type="text"
+            class="input input-bordered w-full"
+          />
+          @if (fields.phone().touched() && fields.phone().errors().length) {
+            <div class="label">
+              <span class="label-text-alt text-error">{{
+                fields.phone().errors()[0].message
+              }}</span>
+            </div>
+          }
+        </div>
+
+        <div class="form-control sm:col-span-2">
+          <label class="label" for="location"><span class="label-text">Location</span></label>
+          <input
+            id="location"
+            [formField]="fields.location"
+            type="text"
+            class="input input-bordered w-full"
+          />
+        </div>
+
+        <div class="form-control sm:col-span-2">
+          <label class="label" for="summary"><span class="label-text">Summary</span></label>
+          <textarea
+            id="summary"
+            [formField]="fields.summary"
+            rows="4"
+            class="textarea textarea-bordered w-full"
+          ></textarea>
+        </div>
+      </div>
+
+      @if (serverErrors() | keyvalue; as errors) {
+        @if (errors.length > 0) {
+          <div class="alert alert-error mt-3">
+            @for (e of errors; track e.key) {
+              <p>{{ e.value.join(', ') }}</p>
+            }
+          </div>
+        }
+      }
+    </form>
+
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn btn-ghost">Cancel</button>
+      </form>
+      <button type="button" class="btn btn-primary" [disabled]="saving()" (click)="onSubmit()">
+        @if (saving()) {
+          <span class="loading loading-spinner loading-sm"></span>
+        }
+        Save
+      </button>
+    </div>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button aria-label="Close modal"></button>
+  </form>
+</dialog>
