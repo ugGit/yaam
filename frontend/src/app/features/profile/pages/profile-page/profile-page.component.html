@@ -22,7 +22,7 @@
         (changed)="onProfileChanged($event)"
       />
       <app-profile-link-section [items]="profile.links" (changed)="onProfileChanged($event)" />
-      <app-custom-fields-section [fields]="profile.customFields" />
+      <app-custom-fields-section [fields]="profile.customFields" (changed)="onProfileChanged($event)" />
     </div>
   }
 </div>
