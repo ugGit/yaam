@@ -6,6 +6,7 @@ using Yaam.UseCases.Profile.Commands;
 using Yaam.UseCases.Profile.Commands.Certifications;
 using Yaam.UseCases.Profile.Commands.Education;
 using Yaam.UseCases.Profile.Commands.Languages;
+using Yaam.UseCases.Profile.Commands.CustomFields;
 using Yaam.UseCases.Profile.Commands.Links;
 using Yaam.UseCases.Profile.Commands.WorkExperiences;
 using Yaam.UseCases.Profile.Queries;
@@ -217,6 +218,38 @@ public class ProfileController(IMediator mediator) : ControllerBase
             cancellationToken);
         return NoContent();
     }
+
+    [HttpPost("custom-fields")]
+    [EndpointName("AddCustomField")]
+    public async Task<ActionResult<CustomFieldViewModel>> AddCustomField(
+        [FromBody] CustomFieldInputModel input, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new AddCustomFieldCommand(input.Label, input.Value),
+            cancellationToken);
+        return Ok(ProfileViewModelMapper.ToViewModel(result));
+    }
+
+    [HttpPut("custom-fields/{id:guid}")]
+    [EndpointName("UpdateCustomField")]
+    public async Task<ActionResult<CustomFieldViewModel>> UpdateCustomField(
+        Guid id, [FromBody] CustomFieldInputModel input, CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new UpdateCustomFieldCommand(id, input.Label, input.Value),
+            cancellationToken);
+        return Ok(ProfileViewModelMapper.ToViewModel(result));
+    }
+
+    [HttpDelete("custom-fields/{id:guid}")]
+    [EndpointName("DeleteCustomField")]
+    public async Task<IActionResult> DeleteCustomField(Guid id, CancellationToken cancellationToken)
+    {
+        await mediator.Send(
+            new DeleteCustomFieldCommand(id),
+            cancellationToken);
+        return NoContent();
+    }
 }
 
 public record UpdateProfileInfoInputModel(
@@ -248,3 +281,5 @@ public record LanguageInputModel(string Name, LanguageProficiency Proficiency);
 public record CertificationInputModel(string Name, string? Issuer, DateOnly Date);
 
 public record ProfileLinkInputModel(string Label, string Url);
+
+public record CustomFieldInputModel(string Label, string Value);
