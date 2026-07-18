@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Yaam.API.Applications;
 using Yaam.UseCases.Applications.Commands.Notes;
-using Yaam.UseCases.Applications.Dtos;
 
 namespace Yaam.API.Controllers;
 
@@ -11,25 +11,26 @@ public class ApplicationNotesController(IMediator mediator) : ControllerBase
 {
     [HttpPost]
     [EndpointName("AddApplicationNote")]
-    public async Task<ActionResult<ApplicationNoteDto>> Add(
+    public async Task<ActionResult<ApplicationNoteViewModel>> Add(
         Guid applicationId, [FromBody] CreateApplicationNoteInputModel input, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
             new AddApplicationNoteCommand(applicationId, input.Body),
             cancellationToken);
-        return Created($"api/applications/{applicationId}/notes/{result.Id}", result);
+        var viewModel = ApplicationViewModelMapper.ToViewModel(result);
+        return Created($"api/applications/{applicationId}/notes/{viewModel.Id}", viewModel);
     }
 
     [HttpPut("{noteId:guid}")]
     [EndpointName("UpdateApplicationNote")]
-    public async Task<ActionResult<ApplicationNoteDto>> Update(
+    public async Task<ActionResult<ApplicationNoteViewModel>> Update(
         Guid applicationId, Guid noteId,
         [FromBody] UpdateApplicationNoteInputModel input, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
             new UpdateApplicationNoteCommand(applicationId, noteId, input.Body),
             cancellationToken);
-        return Ok(result);
+        return Ok(ApplicationViewModelMapper.ToViewModel(result));
     }
 
     [HttpDelete("{noteId:guid}")]

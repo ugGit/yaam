@@ -1,9 +1,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Yaam.API.Applications;
 using Yaam.Domain.Common;
 using Yaam.Domain.Enums;
 using Yaam.UseCases.Applications.Commands;
-using Yaam.UseCases.Applications.Dtos;
 using Yaam.UseCases.Applications.Queries;
 
 namespace Yaam.API.Controllers;
@@ -14,7 +14,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
     [EndpointName("ListApplications")]
-    public async Task<ActionResult<List<ApplicationSummaryDto>>> GetAll(
+    public async Task<ActionResult<List<ApplicationSummaryViewModel>>> GetAll(
         CancellationToken cancellationToken,
         [FromQuery] ApplicationStatus? status,
         [FromQuery] string sort = ApplicationSortFields.DateApplied,
@@ -26,22 +26,22 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
             _ => ApplicationSortField.DateApplied,
         };
         var result = await mediator.Send(new GetApplicationsQuery(status, sortField, order), cancellationToken);
-        return Ok(result);
+        return Ok(result.Select(ApplicationViewModelMapper.ToViewModel).ToList());
     }
 
     [HttpGet("{id:guid}")]
     [EndpointName("GetApplication")]
-    public async Task<ActionResult<ApplicationDto>> GetById(Guid id, CancellationToken cancellationToken)
+    public async Task<ActionResult<ApplicationViewModel>> GetById(Guid id, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
             new GetApplicationByIdQuery(id),
             cancellationToken);
-        return Ok(result);
+        return Ok(ApplicationViewModelMapper.ToViewModel(result));
     }
 
     [HttpPost]
     [EndpointName("CreateApplication")]
-    public async Task<ActionResult<ApplicationDto>> Create(
+    public async Task<ActionResult<ApplicationViewModel>> Create(
         [FromBody] CreateApplicationInputModel input, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
@@ -55,12 +55,13 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
                 input.ContactPhone,
                 input.JobPosting),
             cancellationToken);
-        return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+        var viewModel = ApplicationViewModelMapper.ToViewModel(result);
+        return CreatedAtAction(nameof(GetById), new { id = viewModel.Id }, viewModel);
     }
 
     [HttpPut("{id:guid}")]
     [EndpointName("UpdateApplication")]
-    public async Task<ActionResult<ApplicationDto>> Update(
+    public async Task<ActionResult<ApplicationViewModel>> Update(
         Guid id, [FromBody] UpdateApplicationInputModel input, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
@@ -75,18 +76,18 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
                 input.ContactPhone,
                 input.JobPosting),
             cancellationToken);
-        return Ok(result);
+        return Ok(ApplicationViewModelMapper.ToViewModel(result));
     }
 
     [HttpPatch("{id:guid}/status")]
     [EndpointName("PatchApplicationStatus")]
-    public async Task<ActionResult<ApplicationDto>> UpdateStatus(
+    public async Task<ActionResult<ApplicationViewModel>> UpdateStatus(
         Guid id, [FromBody] UpdateApplicationStatusInputModel input, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
             new UpdateApplicationStatusCommand(id, input.Status),
             cancellationToken);
-        return Ok(result);
+        return Ok(ApplicationViewModelMapper.ToViewModel(result));
     }
 
     [HttpDelete("{id:guid}")]
