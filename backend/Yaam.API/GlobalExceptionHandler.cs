@@ -23,6 +23,7 @@ public class GlobalExceptionHandler(IProblemDetailsService problemDetailsService
                         g => g.Key,
                         g => g.Select(e => e.ErrorMessage).ToArray())),
             NotFoundException => (StatusCodes.Status404NotFound, "Resource not found.", (Dictionary<string, string[]>?)null),
+            ConflictException ce => (StatusCodes.Status409Conflict, ce.Message, (Dictionary<string, string[]>?)null),
             _ => (StatusCodes.Status500InternalServerError, "An unexpected error occurred.", (Dictionary<string, string[]>?)null)
         };
 

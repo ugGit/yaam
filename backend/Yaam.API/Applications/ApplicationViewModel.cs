@@ -1,3 +1,4 @@
+using Yaam.API.Reminders;
 using Yaam.Domain.Enums;
 
 namespace Yaam.API.Applications;
@@ -14,7 +15,8 @@ public record ApplicationViewModel(
     string? JobPosting,
     DateTime CreatedAt,
     DateTime UpdatedAt,
-    List<ApplicationNoteViewModel> Notes);
+    List<ApplicationNoteViewModel> Notes,
+    ApplicationReminderViewModel? Reminder);
 
 public record ApplicationSummaryViewModel(
     Guid Id,
