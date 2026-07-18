@@ -1,6 +1,6 @@
 import { Component, ElementRef, input, linkedSignal, output, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormField, form, required, submit } from '@angular/forms/signals';
+import { FormField, form, maxLength, required, submit } from '@angular/forms/signals';
 import { CustomFieldViewModel } from '../../../../generated/api';
 
 export interface CustomFieldFormData {
@@ -28,7 +28,9 @@ export class CustomFieldModalComponent {
 
   protected readonly fields = form(this.formModel, (f) => {
     required(f.label, { message: 'Label is required.' });
+    maxLength(f.label, 250, { message: 'Label must be 250 characters or fewer.' });
     required(f.value, { message: 'Value is required.' });
+    maxLength(f.value, 1000, { message: 'Value must be 1000 characters or fewer.' });
   });
 
   show(): void {
