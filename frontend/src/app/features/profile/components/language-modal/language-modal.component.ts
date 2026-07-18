@@ -1,7 +1,7 @@
 import { Component, ElementRef, input, linkedSignal, output, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormField, form, required, submit } from '@angular/forms/signals';
-import { LanguageDto, LanguageProficiency } from '../../../../generated/api';
+import { LanguageViewModel, LanguageProficiency } from '../../../../generated/api';
 
 export interface LanguageFormData {
   name: string;
@@ -29,7 +29,7 @@ export const LANGUAGE_PROFICIENCY_LABELS: Record<LanguageProficiency, string> = 
   templateUrl: './language-modal.component.html',
 })
 export class LanguageModalComponent {
-  readonly item = input<LanguageDto | null>(null);
+  readonly item = input<LanguageViewModel | null>(null);
   readonly saved = output<LanguageFormData>();
   readonly dismissed = output<void>();
 

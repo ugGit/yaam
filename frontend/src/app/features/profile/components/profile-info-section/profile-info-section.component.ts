@@ -1,6 +1,6 @@
 import { Component, input, output, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProfileDto } from '../../../../generated/api';
+import { ProfileViewModel } from '../../../../generated/api';
 import { ProfileInfoModalComponent } from '../profile-info-modal/profile-info-modal.component';
 
 @Component({
@@ -10,8 +10,8 @@ import { ProfileInfoModalComponent } from '../profile-info-modal/profile-info-mo
   templateUrl: './profile-info-section.component.html',
 })
 export class ProfileInfoSectionComponent {
-  readonly profile = input.required<ProfileDto>();
-  readonly changed = output<ProfileDto>();
+  readonly profile = input.required<ProfileViewModel>();
+  readonly changed = output<ProfileViewModel>();
 
   private readonly modal = viewChild.required<ProfileInfoModalComponent>('modal');
 
@@ -19,7 +19,7 @@ export class ProfileInfoSectionComponent {
     this.modal().show();
   }
 
-  protected onSaved(profile: ProfileDto): void {
+  protected onSaved(profile: ProfileViewModel): void {
     this.changed.emit(profile);
   }
 }

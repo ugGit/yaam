@@ -1,7 +1,7 @@
 import { Component, ElementRef, input, linkedSignal, output, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormField, form, required, submit } from '@angular/forms/signals';
-import { WorkExperienceDto } from '../../../../generated/api';
+import { WorkExperienceViewModel } from '../../../../generated/api';
 
 export interface WorkExperienceFormData {
   company: string;
@@ -18,7 +18,7 @@ export interface WorkExperienceFormData {
   templateUrl: './work-experience-modal.component.html',
 })
 export class WorkExperienceModalComponent {
-  readonly item = input<WorkExperienceDto | null>(null);
+  readonly item = input<WorkExperienceViewModel | null>(null);
   readonly saved = output<WorkExperienceFormData>();
   readonly dismissed = output<void>();
 

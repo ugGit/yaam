@@ -1,7 +1,7 @@
 import { Component, inject, input, output, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
-import { ProfileDto, ProfileService, WorkExperienceDto } from '../../../../generated/api';
+import { ProfileViewModel, ProfileService, WorkExperienceViewModel } from '../../../../generated/api';
 import {
   WorkExperienceModalComponent,
   WorkExperienceFormData,
@@ -14,13 +14,13 @@ import {
   templateUrl: './work-experience-section.component.html',
 })
 export class WorkExperienceSectionComponent {
-  readonly items = input.required<WorkExperienceDto[]>();
-  readonly changed = output<ProfileDto>();
+  readonly items = input.required<WorkExperienceViewModel[]>();
+  readonly changed = output<ProfileViewModel>();
 
   private readonly profileService = inject(ProfileService);
   private readonly modal = viewChild.required<WorkExperienceModalComponent>('modal');
 
-  protected readonly editingItem = signal<WorkExperienceDto | null>(null);
+  protected readonly editingItem = signal<WorkExperienceViewModel | null>(null);
   protected readonly deletingId = signal<string | null>(null);
 
   protected onAdd(): void {
@@ -28,7 +28,7 @@ export class WorkExperienceSectionComponent {
     this.modal().show();
   }
 
-  protected onEdit(item: WorkExperienceDto): void {
+  protected onEdit(item: WorkExperienceViewModel): void {
     this.editingItem.set(item);
     this.modal().show();
   }

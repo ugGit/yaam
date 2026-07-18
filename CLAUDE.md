@@ -42,3 +42,12 @@ Use `form()` / `schema()` / `[formField]` from `@angular/forms`. Never use `Reac
 ## Backend controllers — input models
 
 Controllers never bind HTTP request bodies directly to Application layer commands. Every endpoint that accepts a body uses a dedicated input model named `<Verb><Resource>InputModel` (e.g., `CreateApplicationInputModel`), defined in the same file as the controller. The controller maps the input model to the command explicitly.
+
+## Backend controllers — response naming (ViewModel suffix)
+
+Controller responses use a two-layer type model:
+
+- **Use-case layer** (`Yaam.UseCases/<Feature>/Dtos/`): `*Dto` records are the output of MediatR handlers. They are internal to the use-case layer and must not be returned directly from a controller.
+- **API layer** (`Yaam.API/<Feature>/`): `*ViewModel` records are what controllers return. An API-layer mapper (e.g. `ApplicationViewModelMapper`, `ProfileViewModelMapper`) converts `*Dto` → `*ViewModel` inside the controller method.
+
+This separation means the API shape can evolve independently of the use-case internals.
