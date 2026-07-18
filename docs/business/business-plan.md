@@ -21,10 +21,15 @@ See [license.md](license.md). Working assumption: open-source core (AGPL or simi
 
 ## Key Differentiators
 
-- End-to-end in one tool (many tools do one piece, not the loop)
-- Cover letter generation grounded in structured profile data (not generic prompts)
-- Provider-agnostic AI — can run fully local via Ollama
-- Swiss market angle: Infomaniak AI hosting for GDPR-aligned production deployment
+See [competitors.md](competitors.md) for the full competitive analysis. Summary:
+
+- **End-to-end lifecycle** — most tools do one piece (tracker or cover letter or resume); YAAM does the full loop
+- **Cover letter generation grounded in structured profile data** — not generic prompts; tied to a specific application and job posting
+- **Cover letter style control** — user selects tone/style presets illustrated with curated examples before generating; no competitor does this
+- **Deeply personal generation inputs** — long-term vision, personal drivers, childhood experiences; differentiates output quality from generic AI letters
+- **Provider-agnostic AI** — runs fully local via Ollama (no data sent to cloud); no commercial competitor offers this
+- **Swiss/GDPR-aligned hosting** — Infomaniak production deployment; explicit jurisdictional privacy guarantee no competitor makes
+- **Per-application cover letter history** — all versions stored, restorable; comparable tools overwrite on regenerate
 
 ## Out of Scope (MVP)
 
