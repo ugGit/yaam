@@ -39,6 +39,28 @@ Use `form()` / `schema()` / `[formField]` from `@angular/forms`. Never use `Reac
       cancellationToken);
   ```
 
+## Commit messages — commitlint
+
+All commits must follow the [Conventional Commits](https://www.conventionalcommits.org/) spec:
+
+```
+<type>(<optional scope>): <description>
+```
+
+Allowed types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `perf`, `build`, `ci`, `revert`, `merge`.
+
+**Merge commits** (squash merges, PR merges, or branch integrations) use the `merge` type with a description derived from the story or PR title:
+
+```
+merge: <story or feature title in sentence case>
+```
+
+Examples:
+- `merge: profile mutation endpoints and frontend edit/CRUD`
+- `merge: job application list view with filtering`
+
+Never use Git's default merge message format (`Merge branch 'x' into 'y'`).
+
 ## Backend controllers — input models
 
 Controllers never bind HTTP request bodies directly to Application layer commands. Every endpoint that accepts a body uses a dedicated input model named `<Verb><Resource>InputModel` (e.g., `CreateApplicationInputModel`), defined in the same file as the controller. The controller maps the input model to the command explicitly.

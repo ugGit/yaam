@@ -1,6 +1,6 @@
 import { Component, inject, input, linkedSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormField, FormRoot, form, required, submit } from '@angular/forms/signals';
+import { FormField, FormRoot, form, maxLength, required, submit } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
 import { ApplicationNotesService } from '../../../../generated/api/index';
 import { ApplicationNote } from '../../models/application-note.model';
@@ -24,11 +24,13 @@ export class ApplicationNotesComponent {
   protected readonly newNoteModel = signal({ body: '' });
   protected readonly newNoteFields = form(this.newNoteModel, (fields) => {
     required(fields.body);
+    maxLength(fields.body, 5000, { message: 'Note must be 5000 characters or fewer.' });
   });
 
   protected readonly editingModel = signal({ body: '' });
   protected readonly editingFields = form(this.editingModel, (fields) => {
     required(fields.body);
+    maxLength(fields.body, 5000, { message: 'Note must be 5000 characters or fewer.' });
   });
 
   protected async addNote(): Promise<void> {

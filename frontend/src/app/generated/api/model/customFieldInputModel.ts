@@ -8,11 +8,7 @@
  * Do not edit the class manually.
  */
 
-export interface EducationViewModel {
-  id: string;
-  institution: string;
-  degree: string | null;
-  fieldOfStudy: string | null;
-  startDate: string | null;
-  endDate: string | null;
+export interface CustomFieldInputModel {
+  label: string;
+  value: string;
 }

@@ -1,6 +1,6 @@
 import { Component, ElementRef, input, linkedSignal, output, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormField, form, required, submit } from '@angular/forms/signals';
+import { FormField, form, maxLength, required, submit } from '@angular/forms/signals';
 import { CertificationViewModel } from '../../../../generated/api';
 
 export interface CertificationFormData {
@@ -30,10 +30,18 @@ export class CertificationModalComponent {
 
   protected readonly fields = form(this.formModel, (f) => {
     required(f.name, { message: 'Certification name is required.' });
+    maxLength(f.name, 250, { message: 'Certification name must be 250 characters or fewer.' });
     required(f.date, { message: 'Date is required.' });
+    maxLength(f.issuer, 250, { message: 'Issuer must be 250 characters or fewer.' });
   });
 
   show(): void {
+    this.formModel.set({
+      name: this.item()?.name ?? '',
+      issuer: this.item()?.issuer ?? '',
+      date: this.item()?.date ?? '',
+    });
+    this.fields().reset();
     this.dialogEl().nativeElement.showModal();
   }
 

@@ -1,6 +1,6 @@
 import { Component, ElementRef, input, linkedSignal, output, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormField, form, required, submit } from '@angular/forms/signals';
+import { FormField, form, maxLength, required, submit } from '@angular/forms/signals';
 import { WorkExperienceViewModel } from '../../../../generated/api';
 
 export interface WorkExperienceFormData {
@@ -34,11 +34,22 @@ export class WorkExperienceModalComponent {
 
   protected readonly fields = form(this.formModel, (f) => {
     required(f.company, { message: 'Company is required.' });
+    maxLength(f.company, 250, { message: 'Company must be 250 characters or fewer.' });
     required(f.title, { message: 'Title is required.' });
+    maxLength(f.title, 250, { message: 'Title must be 250 characters or fewer.' });
     required(f.startDate, { message: 'Start date is required.' });
+    maxLength(f.description, 1000, { message: 'Description must be 1000 characters or fewer.' });
   });
 
   show(): void {
+    this.formModel.set({
+      company: this.item()?.company ?? '',
+      title: this.item()?.title ?? '',
+      startDate: this.item()?.startDate ?? '',
+      endDate: this.item()?.endDate ?? '',
+      description: this.item()?.description ?? '',
+    });
+    this.fields().reset();
     this.dialogEl().nativeElement.showModal();
   }
 

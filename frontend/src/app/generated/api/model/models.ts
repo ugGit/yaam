@@ -6,6 +6,7 @@ export * from './certificationInputModel';
 export * from './certificationViewModel';
 export * from './createApplicationInputModel';
 export * from './createApplicationNoteInputModel';
+export * from './customFieldInputModel';
 export * from './customFieldViewModel';
 export * from './educationInputModel';
 export * from './educationViewModel';

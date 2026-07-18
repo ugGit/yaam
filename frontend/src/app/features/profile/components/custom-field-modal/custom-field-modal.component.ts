@@ -1,42 +1,42 @@
 import { Component, ElementRef, input, linkedSignal, output, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormField, form, maxLength, required, submit } from '@angular/forms/signals';
-import { ProfileLinkViewModel } from '../../../../generated/api';
+import { CustomFieldViewModel } from '../../../../generated/api';
 
-export interface ProfileLinkFormData {
+export interface CustomFieldFormData {
   label: string;
-  url: string;
+  value: string;
 }
 
 @Component({
-  selector: 'app-profile-link-modal',
+  selector: 'app-custom-field-modal',
   standalone: true,
   imports: [CommonModule, FormField],
-  templateUrl: './profile-link-modal.component.html',
+  templateUrl: './custom-field-modal.component.html',
 })
-export class ProfileLinkModalComponent {
-  readonly item = input<ProfileLinkViewModel | null>(null);
-  readonly saved = output<ProfileLinkFormData>();
+export class CustomFieldModalComponent {
+  readonly item = input<CustomFieldViewModel | null>(null);
+  readonly saved = output<CustomFieldFormData>();
   readonly dismissed = output<void>();
 
   private readonly dialogEl = viewChild.required<ElementRef<HTMLDialogElement>>('modal');
 
-  protected readonly formModel = linkedSignal<ProfileLinkFormData>(() => ({
+  protected readonly formModel = linkedSignal<CustomFieldFormData>(() => ({
     label: this.item()?.label ?? '',
-    url: this.item()?.url ?? '',
+    value: this.item()?.value ?? '',
   }));
 
   protected readonly fields = form(this.formModel, (f) => {
     required(f.label, { message: 'Label is required.' });
     maxLength(f.label, 250, { message: 'Label must be 250 characters or fewer.' });
-    required(f.url, { message: 'URL is required.' });
-    maxLength(f.url, 2000, { message: 'URL must be 2000 characters or fewer.' });
+    required(f.value, { message: 'Value is required.' });
+    maxLength(f.value, 1000, { message: 'Value must be 1000 characters or fewer.' });
   });
 
   show(): void {
     this.formModel.set({
       label: this.item()?.label ?? '',
-      url: this.item()?.url ?? '',
+      value: this.item()?.value ?? '',
     });
     this.fields().reset();
     this.dialogEl().nativeElement.showModal();

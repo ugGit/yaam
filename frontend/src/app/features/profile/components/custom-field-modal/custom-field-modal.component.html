@@ -1,0 +1,47 @@
+<dialog #modal class="modal" (close)="onClose()">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg mb-4">{{ isEditMode ? 'Edit' : 'Add' }} Custom Field</h3>
+
+    <div class="flex flex-col gap-3">
+      <div class="form-control">
+        <label class="label" for="cf-label"><span class="label-text">Label *</span></label>
+        <input
+          id="cf-label"
+          [formField]="fields.label"
+          type="text"
+          class="input input-bordered w-full"
+        />
+        @if (fields.label().touched() && fields.label().errors().length) {
+          <div class="label">
+            <span class="label-text-alt text-error">{{ fields.label().errors()[0].message }}</span>
+          </div>
+        }
+      </div>
+
+      <div class="form-control">
+        <label class="label" for="cf-value"><span class="label-text">Value *</span></label>
+        <textarea
+          id="cf-value"
+          [formField]="fields.value"
+          class="textarea textarea-bordered w-full"
+          rows="3"
+        ></textarea>
+        @if (fields.value().touched() && fields.value().errors().length) {
+          <div class="label">
+            <span class="label-text-alt text-error">{{ fields.value().errors()[0].message }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn btn-ghost">Cancel</button>
+      </form>
+      <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+    </div>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button aria-label="Close modal"></button>
+  </form>
+</dialog>

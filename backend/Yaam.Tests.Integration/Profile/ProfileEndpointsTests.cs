@@ -219,4 +219,49 @@ public class ProfileEndpointsTests(ApiFactory factory)
         var deleteResponse = await _client.DeleteAsync($"/api/profile/links/{added.Id}");
         deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }
+
+    [Fact]
+    public async Task CustomFieldCrudFlow()
+    {
+        // Add
+        var addPayload = new { label = "Salary expectation", value = "CHF 120k" };
+        var addResponse = await _client.PostAsJsonAsync("/api/profile/custom-fields", addPayload);
+        addResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var added = await addResponse.Content.ReadFromJsonAsync<CustomFieldViewModel>();
+        added!.Label.Should().Be("Salary expectation");
+        added.Value.Should().Be("CHF 120k");
+
+        // Update
+        var updatePayload = new { label = "Salary expectation", value = "CHF 130k" };
+        var updateResponse = await _client.PutAsJsonAsync(
+            $"/api/profile/custom-fields/{added.Id}", updatePayload);
+        updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var updated = await updateResponse.Content.ReadFromJsonAsync<CustomFieldViewModel>();
+        updated!.Value.Should().Be("CHF 130k");
+
+        // Delete
+        var deleteResponse = await _client.DeleteAsync($"/api/profile/custom-fields/{added.Id}");
+        deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
+
+        // Verify gone
+        var profile = await (await _client.GetAsync("/api/profile"))
+            .Content.ReadFromJsonAsync<ProfileViewModel>();
+        profile!.CustomFields.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task POST_CustomField_Returns400_WhenLabelEmpty()
+    {
+        var payload = new { label = "", value = "some value" };
+        var response = await _client.PostAsJsonAsync("/api/profile/custom-fields", payload);
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    }
+
+    [Fact]
+    public async Task POST_CustomField_Returns400_WhenValueEmpty()
+    {
+        var payload = new { label = "My Label", value = "" };
+        var response = await _client.PostAsJsonAsync("/api/profile/custom-fields", payload);
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    }
 }

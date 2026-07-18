@@ -1,6 +1,6 @@
 import { Component, ElementRef, input, linkedSignal, output, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormField, form, required, submit } from '@angular/forms/signals';
+import { FormField, form, maxLength, required, submit } from '@angular/forms/signals';
 import { EducationViewModel } from '../../../../generated/api';
 
 export interface EducationFormData {
@@ -34,9 +34,20 @@ export class EducationModalComponent {
 
   protected readonly fields = form(this.formModel, (f) => {
     required(f.institution, { message: 'Institution is required.' });
+    maxLength(f.institution, 250, { message: 'Institution must be 250 characters or fewer.' });
+    maxLength(f.degree, 250, { message: 'Degree must be 250 characters or fewer.' });
+    maxLength(f.fieldOfStudy, 250, { message: 'Field of study must be 250 characters or fewer.' });
   });
 
   show(): void {
+    this.formModel.set({
+      institution: this.item()?.institution ?? '',
+      degree: this.item()?.degree ?? '',
+      fieldOfStudy: this.item()?.fieldOfStudy ?? '',
+      startDate: this.item()?.startDate ?? '',
+      endDate: this.item()?.endDate ?? '',
+    });
+    this.fields().reset();
     this.dialogEl().nativeElement.showModal();
   }
 

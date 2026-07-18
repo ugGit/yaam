@@ -36,18 +36,20 @@ Controller additions to `ProfileController`:
 
 | Method | Route | Input Model | Success |
 |--------|-------|-------------|---------|
-| `POST` | `/api/profile/custom-fields` | `CustomFieldInputModel(Label, Value)` | 200 `CustomFieldDto` |
-| `PUT` | `/api/profile/custom-fields/{id}` | `CustomFieldInputModel(Label, Value)` | 200 `CustomFieldDto` |
+| `POST` | `/api/profile/custom-fields` | `CustomFieldInputModel(Label, Value)` | 200 `CustomFieldViewModel` |
+| `PUT` | `/api/profile/custom-fields/{id}` | `CustomFieldInputModel(Label, Value)` | 200 `CustomFieldViewModel` |
 | `DELETE` | `/api/profile/custom-fields/{id}` | — | 204 |
 
 `CustomFieldInputModel` is a record defined in `ProfileController.cs`, consistent with all other input models in this file.
+
+Controllers return `CustomFieldViewModel` (not `CustomFieldDto`). `ProfileViewModelMapper.ToViewModel(CustomFieldDto)` already exists on the `refactor/dto-to-viewmodel` branch — controllers call it to map the use-case output before returning.
 
 ### Frontend
 
 Two components follow the `ProfileLinkSectionComponent` / `ProfileLinkModalComponent` pattern exactly:
 
 **`CustomFieldModalComponent`**
-- Inputs: `item: CustomFieldDto | null` (null = add mode, set = edit mode)
+- Inputs: `item: CustomFieldViewModel | null` (null = add mode, set = edit mode)
 - Outputs: `saved: CustomFieldFormData`, `dismissed: void`
 - Uses `linkedSignal` to sync form model from `item` input
 - Uses `form()` + `[formField]` with `required` validators on both fields
@@ -56,8 +58,8 @@ Two components follow the `ProfileLinkSectionComponent` / `ProfileLinkModalCompo
 - Exposes `show()` method; section calls it via `viewChild`
 
 **`CustomFieldsSectionComponent`** (replaces current read-only component)
-- Inputs: `fields: CustomFieldDto[]` (unchanged)
-- Outputs: `changed: ProfileDto` (new — emits updated profile after every mutation)
+- Inputs: `fields: CustomFieldViewModel[]` (unchanged from Story 1, type name updated)
+- Outputs: `changed: ProfileViewModel` (new — emits updated profile after every mutation)
 - Signals: `editingItem: CustomFieldDto | null`, `deletingId: string | null`
 - Add/edit mutate via `ProfileService` (generated), then re-fetch full profile and emit `changed`
 - Delete is two-step in-list: first click shows Confirm/Cancel; confirm calls `deleteCustomField`
@@ -128,6 +130,8 @@ frontend/src/app/generated/api/  (regenerated — never edit manually)
 ## Constraints
 
 - All backend conventions from CLAUDE.md apply: handler parameter named `command`, `cancellationToken` never `= default`, `mediator.Send` three-line format, no type aliases.
+- Controllers return `*ViewModel` (never `*Dto` directly). Use `ProfileViewModelMapper.ToViewModel(dto)` inside controller actions.
 - `frontend/src/app/generated/` is never edited manually; regenerate after backend endpoints are added.
 - daisyUI skill must be invoked before writing any component HTML.
 - Angular signal forms only: `form()` / `[formField]`. No `ReactiveFormsModule`, `FormBuilder`, or `FormGroup`.
+- Branch based on `origin/refactor/dto-to-viewmodel` (not main) — `CustomFieldViewModel` and its mapper already exist there.
