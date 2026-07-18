@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
 using Yaam.Domain.Enums;
-using Yaam.UseCases.Applications.Dtos;
+using Yaam.API.Applications;
 
 namespace Yaam.Tests.Integration.Applications;
 
@@ -17,7 +17,7 @@ public class ApplicationsEndpointsTests(ApiFactory factory)
         var response = await _client.GetAsync("/api/applications");
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var body = await response.Content.ReadFromJsonAsync<List<ApplicationSummaryDto>>();
+        var body = await response.Content.ReadFromJsonAsync<List<ApplicationSummaryViewModel>>();
         body.Should().NotBeNull();
     }
 
@@ -51,7 +51,7 @@ public class ApplicationsEndpointsTests(ApiFactory factory)
         var createPayload = new { companyName = "Acme Corp", role = "Software Engineer", status = "Draft" };
         var createResponse = await _client.PostAsJsonAsync("/api/applications", createPayload);
         createResponse.StatusCode.Should().Be(HttpStatusCode.Created);
-        var created = await createResponse.Content.ReadFromJsonAsync<ApplicationDto>();
+        var created = await createResponse.Content.ReadFromJsonAsync<ApplicationViewModel>();
         created!.CompanyName.Should().Be("Acme Corp");
         created.Status.Should().Be(ApplicationStatus.Draft);
 
@@ -65,7 +65,7 @@ public class ApplicationsEndpointsTests(ApiFactory factory)
         };
         var updateResponse = await _client.PutAsJsonAsync($"/api/applications/{created.Id}", updatePayload);
         updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        var updated = await updateResponse.Content.ReadFromJsonAsync<ApplicationDto>();
+        var updated = await updateResponse.Content.ReadFromJsonAsync<ApplicationViewModel>();
         updated!.Role.Should().Be("Senior Software Engineer");
         updated.Status.Should().Be(ApplicationStatus.Applied);
 
@@ -73,27 +73,27 @@ public class ApplicationsEndpointsTests(ApiFactory factory)
         var patchResponse = await _client.PatchAsJsonAsync(
             $"/api/applications/{created.Id}/status", new { status = "Interviewed" });
         patchResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        var patched = await patchResponse.Content.ReadFromJsonAsync<ApplicationDto>();
+        var patched = await patchResponse.Content.ReadFromJsonAsync<ApplicationViewModel>();
         patched!.Status.Should().Be(ApplicationStatus.Interviewed);
 
         // Add note
         var addNoteResponse = await _client.PostAsJsonAsync(
             $"/api/applications/{created.Id}/notes", new { body = "Had a great interview." });
         addNoteResponse.StatusCode.Should().Be(HttpStatusCode.Created);
-        var note = await addNoteResponse.Content.ReadFromJsonAsync<ApplicationNoteDto>();
+        var note = await addNoteResponse.Content.ReadFromJsonAsync<ApplicationNoteViewModel>();
         note!.Body.Should().Be("Had a great interview.");
 
         // Update note
         var updateNoteResponse = await _client.PutAsJsonAsync(
             $"/api/applications/{created.Id}/notes/{note.Id}", new { body = "Updated note." });
         updateNoteResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        var updatedNote = await updateNoteResponse.Content.ReadFromJsonAsync<ApplicationNoteDto>();
+        var updatedNote = await updateNoteResponse.Content.ReadFromJsonAsync<ApplicationNoteViewModel>();
         updatedNote!.Body.Should().Be("Updated note.");
 
         // Read by id — note present after update
         var getResponse = await _client.GetAsync($"/api/applications/{created.Id}");
         getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        var fetched = await getResponse.Content.ReadFromJsonAsync<ApplicationDto>();
+        var fetched = await getResponse.Content.ReadFromJsonAsync<ApplicationViewModel>();
         fetched!.Notes.Should().Contain(n => n.Id == note.Id && n.Body == "Updated note.");
 
         // Delete note
@@ -101,7 +101,7 @@ public class ApplicationsEndpointsTests(ApiFactory factory)
             $"/api/applications/{created.Id}/notes/{note.Id}");
         deleteNoteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
         var afterNoteDelete = await _client.GetAsync($"/api/applications/{created.Id}");
-        var afterNoteDeleteBody = await afterNoteDelete.Content.ReadFromJsonAsync<ApplicationDto>();
+        var afterNoteDeleteBody = await afterNoteDelete.Content.ReadFromJsonAsync<ApplicationViewModel>();
         afterNoteDeleteBody!.Notes.Should().NotContain(n => n.Id == note.Id);
 
         // Delete application

@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
 using Yaam.Domain.Enums;
-using Yaam.UseCases.Profile.Dtos;
+using Yaam.API.Profile;
 
 namespace Yaam.Tests.Integration.Profile;
 
@@ -17,7 +17,7 @@ public class ProfileEndpointsTests(ApiFactory factory)
         var response = await _client.GetAsync("/api/profile");
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var profile = await response.Content.ReadFromJsonAsync<ProfileDto>();
+        var profile = await response.Content.ReadFromJsonAsync<ProfileViewModel>();
         profile.Should().NotBeNull();
         profile!.Id.Should().NotBeEmpty();
     }
@@ -26,10 +26,10 @@ public class ProfileEndpointsTests(ApiFactory factory)
     public async Task GET_Profile_ReturnsSameId_OnSubsequentCalls()
     {
         var r1 = await _client.GetAsync("/api/profile");
-        var p1 = await r1.Content.ReadFromJsonAsync<ProfileDto>();
+        var p1 = await r1.Content.ReadFromJsonAsync<ProfileViewModel>();
 
         var r2 = await _client.GetAsync("/api/profile");
-        var p2 = await r2.Content.ReadFromJsonAsync<ProfileDto>();
+        var p2 = await r2.Content.ReadFromJsonAsync<ProfileViewModel>();
 
         p2!.Id.Should().Be(p1!.Id);
     }
@@ -50,7 +50,7 @@ public class ProfileEndpointsTests(ApiFactory factory)
         var response = await _client.PutAsJsonAsync("/api/profile/info", payload);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var profile = await response.Content.ReadFromJsonAsync<ProfileDto>();
+        var profile = await response.Content.ReadFromJsonAsync<ProfileViewModel>();
         profile!.FirstName.Should().Be("Ada");
         profile.LastName.Should().Be("Lovelace");
         profile.Summary.Should().Be("Pioneer of computing.");
@@ -82,7 +82,7 @@ public class ProfileEndpointsTests(ApiFactory factory)
         var response = await _client.PutAsJsonAsync("/api/profile/skills", payload);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var profile = await response.Content.ReadFromJsonAsync<ProfileDto>();
+        var profile = await response.Content.ReadFromJsonAsync<ProfileViewModel>();
         profile!.Skills.Should().BeEquivalentTo(new[] { "C#", "Angular", "PostgreSQL" });
     }
 
@@ -100,7 +100,7 @@ public class ProfileEndpointsTests(ApiFactory factory)
         };
         var addResponse = await _client.PostAsJsonAsync("/api/profile/work-experiences", addPayload);
         addResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        var added = await addResponse.Content.ReadFromJsonAsync<WorkExperienceDto>();
+        var added = await addResponse.Content.ReadFromJsonAsync<WorkExperienceViewModel>();
         added!.Company.Should().Be("ACME Corp");
 
         // Update
@@ -115,7 +115,7 @@ public class ProfileEndpointsTests(ApiFactory factory)
         var updateResponse = await _client.PutAsJsonAsync(
             $"/api/profile/work-experiences/{added.Id}", updatePayload);
         updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        var updated = await updateResponse.Content.ReadFromJsonAsync<WorkExperienceDto>();
+        var updated = await updateResponse.Content.ReadFromJsonAsync<WorkExperienceViewModel>();
         updated!.Title.Should().Be("Senior Software Engineer");
 
         // Delete
@@ -124,7 +124,7 @@ public class ProfileEndpointsTests(ApiFactory factory)
 
         // Verify gone
         var profile = await (await _client.GetAsync("/api/profile"))
-            .Content.ReadFromJsonAsync<ProfileDto>();
+            .Content.ReadFromJsonAsync<ProfileViewModel>();
         profile!.WorkExperiences.Should().BeEmpty();
     }
 
@@ -149,13 +149,13 @@ public class ProfileEndpointsTests(ApiFactory factory)
         };
         var addResponse = await _client.PostAsJsonAsync("/api/profile/education", addPayload);
         addResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        var added = await addResponse.Content.ReadFromJsonAsync<EducationDto>();
+        var added = await addResponse.Content.ReadFromJsonAsync<EducationViewModel>();
         added!.Institution.Should().Be("ETH Zurich");
 
         var updatePayload = new { institution = "ETH Zurich", degree = "PhD", fieldOfStudy = "Computer Science", startDate = "2020-09-01", endDate = (string?)null };
         var updateResponse = await _client.PutAsJsonAsync($"/api/profile/education/{added.Id}", updatePayload);
         updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        var updated = await updateResponse.Content.ReadFromJsonAsync<EducationDto>();
+        var updated = await updateResponse.Content.ReadFromJsonAsync<EducationViewModel>();
         updated!.Degree.Should().Be("PhD");
 
         var deleteResponse = await _client.DeleteAsync($"/api/profile/education/{added.Id}");
@@ -168,14 +168,14 @@ public class ProfileEndpointsTests(ApiFactory factory)
         var addPayload = new { name = "German", proficiency = "Fluent" };
         var addResponse = await _client.PostAsJsonAsync("/api/profile/languages", addPayload);
         addResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        var added = await addResponse.Content.ReadFromJsonAsync<LanguageDto>();
+        var added = await addResponse.Content.ReadFromJsonAsync<LanguageViewModel>();
         added!.Name.Should().Be("German");
         added.Proficiency.Should().Be(LanguageProficiency.Fluent);
 
         var updatePayload = new { name = "German", proficiency = "Native" };
         var updateResponse = await _client.PutAsJsonAsync($"/api/profile/languages/{added.Id}", updatePayload);
         updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        var updated = await updateResponse.Content.ReadFromJsonAsync<LanguageDto>();
+        var updated = await updateResponse.Content.ReadFromJsonAsync<LanguageViewModel>();
         updated!.Proficiency.Should().Be(LanguageProficiency.Native);
 
         var deleteResponse = await _client.DeleteAsync($"/api/profile/languages/{added.Id}");
@@ -188,13 +188,13 @@ public class ProfileEndpointsTests(ApiFactory factory)
         var addPayload = new { name = "AWS Solutions Architect", issuer = "Amazon", date = "2023-06-15" };
         var addResponse = await _client.PostAsJsonAsync("/api/profile/certifications", addPayload);
         addResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        var added = await addResponse.Content.ReadFromJsonAsync<CertificationDto>();
+        var added = await addResponse.Content.ReadFromJsonAsync<CertificationViewModel>();
         added!.Name.Should().Be("AWS Solutions Architect");
 
         var updatePayload = new { name = "AWS Solutions Architect Professional", issuer = "Amazon", date = "2024-01-01" };
         var updateResponse = await _client.PutAsJsonAsync($"/api/profile/certifications/{added.Id}", updatePayload);
         updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        var updated = await updateResponse.Content.ReadFromJsonAsync<CertificationDto>();
+        var updated = await updateResponse.Content.ReadFromJsonAsync<CertificationViewModel>();
         updated!.Name.Should().Be("AWS Solutions Architect Professional");
 
         var deleteResponse = await _client.DeleteAsync($"/api/profile/certifications/{added.Id}");
@@ -207,13 +207,13 @@ public class ProfileEndpointsTests(ApiFactory factory)
         var addPayload = new { label = "GitHub", url = "https://github.com/ada" };
         var addResponse = await _client.PostAsJsonAsync("/api/profile/links", addPayload);
         addResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        var added = await addResponse.Content.ReadFromJsonAsync<ProfileLinkDto>();
+        var added = await addResponse.Content.ReadFromJsonAsync<ProfileLinkViewModel>();
         added!.Label.Should().Be("GitHub");
 
         var updatePayload = new { label = "GitHub Profile", url = "https://github.com/ada" };
         var updateResponse = await _client.PutAsJsonAsync($"/api/profile/links/{added.Id}", updatePayload);
         updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        var updated = await updateResponse.Content.ReadFromJsonAsync<ProfileLinkDto>();
+        var updated = await updateResponse.Content.ReadFromJsonAsync<ProfileLinkViewModel>();
         updated!.Label.Should().Be("GitHub Profile");
 
         var deleteResponse = await _client.DeleteAsync($"/api/profile/links/{added.Id}");
