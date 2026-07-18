@@ -1,0 +1,94 @@
+<div class="container mx-auto p-6 max-w-3xl">
+  <h1 class="text-2xl font-bold mb-6">Reminders</h1>
+
+  @if (remindersResource.isLoading()) {
+    <div class="flex justify-center py-12">
+      <span class="loading loading-spinner loading-lg"></span>
+    </div>
+  } @else if (remindersResource.status() === 'error') {
+    <div class="alert alert-error">Failed to load reminders.</div>
+  } @else if (!remindersResource.value()?.length) {
+    <div class="flex flex-col items-center py-16 text-base-content/50">
+      <p class="text-lg">No active reminders.</p>
+      <a routerLink="/applications" class="btn btn-outline mt-4">Go to applications</a>
+    </div>
+  } @else {
+    @let g = grouped();
+
+    @if (g.overdue.length) {
+      <section class="mb-6">
+        <h2 class="text-sm font-semibold text-error uppercase tracking-wide mb-2">
+          Overdue ({{ g.overdue.length }})
+        </h2>
+        @for (r of g.overdue; track r.id) {
+          <ng-container *ngTemplateOutlet="reminderCard; context: { r }" />
+        }
+      </section>
+    }
+
+    @if (g.dueToday.length) {
+      <section class="mb-6">
+        <h2 class="text-sm font-semibold text-warning uppercase tracking-wide mb-2">
+          Due today ({{ g.dueToday.length }})
+        </h2>
+        @for (r of g.dueToday; track r.id) {
+          <ng-container *ngTemplateOutlet="reminderCard; context: { r }" />
+        }
+      </section>
+    }
+
+    @if (g.upcoming.length) {
+      <section class="mb-6">
+        <h2 class="text-sm font-semibold uppercase tracking-wide mb-2">
+          Upcoming ({{ g.upcoming.length }})
+        </h2>
+        @for (r of g.upcoming; track r.id) {
+          <ng-container *ngTemplateOutlet="reminderCard; context: { r }" />
+        }
+      </section>
+    }
+  }
+</div>
+
+<ng-template #reminderCard let-r="r">
+  <div class="card bg-base-100 shadow-sm mb-3 p-4">
+    <div class="flex items-start justify-between gap-4">
+      <div class="flex-1 min-w-0">
+        <a
+          class="font-semibold hover:underline"
+          [routerLink]="['/applications', r.applicationId]"
+        >
+          {{ r.companyName }}
+        </a>
+        <p class="text-sm text-base-content/70">{{ r.role }}</p>
+        @if (r.note) {
+          <p class="text-xs text-base-content/60 mt-1">{{ r.note }}</p>
+        }
+        @if (r.notifiedAt) {
+          <p class="text-xs text-base-content/50 mt-1">
+            Notification sent {{ r.notifiedAt | date: 'mediumDate' }}
+          </p>
+        }
+      </div>
+      <div class="flex flex-col items-end gap-2 shrink-0">
+        <span class="text-xs font-medium text-base-content/60">{{ dueDaysLabel(r) }}</span>
+        <div class="flex gap-1">
+          <button
+            class="btn btn-xs btn-success btn-outline"
+            [disabled]="saving() === r.applicationId"
+            (click)="complete(r.applicationId)"
+          >
+            Done
+          </button>
+          <button
+            class="btn btn-xs btn-ghost text-error"
+            [disabled]="saving() === r.applicationId"
+            (click)="deleteReminder(r.applicationId)"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
