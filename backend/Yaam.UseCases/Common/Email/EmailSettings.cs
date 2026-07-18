@@ -1,4 +1,4 @@
-namespace Yaam.Infrastructure.Email;
+namespace Yaam.UseCases.Common.Email;
 
 public class EmailSettings
 {
