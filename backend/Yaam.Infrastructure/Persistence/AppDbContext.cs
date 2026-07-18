@@ -14,6 +14,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Certification> Certifications => Set<Certification>();
     public DbSet<ProfileLink> ProfileLinks => Set<ProfileLink>();
     public DbSet<CustomField> CustomFields => Set<CustomField>();
+    public DbSet<Reminder> Reminders => Set<Reminder>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -17,6 +17,7 @@ public static class DependencyInjection
 
         services.AddScoped<IApplicationRepository, ApplicationRepository>();
         services.AddScoped<IProfileRepository, ProfileRepository>();
+        services.AddScoped<IReminderRepository, ReminderRepository>();
 
         return services;
     }
