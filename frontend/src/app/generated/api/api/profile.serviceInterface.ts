@@ -13,6 +13,8 @@ import { Observable }                                        from 'rxjs';
 
 import { CertificationInputModel } from '../model/models';
 import { CertificationViewModel } from '../model/models';
+import { CustomFieldInputModel } from '../model/models';
+import { CustomFieldViewModel } from '../model/models';
 import { EducationInputModel } from '../model/models';
 import { EducationViewModel } from '../model/models';
 import { LanguageInputModel } from '../model/models';
@@ -40,6 +42,13 @@ export interface ProfileServiceInterface {
      * @param certificationInputModel 
      */
     addCertification(certificationInputModel: CertificationInputModel, extraHttpRequestParams?: any): Observable<CertificationViewModel>;
+
+    /**
+     * 
+     * 
+     * @param customFieldInputModel 
+     */
+    addCustomField(customFieldInputModel: CustomFieldInputModel, extraHttpRequestParams?: any): Observable<CustomFieldViewModel>;
 
     /**
      * 
@@ -75,6 +84,13 @@ export interface ProfileServiceInterface {
      * @param id 
      */
     deleteCertification(id: string, extraHttpRequestParams?: any): Observable<{}>;
+
+    /**
+     * 
+     * 
+     * @param id 
+     */
+    deleteCustomField(id: string, extraHttpRequestParams?: any): Observable<{}>;
 
     /**
      * 
@@ -117,6 +133,14 @@ export interface ProfileServiceInterface {
      * @param certificationInputModel 
      */
     updateCertification(id: string, certificationInputModel: CertificationInputModel, extraHttpRequestParams?: any): Observable<CertificationViewModel>;
+
+    /**
+     * 
+     * 
+     * @param id 
+     * @param customFieldInputModel 
+     */
+    updateCustomField(id: string, customFieldInputModel: CustomFieldInputModel, extraHttpRequestParams?: any): Observable<CustomFieldViewModel>;
 
     /**
      * 
