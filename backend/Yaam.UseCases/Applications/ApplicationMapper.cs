@@ -1,5 +1,6 @@
 using Yaam.Domain.Entities;
 using Yaam.UseCases.Applications.Dtos;
+using Yaam.UseCases.Reminders;
 
 namespace Yaam.UseCases.Applications;
 
@@ -9,7 +10,8 @@ internal static class ApplicationMapper
         a.Id, a.CompanyName, a.Role, a.DateApplied, a.Status,
         a.ContactName, a.ContactEmail, a.ContactPhone, a.JobPosting,
         a.CreatedAt, a.UpdatedAt,
-        a.Notes.Select(NoteToDto).ToList());
+        a.Notes.Select(NoteToDto).ToList(),
+        a.Reminder is null ? null : ReminderMapper.ToApplicationReminderDto(a.Reminder));
 
     internal static ApplicationSummaryDto ToSummaryDto(Application a) =>
         new(a.Id, a.CompanyName, a.Role, a.DateApplied, a.Status);
