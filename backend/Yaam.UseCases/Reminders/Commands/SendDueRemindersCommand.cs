@@ -1,5 +1,6 @@
 using System.Text;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Yaam.Domain.Entities;
 using Yaam.Domain.Repositories;
@@ -12,7 +13,8 @@ public record SendDueRemindersCommand : IRequest;
 public class SendDueRemindersCommandHandler(
     IReminderRepository repository,
     IEmailSender emailSender,
-    IOptions<EmailSettings> emailOptions)
+    IOptions<EmailSettings> emailOptions,
+    ILogger<SendDueRemindersCommandHandler> logger)
     : IRequestHandler<SendDueRemindersCommand>
 {
     public async Task Handle(SendDueRemindersCommand command, CancellationToken cancellationToken)
@@ -22,17 +24,24 @@ public class SendDueRemindersCommandHandler(
 
         foreach (var reminder in dueReminders)
         {
-            var subject = $"Follow-up reminder: {reminder.Application.CompanyName} — {reminder.Application.Role}";
-            var body = BuildEmailBody(reminder);
+            try
+            {
+                var subject = $"Follow-up reminder: {reminder.Application.CompanyName} — {reminder.Application.Role}";
+                var body = BuildEmailBody(reminder);
 
-            await emailSender.SendAsync(
-                emailOptions.Value.NotificationEmail,
-                subject,
-                body,
-                cancellationToken);
+                await emailSender.SendAsync(
+                    emailOptions.Value.NotificationEmail,
+                    subject,
+                    body,
+                    cancellationToken);
 
-            reminder.NotifiedAt = DateTime.UtcNow;
-            await repository.UpdateAsync(reminder, cancellationToken);
+                reminder.NotifiedAt = DateTime.UtcNow;
+                await repository.UpdateAsync(reminder, cancellationToken);
+            }
+            catch (Exception exception) when (exception is not OperationCanceledException)
+            {
+                logger.LogError(exception, "Failed to send reminder for {ApplicationId}", reminder.ApplicationId);
+            }
         }
     }
 

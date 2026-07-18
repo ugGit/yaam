@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 using Yaam.Domain.Entities;
@@ -11,6 +12,7 @@ public class SendDueRemindersCommandHandlerTests
 {
     private readonly IReminderRepository _repo = Substitute.For<IReminderRepository>();
     private readonly IEmailSender _emailSender = Substitute.For<IEmailSender>();
+    private readonly ILogger<SendDueRemindersCommandHandler> _logger = Substitute.For<ILogger<SendDueRemindersCommandHandler>>();
     private readonly EmailSettings _settings = new()
     {
         NotificationEmail = "user@example.com",
@@ -19,7 +21,7 @@ public class SendDueRemindersCommandHandlerTests
     };
 
     private SendDueRemindersCommandHandler CreateHandler() =>
-        new(_repo, _emailSender, Options.Create(_settings));
+        new(_repo, _emailSender, Options.Create(_settings), _logger);
 
     [Fact]
     public async Task Handle_SendsOneEmailPerDueReminder()

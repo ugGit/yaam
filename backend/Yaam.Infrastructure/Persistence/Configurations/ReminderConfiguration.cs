@@ -17,5 +17,9 @@ public class ReminderConfiguration : IEntityTypeConfiguration<Reminder>
             .WithOne(a => a.Reminder)
             .HasForeignKey<Reminder>(r => r.ApplicationId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasIndex(r => r.ApplicationId)
+            .IsUnique()
+            .HasFilter("\"CompletedAt\" IS NULL");
     }
 }

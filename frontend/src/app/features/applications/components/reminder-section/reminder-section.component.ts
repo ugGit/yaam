@@ -41,10 +41,10 @@ export class ReminderSectionComponent {
   protected readonly dueDateDisplay = computed(() => {
     const r = this.reminder();
     if (!r) return null;
-    const due = new Date(r.dueDate as unknown as string);
+    const [y, m, d] = (r.dueDate as unknown as string).split('-').map(Number);
+    const due = new Date(y, m - 1, d);
     const todayDate = new Date();
     todayDate.setHours(0, 0, 0, 0);
-    due.setHours(0, 0, 0, 0);
     const diff = Math.round((due.getTime() - todayDate.getTime()) / 86400000);
     if (diff < 0) return { label: `Overdue by ${-diff} day${-diff === 1 ? '' : 's'}`, cls: 'badge-error' };
     if (diff === 0) return { label: 'Due today', cls: 'badge-warning' };

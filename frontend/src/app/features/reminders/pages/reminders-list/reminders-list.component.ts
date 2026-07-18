@@ -34,8 +34,8 @@ export class RemindersListComponent {
     const upcoming: ReminderViewModel[] = [];
 
     for (const r of all) {
-      const due = new Date(r.dueDate as unknown as string);
-      due.setHours(0, 0, 0, 0);
+      const [y, m, d] = (r.dueDate as unknown as string).split('-').map(Number);
+      const due = new Date(y, m - 1, d);
       const diff = Math.round((due.getTime() - today.getTime()) / 86400000);
       if (diff < 0) overdue.push(r);
       else if (diff === 0) dueToday.push(r);
@@ -68,8 +68,8 @@ export class RemindersListComponent {
   protected dueDaysLabel(reminder: ReminderViewModel): string {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const due = new Date(reminder.dueDate as unknown as string);
-    due.setHours(0, 0, 0, 0);
+    const [y, m, d] = (reminder.dueDate as unknown as string).split('-').map(Number);
+    const due = new Date(y, m - 1, d);
     const diff = Math.round((due.getTime() - today.getTime()) / 86400000);
     if (diff < 0) return `${-diff}d overdue`;
     if (diff === 0) return 'Today';

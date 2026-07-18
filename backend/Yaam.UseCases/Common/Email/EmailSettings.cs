@@ -9,4 +9,5 @@ public class EmailSettings
     public string? Username { get; set; }
     public string? Password { get; set; }
     public string NotificationEmail { get; set; } = string.Empty;
+    public bool AllowInsecureConnection { get; set; } = false;
 }

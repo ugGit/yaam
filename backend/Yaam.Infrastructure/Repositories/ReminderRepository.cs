@@ -11,6 +11,10 @@ public class ReminderRepository(AppDbContext db) : IReminderRepository
         => await db.Reminders
             .FirstOrDefaultAsync(r => r.ApplicationId == applicationId && r.CompletedAt == null, cancellationToken);
 
+    public async Task<Reminder?> GetCompletedByApplicationIdAsync(Guid applicationId, CancellationToken cancellationToken)
+        => await db.Reminders
+            .FirstOrDefaultAsync(r => r.ApplicationId == applicationId && r.CompletedAt != null, cancellationToken);
+
     public async Task<List<Reminder>> GetAllActiveAsync(CancellationToken cancellationToken)
         => await db.Reminders
             .Include(r => r.Application)
