@@ -1,6 +1,6 @@
 export type {
-  ApplicationDto as Application,
-  ApplicationSummaryDto as ApplicationSummary,
+  ApplicationViewModel as Application,
+  ApplicationSummaryViewModel as ApplicationSummary,
   ApplicationStatus,
 } from '../../../generated/api/index';
 

@@ -1,7 +1,7 @@
 import { Component, inject, input, output, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
-import { ProfileDto, ProfileService, EducationDto } from '../../../../generated/api';
+import { ProfileViewModel, ProfileService, EducationViewModel } from '../../../../generated/api';
 import {
   EducationModalComponent,
   EducationFormData,
@@ -14,13 +14,13 @@ import {
   templateUrl: './education-section.component.html',
 })
 export class EducationSectionComponent {
-  readonly items = input.required<EducationDto[]>();
-  readonly changed = output<ProfileDto>();
+  readonly items = input.required<EducationViewModel[]>();
+  readonly changed = output<ProfileViewModel>();
 
   private readonly profileService = inject(ProfileService);
   private readonly modal = viewChild.required<EducationModalComponent>('modal');
 
-  protected readonly editingItem = signal<EducationDto | null>(null);
+  protected readonly editingItem = signal<EducationViewModel | null>(null);
   protected readonly deletingId = signal<string | null>(null);
 
   protected onAdd(): void {
@@ -28,7 +28,7 @@ export class EducationSectionComponent {
     this.modal().show();
   }
 
-  protected onEdit(item: EducationDto): void {
+  protected onEdit(item: EducationViewModel): void {
     this.editingItem.set(item);
     this.modal().show();
   }
@@ -73,7 +73,7 @@ export class EducationSectionComponent {
     }
   }
 
-  protected degreeAndField(item: EducationDto): string {
+  protected degreeAndField(item: EducationViewModel): string {
     return [item.degree, item.fieldOfStudy].filter((value): value is string => !!value).join(', ');
   }
 }

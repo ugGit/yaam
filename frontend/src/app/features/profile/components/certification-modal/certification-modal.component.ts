@@ -1,7 +1,7 @@
 import { Component, ElementRef, input, linkedSignal, output, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormField, form, required, submit } from '@angular/forms/signals';
-import { CertificationDto } from '../../../../generated/api';
+import { CertificationViewModel } from '../../../../generated/api';
 
 export interface CertificationFormData {
   name: string;
@@ -16,7 +16,7 @@ export interface CertificationFormData {
   templateUrl: './certification-modal.component.html',
 })
 export class CertificationModalComponent {
-  readonly item = input<CertificationDto | null>(null);
+  readonly item = input<CertificationViewModel | null>(null);
   readonly saved = output<CertificationFormData>();
   readonly dismissed = output<void>();
 

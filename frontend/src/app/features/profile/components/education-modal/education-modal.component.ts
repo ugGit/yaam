@@ -1,7 +1,7 @@
 import { Component, ElementRef, input, linkedSignal, output, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormField, form, required, submit } from '@angular/forms/signals';
-import { EducationDto } from '../../../../generated/api';
+import { EducationViewModel } from '../../../../generated/api';
 
 export interface EducationFormData {
   institution: string;
@@ -18,7 +18,7 @@ export interface EducationFormData {
   templateUrl: './education-modal.component.html',
 })
 export class EducationModalComponent {
-  readonly item = input<EducationDto | null>(null);
+  readonly item = input<EducationViewModel | null>(null);
   readonly saved = output<EducationFormData>();
   readonly dismissed = output<void>();
 

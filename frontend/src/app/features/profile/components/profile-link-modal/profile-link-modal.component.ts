@@ -1,7 +1,7 @@
 import { Component, ElementRef, input, linkedSignal, output, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormField, form, required, submit } from '@angular/forms/signals';
-import { ProfileLinkDto } from '../../../../generated/api';
+import { ProfileLinkViewModel } from '../../../../generated/api';
 
 export interface ProfileLinkFormData {
   label: string;
@@ -15,7 +15,7 @@ export interface ProfileLinkFormData {
   templateUrl: './profile-link-modal.component.html',
 })
 export class ProfileLinkModalComponent {
-  readonly item = input<ProfileLinkDto | null>(null);
+  readonly item = input<ProfileLinkViewModel | null>(null);
   readonly saved = output<ProfileLinkFormData>();
   readonly dismissed = output<void>();
 

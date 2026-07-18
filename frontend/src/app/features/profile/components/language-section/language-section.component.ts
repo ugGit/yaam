@@ -1,7 +1,7 @@
 import { Component, inject, input, output, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
-import { ProfileDto, ProfileService, LanguageDto } from '../../../../generated/api';
+import { ProfileViewModel, ProfileService, LanguageViewModel } from '../../../../generated/api';
 import {
   LanguageModalComponent,
   LanguageFormData,
@@ -15,13 +15,13 @@ import {
   templateUrl: './language-section.component.html',
 })
 export class LanguageSectionComponent {
-  readonly items = input.required<LanguageDto[]>();
-  readonly changed = output<ProfileDto>();
+  readonly items = input.required<LanguageViewModel[]>();
+  readonly changed = output<ProfileViewModel>();
 
   private readonly profileService = inject(ProfileService);
   private readonly modal = viewChild.required<LanguageModalComponent>('modal');
 
-  protected readonly editingItem = signal<LanguageDto | null>(null);
+  protected readonly editingItem = signal<LanguageViewModel | null>(null);
   protected readonly deletingId = signal<string | null>(null);
   protected readonly proficiencyLabels = LANGUAGE_PROFICIENCY_LABELS;
 
@@ -30,7 +30,7 @@ export class LanguageSectionComponent {
     this.modal().show();
   }
 
-  protected onEdit(item: LanguageDto): void {
+  protected onEdit(item: LanguageViewModel): void {
     this.editingItem.set(item);
     this.modal().show();
   }
@@ -43,7 +43,7 @@ export class LanguageSectionComponent {
     const id = this.editingItem()?.id;
     const payload = {
       name: data.name,
-      proficiency: data.proficiency as LanguageDto['proficiency'],
+      proficiency: data.proficiency as LanguageViewModel['proficiency'],
     };
     if (id) {
       await firstValueFrom(this.profileService.updateLanguage(id, payload));
