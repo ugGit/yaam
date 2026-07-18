@@ -42,6 +42,14 @@ export class WorkExperienceModalComponent {
   });
 
   show(): void {
+    this.formModel.set({
+      company: this.item()?.company ?? '',
+      title: this.item()?.title ?? '',
+      startDate: this.item()?.startDate ?? '',
+      endDate: this.item()?.endDate ?? '',
+      description: this.item()?.description ?? '',
+    });
+    this.fields().reset();
     this.dialogEl().nativeElement.showModal();
   }
 

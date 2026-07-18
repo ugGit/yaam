@@ -34,6 +34,11 @@ export class CustomFieldModalComponent {
   });
 
   show(): void {
+    this.formModel.set({
+      label: this.item()?.label ?? '',
+      value: this.item()?.value ?? '',
+    });
+    this.fields().reset();
     this.dialogEl().nativeElement.showModal();
   }
 

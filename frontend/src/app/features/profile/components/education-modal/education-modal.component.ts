@@ -40,6 +40,14 @@ export class EducationModalComponent {
   });
 
   show(): void {
+    this.formModel.set({
+      institution: this.item()?.institution ?? '',
+      degree: this.item()?.degree ?? '',
+      fieldOfStudy: this.item()?.fieldOfStudy ?? '',
+      startDate: this.item()?.startDate ?? '',
+      endDate: this.item()?.endDate ?? '',
+    });
+    this.fields().reset();
     this.dialogEl().nativeElement.showModal();
   }
 

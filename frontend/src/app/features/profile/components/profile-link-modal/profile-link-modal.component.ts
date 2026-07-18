@@ -34,6 +34,11 @@ export class ProfileLinkModalComponent {
   });
 
   show(): void {
+    this.formModel.set({
+      label: this.item()?.label ?? '',
+      url: this.item()?.url ?? '',
+    });
+    this.fields().reset();
     this.dialogEl().nativeElement.showModal();
   }
 

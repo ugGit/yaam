@@ -36,6 +36,12 @@ export class CertificationModalComponent {
   });
 
   show(): void {
+    this.formModel.set({
+      name: this.item()?.name ?? '',
+      issuer: this.item()?.issuer ?? '',
+      date: this.item()?.date ?? '',
+    });
+    this.fields().reset();
     this.dialogEl().nativeElement.showModal();
   }
 

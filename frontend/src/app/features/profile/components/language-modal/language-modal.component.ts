@@ -50,6 +50,11 @@ export class LanguageModalComponent {
   protected readonly proficiencyLabels = LANGUAGE_PROFICIENCY_LABELS;
 
   show(): void {
+    this.formModel.set({
+      name: this.item()?.name ?? '',
+      proficiency: this.item()?.proficiency ?? '',
+    });
+    this.fields().reset();
     this.dialogEl().nativeElement.showModal();
   }
 

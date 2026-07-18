@@ -53,6 +53,15 @@ export class ProfileInfoModalComponent {
   });
 
   show(): void {
+    this.formModel.set({
+      firstName: this.profile().firstName ?? '',
+      lastName: this.profile().lastName ?? '',
+      email: this.profile().email ?? '',
+      phone: this.profile().phone ?? '',
+      location: this.profile().location ?? '',
+      summary: this.profile().summary ?? '',
+    });
+    this.fields().reset();
     this.dialogEl().nativeElement.showModal();
   }
 
