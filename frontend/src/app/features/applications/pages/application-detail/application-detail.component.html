@@ -82,6 +82,14 @@
       }
 
       <app-application-notes [applicationId]="app.id" [initialNotes]="app.notes" />
+
+      <div class="divider"></div>
+
+      <app-reminder-section
+        [applicationId]="app.id"
+        [reminder]="app.reminder"
+        (reminderChanged)="applicationResource.reload()"
+      />
     </div>
 
     @if (deleteModalOpen()) {

@@ -11,11 +11,12 @@ import {
   ApplicationFormData,
 } from '../../components/application-form/application-form.component';
 import { ApplicationNotesComponent } from '../../components/application-notes/application-notes.component';
+import { ReminderSectionComponent } from '../../components/reminder-section/reminder-section.component';
 
 @Component({
   selector: 'app-application-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, ApplicationFormComponent, ApplicationNotesComponent],
+  imports: [CommonModule, RouterLink, ApplicationFormComponent, ApplicationNotesComponent, ReminderSectionComponent],
   templateUrl: './application-detail.component.html',
 })
 export class ApplicationDetailComponent {
