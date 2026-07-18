@@ -9,7 +9,7 @@
  */
 
 
-export interface UpdateApplicationNoteInputModel { 
-    body: string;
+export interface RescheduleReminderInputModel { 
+    newDueDate: string;
 }
 

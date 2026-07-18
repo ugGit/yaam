@@ -9,7 +9,6 @@
  */
 
 
-export interface UpdateApplicationNoteInputModel { 
-    body: string;
+export interface ApplicationReminderViewModelDelayDays { 
 }
 
