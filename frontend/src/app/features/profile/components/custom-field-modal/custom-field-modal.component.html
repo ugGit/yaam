@@ -10,7 +10,6 @@
           [formField]="fields.label"
           type="text"
           class="input input-bordered w-full"
-          maxlength="250"
         />
         @if (fields.label().touched() && fields.label().errors().length) {
           <div class="label">
@@ -26,7 +25,6 @@
           [formField]="fields.value"
           class="textarea textarea-bordered w-full"
           rows="3"
-          maxlength="1000"
         ></textarea>
         @if (fields.value().touched() && fields.value().errors().length) {
           <div class="label">
