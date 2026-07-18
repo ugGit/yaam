@@ -7,10 +7,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ApplicationNoteViewModel } from './applicationNoteViewModel';
 import { ApplicationStatus } from './applicationStatus';
 
 
-export interface CreateApplicationInputModel { 
+export interface ApplicationViewModel { 
+    id: string;
     companyName: string;
     role: string;
     dateApplied: string | null;
@@ -19,8 +21,11 @@ export interface CreateApplicationInputModel {
     contactEmail: string | null;
     contactPhone: string | null;
     jobPosting: string | null;
+    createdAt: string;
+    updatedAt: string;
+    notes: Array<ApplicationNoteViewModel>;
 }
-export namespace CreateApplicationInputModel {
+export namespace ApplicationViewModel {
 }
 
 

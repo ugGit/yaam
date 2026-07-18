@@ -9,7 +9,10 @@
  */
 
 
-export interface UpdateApplicationNoteInputModel { 
+export interface ApplicationNoteViewModel { 
+    id: string;
     body: string;
+    createdAt: string;
+    updatedAt: string;
 }
 

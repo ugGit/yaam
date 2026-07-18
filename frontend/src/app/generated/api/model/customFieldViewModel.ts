@@ -9,7 +9,9 @@
  */
 
 
-export interface UpdateApplicationNoteInputModel { 
-    body: string;
+export interface CustomFieldViewModel { 
+    id: string;
+    label: string;
+    value: string;
 }
 

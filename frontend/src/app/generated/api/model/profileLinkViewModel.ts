@@ -9,7 +9,9 @@
  */
 
 
-export interface UpdateApplicationNoteInputModel { 
-    body: string;
+export interface ProfileLinkViewModel { 
+    id: string;
+    label: string;
+    url: string;
 }
 
