@@ -1,7 +1,11 @@
 import { Component, inject, input, output, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
-import { ProfileViewModel, ProfileService, CertificationViewModel } from '../../../../generated/api';
+import {
+  ProfileViewModel,
+  ProfileService,
+  CertificationViewModel,
+} from '../../../../generated/api';
 import {
   CertificationModalComponent,
   CertificationFormData,

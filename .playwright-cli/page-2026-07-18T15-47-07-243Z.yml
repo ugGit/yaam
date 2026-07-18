@@ -1,0 +1,324 @@
+- generic [ref=e4]:
+  - heading "My Profile" [level=1] [ref=e5]
+  - generic [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e9]:
+        - generic [ref=e10]:
+          - heading "Contact Info" [level=2] [ref=e11]
+          - button "Edit" [ref=e12] [cursor=pointer]
+        - generic [ref=e13]:
+          - generic [ref=e14]:
+            - paragraph [ref=e15]: First name
+            - paragraph [ref=e16]: Johnny
+          - generic [ref=e17]:
+            - paragraph [ref=e18]: Last name
+            - paragraph [ref=e19]: English
+          - generic [ref=e20]:
+            - paragraph [ref=e21]: Email
+            - paragraph [ref=e22]: john@hosa.de
+          - generic [ref=e23]:
+            - paragraph [ref=e24]: Phone
+            - paragraph [ref=e25]: "+1838383833"
+          - generic [ref=e26]:
+            - paragraph [ref=e27]: Location
+            - paragraph [ref=e28]: Not set
+        - heading "Summary" [level=2] [ref=e30]
+        - paragraph [ref=e31]: asdasd
+      - generic:
+        - dialog:
+          - generic:
+            - heading "Edit Contact Info" [level=3]
+            - generic:
+              - generic:
+                - generic:
+                  - generic: First name *
+                  - textbox "First name *": Johnny
+                - generic:
+                  - generic: Last name *
+                  - textbox "Last name *": English
+                - generic:
+                  - generic: Email *
+                  - textbox "Email *": john@hosa.de
+                - generic:
+                  - generic: Phone *
+                  - textbox "Phone *": "+1838383833"
+                - generic:
+                  - generic: Location
+                  - textbox "Location"
+                - generic:
+                  - generic: Summary
+                  - textbox "Summary": asdasd
+            - generic:
+              - generic:
+                - button "Cancel"
+              - button "Save"
+          - generic:
+            - button "Close modal"
+    - generic [ref=e32]:
+      - generic [ref=e34]:
+        - generic [ref=e35]:
+          - heading "Work Experience" [level=2] [ref=e36]
+          - button "+ Add" [ref=e37] [cursor=pointer]
+        - list [ref=e38]:
+          - listitem [ref=e39]:
+            - generic [ref=e40]:
+              - generic [ref=e41]:
+                - paragraph [ref=e42]: aoisdh — John Does
+                - paragraph [ref=e43]: 2009-09-10 – Present
+                - paragraph [ref=e44]: Doing great work, being awsome
+              - generic [ref=e45]:
+                - button "Edit" [ref=e46] [cursor=pointer]
+                - button "Delete" [ref=e47] [cursor=pointer]
+          - listitem [ref=e48]:
+            - generic [ref=e49]:
+              - generic [ref=e50]:
+                - paragraph [ref=e51]: Being Mario — Super Mario Bros
+                - paragraph [ref=e52]: 2004-01-01 – 2006-12-31
+                - paragraph [ref=e53]: "What happens with a lot of text. Ich bin ehrlich: Als Product Manager Backend-Services zu entwickeln, klingt erstmal nach einem Sprung ins kalte Wasser. Aber genau das reizt mich. Während meiner Zeit als Product Manager habe ich die Brücke zwischen Business, Tech und User Experience gebaut – jetzt will ich tiefer in die technische Umsetzung eintauchen und dort mitgestalten, wo Innovation wirklich entsteht. Was ich mitbringe? Ein tiefes Verständnis für Produktstrategie, Cross-funktionale Zusammenarbeit und die Fähigkeit, komplexe technische Konzepte greifbar zu machen. Als Product Manager habe ich Roadmaps priorisiert, Requirements geschrieben und eng mit Dev-Teams zusammengearbeitet – ich kenne beide Seiten der Medaille. Mein Informatik-Studium an der Harvard hat mir das technische Fundament gegeben, das ich jetzt hands-on einsetzen möchte."
+              - generic [ref=e54]:
+                - button "Edit" [ref=e55] [cursor=pointer]
+                - button "Delete" [ref=e56] [cursor=pointer]
+          - listitem [ref=e57]:
+            - generic [ref=e58]:
+              - generic [ref=e59]:
+                - paragraph [ref=e60]: CEO — Other COmpany
+                - paragraph [ref=e61]: 2000-01-01 – 2003-09-20
+                - paragraph [ref=e62]: Well great
+              - generic [ref=e63]:
+                - button "Edit" [ref=e64] [cursor=pointer]
+                - button "Delete" [ref=e65] [cursor=pointer]
+      - generic:
+        - dialog:
+          - generic:
+            - heading "Add Work Experience" [level=3]
+            - generic:
+              - generic:
+                - generic: Company *
+                - textbox "Company *"
+              - generic:
+                - generic: Title *
+                - textbox "Title *"
+              - generic:
+                - generic:
+                  - generic: Start date *
+                  - textbox "Start date * Start date"
+                - generic:
+                  - generic: End date
+                  - textbox "End date End date"
+              - generic:
+                - generic: Description
+                - textbox "Description"
+            - generic:
+              - generic:
+                - button "Cancel"
+              - button "Save"
+          - generic:
+            - button "Close modal"
+    - generic [ref=e66]:
+      - generic [ref=e68]:
+        - generic [ref=e69]:
+          - heading "Education" [level=2] [ref=e70]
+          - button "+ Add" [ref=e71] [cursor=pointer]
+        - list [ref=e72]:
+          - listitem [ref=e73]:
+            - generic [ref=e74]:
+              - generic [ref=e75]:
+                - paragraph [ref=e76]: HEIA
+                - paragraph [ref=e77]: Bachelor, Computer Science
+                - paragraph [ref=e78]: 1999-01-01 – 2004-03-11
+              - generic [ref=e79]:
+                - button "Edit" [ref=e80] [cursor=pointer]
+                - button "Delete" [ref=e81] [cursor=pointer]
+      - generic:
+        - dialog:
+          - generic:
+            - heading "Add Education" [level=3]
+            - generic:
+              - generic:
+                - generic: Institution *
+                - textbox "Institution *"
+              - generic:
+                - generic: Degree
+                - textbox "Degree"
+              - generic:
+                - generic: Field of Study
+                - textbox "Field of Study"
+              - generic:
+                - generic:
+                  - generic: Start date
+                  - textbox
+                - generic:
+                  - generic: End date
+                  - textbox
+            - generic:
+              - generic:
+                - button "Cancel"
+              - button "Save"
+          - generic:
+            - button "Close modal"
+    - generic [ref=e82]:
+      - generic [ref=e84]:
+        - generic [ref=e85]:
+          - heading "Skills" [level=2] [ref=e86]
+          - button "Edit" [ref=e87] [cursor=pointer]
+        - generic [ref=e88]:
+          - generic [ref=e89]: Whats up
+          - generic [ref=e90]: hi
+          - generic [ref=e91]: Great
+      - generic:
+        - dialog:
+          - generic:
+            - heading "Edit Skills" [level=3]
+            - generic:
+              - generic:
+                - text: Whats up
+                - button "Remove Whats up": ✕
+              - generic:
+                - text: hi
+                - button "Remove hi": ✕
+              - generic:
+                - text: Great
+                - button "Remove Great": ✕
+            - generic:
+              - generic: Add a skill
+              - textbox "Add a skill":
+                - /placeholder: Type a skill and press Enter
+            - generic:
+              - generic:
+                - button "Cancel"
+              - button "Save"
+          - generic:
+            - button "Close modal"
+    - generic [ref=e92]:
+      - generic [ref=e94]:
+        - generic [ref=e95]:
+          - heading "Languages" [level=2] [ref=e96]
+          - button "+ Add" [ref=e97] [cursor=pointer]
+        - list [ref=e98]:
+          - listitem [ref=e99]:
+            - generic [ref=e100]:
+              - text: English
+              - generic [ref=e101]: Basic
+            - generic [ref=e102]:
+              - button "Edit" [ref=e103] [cursor=pointer]
+              - button "Delete" [ref=e104] [cursor=pointer]
+          - listitem [ref=e105]:
+            - generic [ref=e106]:
+              - text: Whataboutism
+              - generic [ref=e107]: Fluent
+            - generic [ref=e108]:
+              - button "Edit" [ref=e109] [cursor=pointer]
+              - button "Delete" [ref=e110] [cursor=pointer]
+      - generic:
+        - dialog:
+          - generic:
+            - heading "Add Language" [level=3]
+            - generic:
+              - generic:
+                - generic: Language *
+                - textbox "Language * Name *"
+              - generic:
+                - generic: Proficiency *
+                - combobox "Proficiency *":
+                  - option "Select proficiency" [selected]
+                  - option "Basic"
+                  - option "Business Proficiency"
+                  - option "Fluent"
+                  - option "Native"
+            - generic:
+              - generic:
+                - button "Cancel"
+              - button "Save"
+          - generic:
+            - button "Close modal"
+    - generic [ref=e111]:
+      - generic [ref=e113]:
+        - generic [ref=e114]:
+          - heading "Certifications" [level=2] [ref=e115]
+          - button "+ Add" [ref=e116] [cursor=pointer]
+        - list [ref=e117]:
+          - listitem [ref=e118]:
+            - generic [ref=e119]:
+              - generic [ref=e120]:
+                - paragraph [ref=e121]: asdoij
+                - paragraph [ref=e122]: aoisdj · 2999-01-01
+              - generic [ref=e123]:
+                - button "Edit" [ref=e124] [cursor=pointer]
+                - button "Delete" [ref=e125] [cursor=pointer]
+      - generic:
+        - dialog:
+          - generic:
+            - heading "Add Certification" [level=3]
+            - generic:
+              - generic:
+                - generic: Name *
+                - textbox
+              - generic:
+                - generic: Issuer
+                - textbox "Issuer"
+              - generic:
+                - generic: Date *
+                - textbox "Date *"
+            - generic:
+              - generic:
+                - button "Cancel"
+              - button "Save"
+          - generic:
+            - button "Close modal"
+    - generic [ref=e126]:
+      - generic [ref=e128]:
+        - generic [ref=e129]:
+          - heading "Links" [level=2] [ref=e130]
+          - button "+ Add" [ref=e131] [cursor=pointer]
+        - list [ref=e132]:
+          - listitem [ref=e133]:
+            - generic [ref=e134]:
+              - generic [ref=e135]:
+                - link "oaidj" [ref=e136] [cursor=pointer]:
+                  - /url: http://google.ch
+                - generic [ref=e137]: http://google.ch
+              - generic [ref=e138]:
+                - button "Edit" [ref=e139] [cursor=pointer]
+                - button "Delete" [ref=e140] [cursor=pointer]
+      - generic:
+        - dialog:
+          - generic:
+            - heading "Add Link" [level=3]
+            - generic:
+              - generic:
+                - generic: Label *
+                - textbox "Label *"
+              - generic:
+                - generic: URL *
+                - textbox "URL *"
+            - generic:
+              - generic:
+                - button "Cancel"
+              - button "Save"
+          - generic:
+            - button "Close modal"
+    - generic [ref=e141]:
+      - generic [ref=e143]:
+        - generic [ref=e144]:
+          - heading "Additional Info" [level=2] [ref=e145]
+          - button "+ Add" [ref=e146] [cursor=pointer]
+        - paragraph [ref=e178]: No additional info added yet.
+      - generic:
+        - dialog:
+          - generic:
+            - heading "Add Custom Field" [level=3]
+            - generic:
+              - generic:
+                - generic: Label *
+                - textbox "Label *"
+                - generic: Label is required.
+              - generic:
+                - generic: Value *
+                - textbox "Value *"
+                - generic: Value is required.
+            - generic:
+              - generic:
+                - button "Cancel"
+              - button "Save"
+          - generic:
+            - button "Close modal"
