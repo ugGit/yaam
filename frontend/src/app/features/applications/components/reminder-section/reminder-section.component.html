@@ -55,7 +55,9 @@
               class="input input-bordered input-sm"
               [min]="today()"
               [value]="rescheduleModel().newDueDate"
-              (input)="rescheduleModel.update(m => ({ ...m, newDueDate: $any($event.target).value }))"
+              (input)="
+                rescheduleModel.update((m) => ({ ...m, newDueDate: $any($event.target).value }))
+              "
             />
           </div>
           <button
@@ -108,7 +110,7 @@
         rows="2"
         placeholder="Optional note (e.g. 'Call recruiter by EOD')"
         [value]="addModel().note"
-        (input)="addModel.update(m => ({ ...m, note: $any($event.target).value }))"
+        (input)="addModel.update((m) => ({ ...m, note: $any($event.target).value }))"
       ></textarea>
 
       <div class="flex gap-2 justify-end">

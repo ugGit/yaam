@@ -16,7 +16,13 @@ import { ReminderSectionComponent } from '../../components/reminder-section/remi
 @Component({
   selector: 'app-application-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, ApplicationFormComponent, ApplicationNotesComponent, ReminderSectionComponent],
+  imports: [
+    CommonModule,
+    RouterLink,
+    ApplicationFormComponent,
+    ApplicationNotesComponent,
+    ReminderSectionComponent,
+  ],
   templateUrl: './application-detail.component.html',
 })
 export class ApplicationDetailComponent {

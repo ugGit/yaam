@@ -54,10 +54,7 @@
   <div class="card bg-base-100 shadow-sm mb-3 p-4">
     <div class="flex items-start justify-between gap-4">
       <div class="flex-1 min-w-0">
-        <a
-          class="font-semibold hover:underline"
-          [routerLink]="['/applications', r.applicationId]"
-        >
+        <a class="font-semibold hover:underline" [routerLink]="['/applications', r.applicationId]">
           {{ r.companyName }}
         </a>
         <p class="text-sm text-base-content/70">{{ r.role }}</p>

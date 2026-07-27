@@ -13,4 +13,10 @@ export * from './profile.serviceInterface';
 export * from './reminders.service';
 import { RemindersService } from './reminders.service';
 export * from './reminders.serviceInterface';
-export const APIS = [ApplicationNotesService, ApplicationReminderService, ApplicationsService, ProfileService, RemindersService];
+export const APIS = [
+  ApplicationNotesService,
+  ApplicationReminderService,
+  ApplicationsService,
+  ProfileService,
+  RemindersService,
+];

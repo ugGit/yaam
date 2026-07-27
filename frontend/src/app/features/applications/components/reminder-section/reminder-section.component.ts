@@ -45,7 +45,8 @@ export class ReminderSectionComponent {
     const todayDate = new Date();
     todayDate.setHours(0, 0, 0, 0);
     const diff = Math.round((due.getTime() - todayDate.getTime()) / 86400000);
-    if (diff < 0) return { label: `Overdue by ${-diff} day${-diff === 1 ? '' : 's'}`, cls: 'badge-error' };
+    if (diff < 0)
+      return { label: `Overdue by ${-diff} day${-diff === 1 ? '' : 's'}`, cls: 'badge-error' };
     if (diff === 0) return { label: 'Due today', cls: 'badge-warning' };
     return { label: `Due in ${diff} day${diff === 1 ? '' : 's'}`, cls: 'badge-info' };
   });
@@ -103,9 +104,7 @@ export class ReminderSectionComponent {
     if (!newDueDate) return;
     this.saving.set(true);
     try {
-      await firstValueFrom(
-        this.api.rescheduleReminder(this.applicationId(), { newDueDate }),
-      );
+      await firstValueFrom(this.api.rescheduleReminder(this.applicationId(), { newDueDate }));
       this.showRescheduleForm.set(false);
       this.rescheduleModel.set({ newDueDate: '' });
       this.reminderChanged.emit();

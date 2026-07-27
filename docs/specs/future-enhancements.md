@@ -20,6 +20,18 @@ Form fields currently rely solely on backend validation (FluentValidation return
 - Display field-level errors inline, not just as a generic "Could not save" banner.
 - Mirror backend max-length constraints so the UX fails fast without a round-trip.
 
+## Reminder scheduling robustness
+
+`ReminderNotificationService` currently uses `await Task.Delay(delay, stoppingToken)` to fire once daily at 8 AM UTC. This is safe for a single-instance deployment but has one notable failure mode: if the app is down at 8 AM, `TimeUntilNextRun()` recalculates on restart and the job waits until the *next* 8 AM, silently skipping any due reminders.
+
+A future story could replace this with [Hangfire](https://www.hangfire.io/) or [Quartz.NET](https://www.quartz-scheduler.net/) when any of the following become true:
+- Missed-run recovery is needed (fire outstanding reminders after a restart)
+- Per-reminder delivery times are required (rather than one daily batch)
+- Multiple app instances are deployed (both would fire without distributed coordination)
+- Job history and a monitoring dashboard are wanted
+
+Until then, the `Task.Delay` approach is the right fit — zero dependencies, auditable, and sufficient for a single-instance tool.
+
 ## Authentication and authorization
 
 The API and frontend currently have no auth. This is acceptable for a single-user local tool, but any multi-user or hosted deployment requires:
