@@ -27,7 +27,6 @@ export class ReminderSectionComponent {
   protected readonly saving = signal(false);
 
   protected readonly addModel = signal({ delayDays: 7, customDays: '', note: '' });
-  protected readonly addFields = form(this.addModel, () => {});
 
   protected readonly rescheduleModel = signal({ newDueDate: '' });
   protected readonly rescheduleFields = form(this.rescheduleModel, (fields) => {

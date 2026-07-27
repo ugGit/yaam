@@ -48,8 +48,9 @@
       } @else {
         <div class="flex items-end gap-2 flex-wrap">
           <div class="form-control">
-            <label class="label label-text text-xs">New due date</label>
+            <label for="reschedule-due-date" class="label label-text text-xs">New due date</label>
             <input
+              id="reschedule-due-date"
               type="date"
               class="input input-bordered input-sm"
               [min]="today()"
