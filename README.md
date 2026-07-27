@@ -45,7 +45,7 @@ This activates the pre-push hook that runs CI checks (build, format, lint, unit 
 docker compose up -d
 ```
 
-This starts PostgreSQL 16 on `localhost:5432` and Ollama on `localhost:11434`.
+This starts PostgreSQL on `localhost:5433`, Ollama on `localhost:11434`, and Mailpit on `localhost:1025` (SMTP) / `http://localhost:8025` (web UI — inspect outbound emails locally).
 
 > **Port conflict?** If port 5432 is already in use, create `docker-compose.override.yml` at the repo root:
 > ```yaml
