@@ -11,6 +11,7 @@
     <PackageReference Include="coverlet.collector" Version="10.0.1" />
     <PackageReference Include="FluentAssertions" Version="8.10.0" />
     <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.10" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.7.0" />
     <PackageReference Include="NSubstitute" Version="6.0.0" />
     <PackageReference Include="xunit" Version="2.9.3" />
@@ -24,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Yaam.UseCases\Yaam.UseCases.csproj" />
     <ProjectReference Include="..\Yaam.Domain\Yaam.Domain.csproj" />
+    <ProjectReference Include="..\Yaam.API\Yaam.API.csproj" />
   </ItemGroup>
 
 </Project>
