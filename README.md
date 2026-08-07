@@ -45,9 +45,9 @@ This activates the pre-push hook that runs CI checks (build, format, lint, unit 
 docker compose up -d
 ```
 
-This starts PostgreSQL on `localhost:5433`, Ollama on `localhost:11434`, and Mailpit on `localhost:1025` (SMTP) / `http://localhost:8025` (web UI — inspect outbound emails locally).
+This starts PostgreSQL on `localhost:5432`, Ollama on `localhost:11434`, and Mailpit on `localhost:1025` (SMTP) / `http://localhost:8025` (web UI — inspect outbound emails locally).
 
-> **Port conflict?** If port 5432 is already in use, create `docker-compose.override.yml` at the repo root:
+> **Port conflict?** If port 5432 is already in use, create a local `docker-compose.override.yml` at the repo root (it is gitignored):
 > ```yaml
 > services:
 >   postgres:
