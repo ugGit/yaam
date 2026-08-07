@@ -11,7 +11,9 @@ internal static class ApplicationMapper
         a.ContactName, a.ContactEmail, a.ContactPhone, a.JobPosting,
         a.CreatedAt, a.UpdatedAt,
         a.Notes.Select(NoteToDto).ToList(),
-        a.Reminder is { CompletedAt: null } ? ReminderMapper.ToApplicationReminderDto(a.Reminder) : null);
+        a.Reminders.FirstOrDefault(r => r.CompletedAt == null) is { } activeReminder
+            ? ReminderMapper.ToApplicationReminderDto(activeReminder)
+            : null);
 
     internal static ApplicationSummaryDto ToSummaryDto(Application a) =>
         new(a.Id, a.CompanyName, a.Role, a.DateApplied, a.Status);

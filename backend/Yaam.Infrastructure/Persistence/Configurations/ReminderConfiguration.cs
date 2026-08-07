@@ -14,12 +14,8 @@ public class ReminderConfiguration : IEntityTypeConfiguration<Reminder>
         builder.Property(r => r.Note).HasMaxLength(500);
 
         builder.HasOne(r => r.Application)
-            .WithOne(a => a.Reminder)
-            .HasForeignKey<Reminder>(r => r.ApplicationId)
+            .WithMany(a => a.Reminders)
+            .HasForeignKey(r => r.ApplicationId)
             .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasIndex(r => r.ApplicationId)
-            .IsUnique()
-            .HasFilter("\"CompletedAt\" IS NULL");
     }
 }

@@ -30,14 +30,6 @@ public class SetReminderCommandHandler(IReminderRepository reminderRepository, I
         var application = await applicationRepository.GetByIdAsync(command.ApplicationId, cancellationToken)
             ?? throw new NotFoundException(nameof(Application), command.ApplicationId);
 
-        var existing = await reminderRepository.GetByApplicationIdAsync(command.ApplicationId, cancellationToken);
-        if (existing is not null)
-            throw new ConflictException("An active reminder already exists. Complete or delete it before adding a new one.");
-
-        var completedReminder = await reminderRepository.GetCompletedByApplicationIdAsync(command.ApplicationId, cancellationToken);
-        if (completedReminder is not null)
-            await reminderRepository.DeleteByApplicationIdAsync(command.ApplicationId, cancellationToken);
-
         var dueDate = DateOnly.FromDateTime(DateTime.UtcNow).AddDays(command.DelayDays);
         var reminder = new Reminder
         {

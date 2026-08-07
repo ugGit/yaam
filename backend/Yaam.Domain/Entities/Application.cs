@@ -13,5 +13,5 @@ public class Application : Entity
     public string? ContactPhone { get; set; }
     public string? JobPosting { get; set; }
     public ICollection<ApplicationNote> Notes { get; set; } = new List<ApplicationNote>();
-    public Reminder? Reminder { get; set; }
+    public ICollection<Reminder> Reminders { get; set; } = new List<Reminder>();
 }
