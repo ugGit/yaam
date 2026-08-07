@@ -8,10 +8,6 @@ public class ReminderNotificationService(IServiceScopeFactory scopeFactory, ILog
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        // BackgroundService guarantees ExecuteAsync runs to completion before shutdown.
-        // Task.Delay propagates cancellation via OperationCanceledException, which breaks
-        // the loop naturally. Unhandled errors are caught and logged so the service keeps
-        // running rather than silently dying mid-lifetime.
         while (!stoppingToken.IsCancellationRequested)
         {
             var delay = TimeUntilNextRun();
