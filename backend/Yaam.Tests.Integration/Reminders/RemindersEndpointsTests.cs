@@ -42,10 +42,10 @@ public class RemindersEndpointsTests(ApiFactory factory)
         appWithReminder!.Reminder.Should().NotBeNull();
         appWithReminder.Reminder!.DelayDays.Should().Be(7);
 
-        // Second set is rejected
-        var conflictResponse = await _client.PostAsJsonAsync(
+        // Second reminder is now allowed (multiple active reminders per application supported)
+        var secondReminderResponse = await _client.PostAsJsonAsync(
             $"/api/applications/{app.Id}/reminder", setPayload);
-        conflictResponse.StatusCode.Should().Be(HttpStatusCode.Conflict);
+        secondReminderResponse.StatusCode.Should().Be(HttpStatusCode.Created);
 
         // Reschedule
         var tomorrow = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1)).ToString("yyyy-MM-dd");
@@ -60,21 +60,23 @@ public class RemindersEndpointsTests(ApiFactory factory)
             $"/api/applications/{app.Id}/reminder/complete", new { });
         completeResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
-        // After complete, app GET shows no active reminder
+        // After completing one reminder the second is still active
         var appAfterComplete = await _client.GetAsync($"/api/applications/{app.Id}");
         var appBody = await appAfterComplete.Content.ReadFromJsonAsync<ApplicationViewModel>();
-        appBody!.Reminder.Should().BeNull();
+        appBody!.Reminder.Should().NotBeNull();
 
         // Set a new reminder after completing old one
         var setAgainResponse = await _client.PostAsJsonAsync(
             $"/api/applications/{app.Id}/reminder", new { delayDays = 14 });
         setAgainResponse.StatusCode.Should().Be(HttpStatusCode.Created);
 
-        // Delete
-        var deleteResponse = await _client.DeleteAsync($"/api/applications/{app.Id}/reminder");
-        deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        // Delete all three reminders created during this test (1 completed + 2 active)
+        await _client.DeleteAsync($"/api/applications/{app.Id}/reminder");
+        await _client.DeleteAsync($"/api/applications/{app.Id}/reminder");
+        var deleteLastResponse = await _client.DeleteAsync($"/api/applications/{app.Id}/reminder");
+        deleteLastResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
-        // Reminders list is empty
+        // Reminders list no longer contains this application
         var listResponse = await _client.GetAsync("/api/reminders");
         var list = await listResponse.Content.ReadFromJsonAsync<List<ReminderViewModel>>();
         list.Should().NotContain(r => r.ApplicationId == app.Id);
