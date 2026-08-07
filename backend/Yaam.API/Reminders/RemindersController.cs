@@ -1,9 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Yaam.API.Reminders;
 using Yaam.UseCases.Reminders.Queries;
 
-namespace Yaam.API.Controllers;
+namespace Yaam.API.Reminders;
 
 [ApiController]
 [Route("api/reminders")]

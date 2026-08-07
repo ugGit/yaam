@@ -1,6 +1,5 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Yaam.API.Profile;
 using Yaam.Domain.Enums;
 using Yaam.UseCases.Profile.Commands;
 using Yaam.UseCases.Profile.Commands.Certifications;
@@ -11,7 +10,7 @@ using Yaam.UseCases.Profile.Commands.Links;
 using Yaam.UseCases.Profile.Commands.WorkExperiences;
 using Yaam.UseCases.Profile.Queries;
 
-namespace Yaam.API.Controllers;
+namespace Yaam.API.Profile;
 
 [ApiController]
 [Route("api/profile")]

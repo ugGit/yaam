@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Yaam.API.Reminders;
 using Yaam.UseCases.Reminders.Commands;
 
-namespace Yaam.API.Controllers;
+namespace Yaam.API.Applications;
 
 [ApiController]
 [Route("api/applications/{applicationId:guid}/reminder")]
