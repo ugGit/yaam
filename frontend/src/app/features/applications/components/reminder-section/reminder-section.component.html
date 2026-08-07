@@ -56,7 +56,10 @@
               [min]="tomorrow()"
               [formField]="rescheduleFields.newDueDate"
             />
-            @if (rescheduleFields.newDueDate().touched() && rescheduleFields.newDueDate().errors().length) {
+            @if (
+              rescheduleFields.newDueDate().touched() &&
+              rescheduleFields.newDueDate().errors().length
+            ) {
               <div class="label">
                 <span class="label-text-alt text-error">{{
                   rescheduleFields.newDueDate().errors()[0].message
@@ -72,7 +75,11 @@
           >
             Save
           </button>
-          <button type="button" class="btn btn-sm btn-ghost" (click)="showRescheduleForm.set(false)">
+          <button
+            type="button"
+            class="btn btn-sm btn-ghost"
+            (click)="showRescheduleForm.set(false)"
+          >
             Cancel
           </button>
         </form>
