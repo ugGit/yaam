@@ -1,16 +1,17 @@
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { form, required } from '@angular/forms/signals';
+import { FormField, FormRoot, form, required, validate } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
 import {
   ApplicationReminderService,
   ApplicationReminderViewModel,
 } from '../../../../generated/api/index';
+import { parseDateOnly } from '../../../../shared/date.util';
 
 @Component({
   selector: 'app-reminder-section',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormField, FormRoot],
   templateUrl: './reminder-section.component.html',
 })
 export class ReminderSectionComponent {
@@ -31,17 +32,31 @@ export class ReminderSectionComponent {
   protected readonly rescheduleModel = signal({ newDueDate: '' });
   protected readonly rescheduleFields = form(this.rescheduleModel, (fields) => {
     required(fields.newDueDate, { message: 'New due date is required.' });
+    validate(fields.newDueDate, (ctx) => {
+      const value = ctx.value() as string;
+      if (!value) return null;
+      const [y, m, d] = value.split('-').map(Number);
+      const selected = new Date(y, m - 1, d);
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(0, 0, 0, 0);
+      return selected < tomorrow ? { message: 'Due date must be at least tomorrow.' } : null;
+    });
   });
 
   protected readonly presetDays = [7, 14, 30] as const;
 
   protected readonly today = computed(() => new Date().toISOString().split('T')[0]);
+  protected readonly tomorrow = computed(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    return d.toISOString().split('T')[0];
+  });
 
   protected readonly dueDateDisplay = computed(() => {
     const r = this.reminder();
     if (!r) return null;
-    const [y, m, d] = (r.dueDate as unknown as string).split('-').map(Number);
-    const due = new Date(y, m - 1, d);
+    const due = parseDateOnly(r.dueDate as unknown as string);
     const todayDate = new Date();
     todayDate.setHours(0, 0, 0, 0);
     const diff = Math.round((due.getTime() - todayDate.getTime()) / 86400000);

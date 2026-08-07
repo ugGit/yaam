@@ -46,31 +46,36 @@
           }
         </div>
       } @else {
-        <div class="flex items-end gap-2 flex-wrap">
+        <form [formRoot]="rescheduleFields" class="flex items-end gap-2 flex-wrap">
           <div class="form-control">
             <label for="reschedule-due-date" class="label label-text text-xs">New due date</label>
             <input
               id="reschedule-due-date"
               type="date"
               class="input input-bordered input-sm"
-              [min]="today()"
-              [value]="rescheduleModel().newDueDate"
-              (input)="
-                rescheduleModel.update((m) => ({ ...m, newDueDate: $any($event.target).value }))
-              "
+              [min]="tomorrow()"
+              [formField]="rescheduleFields.newDueDate"
             />
+            @if (rescheduleFields.newDueDate().touched() && rescheduleFields.newDueDate().errors().length) {
+              <div class="label">
+                <span class="label-text-alt text-error">{{
+                  rescheduleFields.newDueDate().errors()[0].message
+                }}</span>
+              </div>
+            }
           </div>
           <button
+            type="button"
             class="btn btn-sm btn-primary"
-            [disabled]="saving() || !rescheduleModel().newDueDate"
+            [disabled]="saving() || !!rescheduleFields.newDueDate().errors().length"
             (click)="rescheduleReminder()"
           >
             Save
           </button>
-          <button class="btn btn-sm btn-ghost" (click)="showRescheduleForm.set(false)">
+          <button type="button" class="btn btn-sm btn-ghost" (click)="showRescheduleForm.set(false)">
             Cancel
           </button>
-        </div>
+        </form>
       }
     </div>
   } @else if (!showAddForm()) {
