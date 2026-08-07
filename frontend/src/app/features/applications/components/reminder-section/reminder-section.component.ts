@@ -40,7 +40,9 @@ export class ReminderSectionComponent {
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       tomorrow.setHours(0, 0, 0, 0);
-      return selected < tomorrow ? { message: 'Due date must be at least tomorrow.' } : null;
+      return selected < tomorrow
+        ? { kind: 'minDate', message: 'Due date must be at least tomorrow.' }
+        : null;
     });
   });
 
