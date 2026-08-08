@@ -18,7 +18,7 @@ internal static class ApplicationViewModelMapper
         dto.CreatedAt,
         dto.UpdatedAt,
         dto.Notes.Select(ToViewModel).ToList(),
-        dto.Reminder is null ? null : ReminderViewModelMapper.ToViewModel(dto.Reminder));
+        dto.Reminders.Select(ReminderViewModelMapper.ToViewModel).ToList());
 
     internal static ApplicationSummaryViewModel ToViewModel(ApplicationSummaryDto dto) =>
         new(dto.Id, dto.CompanyName, dto.Role, dto.DateApplied, dto.Status);

@@ -16,4 +16,4 @@ public record ApplicationDto(
     DateTime CreatedAt,
     DateTime UpdatedAt,
     List<ApplicationNoteDto> Notes,
-    ApplicationReminderDto? Reminder);
+    List<ApplicationReminderDto> Reminders);

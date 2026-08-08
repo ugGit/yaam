@@ -11,9 +11,8 @@ public class ReminderRepository(AppDbContext db) : IReminderRepository
         => await db.Reminders
             .FirstOrDefaultAsync(r => r.ApplicationId == applicationId && r.CompletedAt == null, cancellationToken);
 
-    public async Task<Reminder?> GetCompletedByApplicationIdAsync(Guid applicationId, CancellationToken cancellationToken)
-        => await db.Reminders
-            .FirstOrDefaultAsync(r => r.ApplicationId == applicationId && r.CompletedAt != null, cancellationToken);
+    public async Task<Reminder?> GetByIdAsync(Guid reminderId, CancellationToken cancellationToken)
+        => await db.Reminders.FindAsync([reminderId], cancellationToken);
 
     public async Task<List<Reminder>> GetAllActiveAsync(CancellationToken cancellationToken)
         => await db.Reminders
@@ -38,10 +37,9 @@ public class ReminderRepository(AppDbContext db) : IReminderRepository
     public async Task UpdateAsync(Reminder reminder, CancellationToken cancellationToken)
         => await db.SaveChangesAsync(cancellationToken);
 
-    public async Task DeleteByApplicationIdAsync(Guid applicationId, CancellationToken cancellationToken)
+    public async Task DeleteByIdAsync(Guid reminderId, CancellationToken cancellationToken)
     {
-        var reminder = await db.Reminders
-            .FirstOrDefaultAsync(r => r.ApplicationId == applicationId, cancellationToken);
+        var reminder = await db.Reminders.FindAsync([reminderId], cancellationToken);
         if (reminder is not null)
         {
             db.Reminders.Remove(reminder);

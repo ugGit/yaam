@@ -8,7 +8,7 @@ using Yaam.UseCases.Reminders.Dtos;
 namespace Yaam.UseCases.Reminders.Commands;
 
 public record RescheduleReminderCommand(
-    Guid ApplicationId,
+    Guid ReminderId,
     DateOnly NewDueDate) : IRequest<ApplicationReminderDto>;
 
 public class RescheduleReminderCommandValidator : AbstractValidator<RescheduleReminderCommand>
@@ -27,8 +27,8 @@ public class RescheduleReminderCommandHandler(IReminderRepository repository)
     public async Task<ApplicationReminderDto> Handle(
         RescheduleReminderCommand command, CancellationToken cancellationToken)
     {
-        var reminder = await repository.GetByApplicationIdAsync(command.ApplicationId, cancellationToken)
-            ?? throw new NotFoundException(nameof(Reminder), command.ApplicationId);
+        var reminder = await repository.GetByIdAsync(command.ReminderId, cancellationToken)
+            ?? throw new NotFoundException(nameof(Reminder), command.ReminderId);
 
         reminder.DueDate = command.NewDueDate;
         reminder.NotifiedAt = null;

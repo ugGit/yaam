@@ -16,7 +16,7 @@ public record ApplicationViewModel(
     DateTime CreatedAt,
     DateTime UpdatedAt,
     List<ApplicationNoteViewModel> Notes,
-    ApplicationReminderViewModel? Reminder);
+    List<ApplicationReminderViewModel> Reminders);
 
 public record ApplicationSummaryViewModel(
     Guid Id,

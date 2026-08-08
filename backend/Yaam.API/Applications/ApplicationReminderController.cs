@@ -20,33 +20,36 @@ public class ApplicationReminderController(IMediator mediator) : ControllerBase
         return CreatedAtAction(nameof(Set), new { applicationId }, ReminderViewModelMapper.ToViewModel(result));
     }
 
-    [HttpPatch("complete")]
+    [HttpPatch("{reminderId:guid}/complete")]
     [EndpointName("CompleteReminder")]
-    public async Task<IActionResult> Complete(Guid applicationId, CancellationToken cancellationToken)
+    public async Task<IActionResult> Complete(
+        Guid applicationId, Guid reminderId, CancellationToken cancellationToken)
     {
         await mediator.Send(
-            new CompleteReminderCommand(applicationId),
+            new CompleteReminderCommand(reminderId),
             cancellationToken);
         return NoContent();
     }
 
-    [HttpPatch("reschedule")]
+    [HttpPatch("{reminderId:guid}/reschedule")]
     [EndpointName("RescheduleReminder")]
     public async Task<ActionResult<ApplicationReminderViewModel>> Reschedule(
-        Guid applicationId, [FromBody] RescheduleReminderInputModel input, CancellationToken cancellationToken)
+        Guid applicationId, Guid reminderId, [FromBody] RescheduleReminderInputModel input,
+        CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new RescheduleReminderCommand(applicationId, input.NewDueDate),
+            new RescheduleReminderCommand(reminderId, input.NewDueDate),
             cancellationToken);
         return Ok(ReminderViewModelMapper.ToViewModel(result));
     }
 
-    [HttpDelete]
+    [HttpDelete("{reminderId:guid}")]
     [EndpointName("DeleteReminder")]
-    public async Task<IActionResult> Delete(Guid applicationId, CancellationToken cancellationToken)
+    public async Task<IActionResult> Delete(
+        Guid applicationId, Guid reminderId, CancellationToken cancellationToken)
     {
         await mediator.Send(
-            new DeleteReminderCommand(applicationId),
+            new DeleteReminderCommand(reminderId),
             cancellationToken);
         return NoContent();
     }
