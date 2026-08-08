@@ -72,15 +72,15 @@
         <div class="flex gap-1">
           <button
             class="btn btn-xs btn-success btn-outline"
-            [disabled]="saving() === r.applicationId"
-            (click)="complete(r.applicationId)"
+            [disabled]="saving() === r.id"
+            (click)="complete(r)"
           >
             Done
           </button>
           <button
             class="btn btn-xs btn-ghost text-error"
-            [disabled]="saving() === r.applicationId"
-            (click)="deleteReminder(r.applicationId)"
+            [disabled]="saving() === r.id"
+            (click)="deleteReminder(r)"
           >
             Delete
           </button>

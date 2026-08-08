@@ -45,20 +45,24 @@ export class RemindersListComponent {
     return { overdue, dueToday, upcoming };
   });
 
-  protected async complete(applicationId: string): Promise<void> {
-    this.saving.set(applicationId);
+  protected async complete(reminder: ReminderViewModel): Promise<void> {
+    this.saving.set(reminder.id);
     try {
-      await firstValueFrom(this.applicationReminderApi.completeReminder(applicationId));
+      await firstValueFrom(
+        this.applicationReminderApi.completeReminder(reminder.applicationId, reminder.id),
+      );
       this.remindersResource.reload();
     } finally {
       this.saving.set(null);
     }
   }
 
-  protected async deleteReminder(applicationId: string): Promise<void> {
-    this.saving.set(applicationId);
+  protected async deleteReminder(reminder: ReminderViewModel): Promise<void> {
+    this.saving.set(reminder.id);
     try {
-      await firstValueFrom(this.applicationReminderApi.deleteReminder(applicationId));
+      await firstValueFrom(
+        this.applicationReminderApi.deleteReminder(reminder.applicationId, reminder.id),
+      );
       this.remindersResource.reload();
     } finally {
       this.saving.set(null);
