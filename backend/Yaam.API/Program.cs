@@ -21,6 +21,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddHostedService<ReminderNotificationService>();
 
 builder.Services.AddCors(options =>

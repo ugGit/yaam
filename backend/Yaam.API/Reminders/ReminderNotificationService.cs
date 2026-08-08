@@ -3,14 +3,16 @@ using Yaam.UseCases.Reminders.Commands;
 
 namespace Yaam.API.Reminders;
 
-public class ReminderNotificationService(IServiceScopeFactory scopeFactory, ILogger<ReminderNotificationService> logger)
-    : BackgroundService
+public class ReminderNotificationService(
+    IServiceScopeFactory scopeFactory,
+    ILogger<ReminderNotificationService> logger,
+    TimeProvider timeProvider) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            var delay = TimeUntilNextRun();
+            var delay = TimeUntilNextRun(timeProvider.GetUtcNow().UtcDateTime);
             await Task.Delay(delay, stoppingToken);
 
             if (stoppingToken.IsCancellationRequested) break;
