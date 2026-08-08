@@ -24,6 +24,6 @@ export interface ApplicationViewModel {
   createdAt: string;
   updatedAt: string;
   notes: Array<ApplicationNoteViewModel>;
-  reminder: ApplicationReminderViewModel | null;
+  reminders: Array<ApplicationReminderViewModel>;
 }
 export namespace ApplicationViewModel {}

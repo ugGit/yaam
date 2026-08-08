@@ -25,24 +25,36 @@ export interface ApplicationReminderServiceInterface {
    *
    *
    * @param applicationId
+   * @param reminderId
    */
-  completeReminder(applicationId: string, extraHttpRequestParams?: any): Observable<{}>;
+  completeReminder(
+    applicationId: string,
+    reminderId: string,
+    extraHttpRequestParams?: any,
+  ): Observable<{}>;
 
   /**
    *
    *
    * @param applicationId
+   * @param reminderId
    */
-  deleteReminder(applicationId: string, extraHttpRequestParams?: any): Observable<{}>;
+  deleteReminder(
+    applicationId: string,
+    reminderId: string,
+    extraHttpRequestParams?: any,
+  ): Observable<{}>;
 
   /**
    *
    *
    * @param applicationId
+   * @param reminderId
    * @param rescheduleReminderInputModel
    */
   rescheduleReminder(
     applicationId: string,
+    reminderId: string,
     rescheduleReminderInputModel: RescheduleReminderInputModel,
     extraHttpRequestParams?: any,
   ): Observable<ApplicationReminderViewModel>;

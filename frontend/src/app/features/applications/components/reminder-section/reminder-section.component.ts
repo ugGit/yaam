@@ -16,15 +16,15 @@ import { parseDateOnly } from '../../../../shared/date.util';
 })
 export class ReminderSectionComponent {
   readonly applicationId = input.required<string>();
-  readonly reminder = input<ApplicationReminderViewModel | null | undefined>();
+  readonly reminders = input<ApplicationReminderViewModel[]>([]);
 
   readonly reminderChanged = output<void>();
 
   private readonly api = inject(ApplicationReminderService);
 
   protected readonly showAddForm = signal(false);
-  protected readonly showRescheduleForm = signal(false);
-  protected readonly deleteConfirm = signal(false);
+  protected readonly reschedulingReminderId = signal<string | null>(null);
+  protected readonly deletingReminderId = signal<string | null>(null);
   protected readonly saving = signal(false);
 
   protected readonly addModel = signal({ delayDays: 7, customDays: '', note: '' });
@@ -48,17 +48,17 @@ export class ReminderSectionComponent {
 
   protected readonly presetDays = [7, 14, 30] as const;
 
-  protected readonly today = computed(() => new Date().toISOString().split('T')[0]);
   protected readonly tomorrow = computed(() => {
     const d = new Date();
     d.setDate(d.getDate() + 1);
     return d.toISOString().split('T')[0];
   });
 
-  protected readonly dueDateDisplay = computed(() => {
-    const r = this.reminder();
-    if (!r) return null;
-    const due = parseDateOnly(r.dueDate as unknown as string);
+  protected dueDateDisplay(reminder: ApplicationReminderViewModel): {
+    label: string;
+    cls: string;
+  } {
+    const due = parseDateOnly(reminder.dueDate as unknown as string);
     const todayDate = new Date();
     todayDate.setHours(0, 0, 0, 0);
     const diff = Math.round((due.getTime() - todayDate.getTime()) / 86400000);
@@ -66,7 +66,7 @@ export class ReminderSectionComponent {
       return { label: `Overdue by ${-diff} day${-diff === 1 ? '' : 's'}`, cls: 'badge-error' };
     if (diff === 0) return { label: 'Due today', cls: 'badge-warning' };
     return { label: `Due in ${diff} day${diff === 1 ? '' : 's'}`, cls: 'badge-info' };
-  });
+  }
 
   protected selectPreset(days: number): void {
     this.addModel.update((m) => ({ ...m, delayDays: days, customDays: '' }));
@@ -106,23 +106,35 @@ export class ReminderSectionComponent {
     }
   }
 
-  protected async completeReminder(): Promise<void> {
+  protected async completeReminder(reminderId: string): Promise<void> {
     this.saving.set(true);
     try {
-      await firstValueFrom(this.api.completeReminder(this.applicationId()));
+      await firstValueFrom(this.api.completeReminder(this.applicationId(), reminderId));
       this.reminderChanged.emit();
     } finally {
       this.saving.set(false);
     }
   }
 
-  protected async rescheduleReminder(): Promise<void> {
+  protected startReschedule(reminderId: string): void {
+    this.reschedulingReminderId.set(reminderId);
+    this.rescheduleModel.set({ newDueDate: '' });
+  }
+
+  protected cancelReschedule(): void {
+    this.reschedulingReminderId.set(null);
+    this.rescheduleModel.set({ newDueDate: '' });
+  }
+
+  protected async rescheduleReminder(reminderId: string): Promise<void> {
     const { newDueDate } = this.rescheduleModel();
     if (!newDueDate) return;
     this.saving.set(true);
     try {
-      await firstValueFrom(this.api.rescheduleReminder(this.applicationId(), { newDueDate }));
-      this.showRescheduleForm.set(false);
+      await firstValueFrom(
+        this.api.rescheduleReminder(this.applicationId(), reminderId, { newDueDate }),
+      );
+      this.reschedulingReminderId.set(null);
       this.rescheduleModel.set({ newDueDate: '' });
       this.reminderChanged.emit();
     } finally {
@@ -130,11 +142,11 @@ export class ReminderSectionComponent {
     }
   }
 
-  protected async deleteReminder(): Promise<void> {
+  protected async deleteReminder(reminderId: string): Promise<void> {
     this.saving.set(true);
     try {
-      await firstValueFrom(this.api.deleteReminder(this.applicationId()));
-      this.deleteConfirm.set(false);
+      await firstValueFrom(this.api.deleteReminder(this.applicationId(), reminderId));
+      this.deletingReminderId.set(null);
       this.reminderChanged.emit();
     } finally {
       this.saving.set(false);

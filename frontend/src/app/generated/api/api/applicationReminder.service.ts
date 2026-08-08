@@ -52,29 +52,34 @@ export class ApplicationReminderService
 
   /**
    * @param applicationId
+   * @param reminderId
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public completeReminder(
     applicationId: string,
+    reminderId: string,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
   ): Observable<any>;
   public completeReminder(
     applicationId: string,
+    reminderId: string,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
   ): Observable<HttpResponse<any>>;
   public completeReminder(
     applicationId: string,
+    reminderId: string,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
   ): Observable<HttpEvent<any>>;
   public completeReminder(
     applicationId: string,
+    reminderId: string,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
@@ -82,6 +87,11 @@ export class ApplicationReminderService
     if (applicationId === null || applicationId === undefined) {
       throw new Error(
         'Required parameter applicationId was null or undefined when calling completeReminder.',
+      );
+    }
+    if (reminderId === null || reminderId === undefined) {
+      throw new Error(
+        'Required parameter reminderId was null or undefined when calling completeReminder.',
       );
     }
 
@@ -108,7 +118,7 @@ export class ApplicationReminderService
       }
     }
 
-    let localVarPath = `/api/applications/${this.configuration.encodeParam({ name: 'applicationId', value: applicationId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}/reminder/complete`;
+    let localVarPath = `/api/applications/${this.configuration.encodeParam({ name: 'applicationId', value: applicationId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}/reminder/${this.configuration.encodeParam({ name: 'reminderId', value: reminderId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}/complete`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('patch', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -123,29 +133,34 @@ export class ApplicationReminderService
 
   /**
    * @param applicationId
+   * @param reminderId
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public deleteReminder(
     applicationId: string,
+    reminderId: string,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
   ): Observable<any>;
   public deleteReminder(
     applicationId: string,
+    reminderId: string,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
   ): Observable<HttpResponse<any>>;
   public deleteReminder(
     applicationId: string,
+    reminderId: string,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
   ): Observable<HttpEvent<any>>;
   public deleteReminder(
     applicationId: string,
+    reminderId: string,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
@@ -153,6 +168,11 @@ export class ApplicationReminderService
     if (applicationId === null || applicationId === undefined) {
       throw new Error(
         'Required parameter applicationId was null or undefined when calling deleteReminder.',
+      );
+    }
+    if (reminderId === null || reminderId === undefined) {
+      throw new Error(
+        'Required parameter reminderId was null or undefined when calling deleteReminder.',
       );
     }
 
@@ -179,7 +199,7 @@ export class ApplicationReminderService
       }
     }
 
-    let localVarPath = `/api/applications/${this.configuration.encodeParam({ name: 'applicationId', value: applicationId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}/reminder`;
+    let localVarPath = `/api/applications/${this.configuration.encodeParam({ name: 'applicationId', value: applicationId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}/reminder/${this.configuration.encodeParam({ name: 'reminderId', value: reminderId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('delete', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -194,12 +214,14 @@ export class ApplicationReminderService
 
   /**
    * @param applicationId
+   * @param reminderId
    * @param rescheduleReminderInputModel
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public rescheduleReminder(
     applicationId: string,
+    reminderId: string,
     rescheduleReminderInputModel: RescheduleReminderInputModel,
     observe?: 'body',
     reportProgress?: boolean,
@@ -211,6 +233,7 @@ export class ApplicationReminderService
   ): Observable<ApplicationReminderViewModel>;
   public rescheduleReminder(
     applicationId: string,
+    reminderId: string,
     rescheduleReminderInputModel: RescheduleReminderInputModel,
     observe?: 'response',
     reportProgress?: boolean,
@@ -222,6 +245,7 @@ export class ApplicationReminderService
   ): Observable<HttpResponse<ApplicationReminderViewModel>>;
   public rescheduleReminder(
     applicationId: string,
+    reminderId: string,
     rescheduleReminderInputModel: RescheduleReminderInputModel,
     observe?: 'events',
     reportProgress?: boolean,
@@ -233,6 +257,7 @@ export class ApplicationReminderService
   ): Observable<HttpEvent<ApplicationReminderViewModel>>;
   public rescheduleReminder(
     applicationId: string,
+    reminderId: string,
     rescheduleReminderInputModel: RescheduleReminderInputModel,
     observe: any = 'body',
     reportProgress: boolean = false,
@@ -245,6 +270,11 @@ export class ApplicationReminderService
     if (applicationId === null || applicationId === undefined) {
       throw new Error(
         'Required parameter applicationId was null or undefined when calling rescheduleReminder.',
+      );
+    }
+    if (reminderId === null || reminderId === undefined) {
+      throw new Error(
+        'Required parameter reminderId was null or undefined when calling rescheduleReminder.',
       );
     }
     if (rescheduleReminderInputModel === null || rescheduleReminderInputModel === undefined) {
@@ -285,7 +315,7 @@ export class ApplicationReminderService
       }
     }
 
-    let localVarPath = `/api/applications/${this.configuration.encodeParam({ name: 'applicationId', value: applicationId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}/reminder/reschedule`;
+    let localVarPath = `/api/applications/${this.configuration.encodeParam({ name: 'applicationId', value: applicationId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}/reminder/${this.configuration.encodeParam({ name: 'reminderId', value: reminderId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}/reschedule`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<ApplicationReminderViewModel>(
       'patch',

@@ -1,14 +1,24 @@
 <div>
-  <h2 class="text-lg font-semibold mb-3">Reminder</h2>
+  <div class="flex items-center justify-between mb-3">
+    <h2 class="text-lg font-semibold">Reminders</h2>
+    @if (!showAddForm()) {
+      <button class="btn btn-sm btn-outline" (click)="showAddForm.set(true)">Add reminder</button>
+    }
+  </div>
 
-  @if (reminder()) {
-    @let r = reminder()!;
-    <div class="card bg-base-200 p-4 space-y-3">
+  @if (reminders().length === 0 && !showAddForm()) {
+    <p class="text-sm text-base-content/50">No reminders set.</p>
+  }
+
+  @for (r of reminders(); track r.id) {
+    @let display = dueDateDisplay(r);
+    @let isRescheduling = reschedulingReminderId() === r.id;
+    @let isDeleting = deletingReminderId() === r.id;
+
+    <div class="card bg-base-200 p-4 space-y-3 mb-3">
       <div class="flex items-center justify-between flex-wrap gap-2">
         <div class="flex items-center gap-2">
-          @if (dueDateDisplay(); as display) {
-            <span class="badge {{ display.cls }}">{{ display.label }}</span>
-          }
+          <span class="badge {{ display.cls }}">{{ display.label }}</span>
           <span class="text-sm text-base-content/70">{{ r.dueDate }}</span>
         </div>
         @if (r.notifiedAt) {
@@ -22,25 +32,35 @@
         <p class="text-sm">{{ r.note }}</p>
       }
 
-      @if (!showRescheduleForm()) {
+      @if (!isRescheduling) {
         <div class="flex gap-2 flex-wrap">
-          <button class="btn btn-sm btn-outline" (click)="showRescheduleForm.set(true)">
+          <button
+            class="btn btn-sm btn-outline"
+            [disabled]="saving()"
+            (click)="startReschedule(r.id)"
+          >
             Reschedule
           </button>
           <button
             class="btn btn-sm btn-success btn-outline"
             [disabled]="saving()"
-            (click)="completeReminder()"
+            (click)="completeReminder(r.id)"
           >
             Mark as done
           </button>
-          @if (deleteConfirm()) {
-            <button class="btn btn-sm btn-error" [disabled]="saving()" (click)="deleteReminder()">
+          @if (isDeleting) {
+            <button
+              class="btn btn-sm btn-error"
+              [disabled]="saving()"
+              (click)="deleteReminder(r.id)"
+            >
               Confirm delete
             </button>
-            <button class="btn btn-sm btn-ghost" (click)="deleteConfirm.set(false)">Cancel</button>
+            <button class="btn btn-sm btn-ghost" (click)="deletingReminderId.set(null)">
+              Cancel
+            </button>
           } @else {
-            <button class="btn btn-sm btn-ghost text-error" (click)="deleteConfirm.set(true)">
+            <button class="btn btn-sm btn-ghost text-error" (click)="deletingReminderId.set(r.id)">
               Delete
             </button>
           }
@@ -71,26 +91,19 @@
             type="button"
             class="btn btn-sm btn-primary"
             [disabled]="saving() || !!rescheduleFields.newDueDate().errors().length"
-            (click)="rescheduleReminder()"
+            (click)="rescheduleReminder(r.id)"
           >
             Save
           </button>
-          <button
-            type="button"
-            class="btn btn-sm btn-ghost"
-            (click)="showRescheduleForm.set(false)"
-          >
+          <button type="button" class="btn btn-sm btn-ghost" (click)="cancelReschedule()">
             Cancel
           </button>
         </form>
       }
     </div>
-  } @else if (!showAddForm()) {
-    <div class="flex items-center gap-3">
-      <p class="text-sm text-base-content/50">No reminder set.</p>
-      <button class="btn btn-sm btn-outline" (click)="showAddForm.set(true)">Add reminder</button>
-    </div>
-  } @else {
+  }
+
+  @if (showAddForm()) {
     <div class="card bg-base-200 p-4 space-y-3">
       <div class="flex gap-2 flex-wrap">
         @for (days of presetDays; track days) {
