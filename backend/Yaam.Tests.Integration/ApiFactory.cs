@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Yaam.Infrastructure.Persistence;
+using Yaam.UseCases.Common.Cv;
 using Yaam.UseCases.Common.Email;
 
 namespace Yaam.Tests.Integration;
@@ -36,6 +37,9 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
             services.RemoveAll<IEmailSender>();
             services.AddSingleton<IEmailSender, NoOpEmailSender>();
+
+            services.RemoveAll<ICvParser>();
+            services.AddSingleton<ICvParser, NoOpCvParser>();
         });
     }
 
@@ -54,4 +58,16 @@ public class NoOpEmailSender : IEmailSender
 {
     public Task SendAsync(string to, string subject, string textBody, CancellationToken cancellationToken)
         => Task.CompletedTask;
+}
+
+public class NoOpCvParser : ICvParser
+{
+    public Task<ParsedCvDto> ParseAsync(string text, CancellationToken cancellationToken) =>
+        Task.FromResult(new ParsedCvDto(
+            new ParsedInfoDto("Ada", "Lovelace", "ada@example.com", "+41 79 000 00 00", null, null),
+            [new ParsedWorkExperienceDto("Acme", "Engineer", "2020-01", null, "Built things.")],
+            [],
+            ["C#", "Angular"],
+            [new ParsedLanguageDto("English", "Native")],
+            []));
 }
