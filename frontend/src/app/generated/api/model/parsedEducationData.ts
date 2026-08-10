@@ -9,7 +9,11 @@
  */
 
 
-export interface UpdateApplicationNoteInputModel { 
-    body: string;
+export interface ParsedEducationData { 
+    institution: string;
+    degree: string | null;
+    fieldOfStudy: string | null;
+    startDate: string | null;
+    endDate: string | null;
 }
 

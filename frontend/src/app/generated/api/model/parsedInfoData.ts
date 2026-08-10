@@ -9,11 +9,11 @@
  */
 
 
-export interface UpdateProfileInfoInputModel { 
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
+export interface ParsedInfoData { 
+    firstName: string | null;
+    lastName: string | null;
+    email: string | null;
+    phone: string | null;
     location: string | null;
     summary: string | null;
 }

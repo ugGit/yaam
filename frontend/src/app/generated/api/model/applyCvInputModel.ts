@@ -7,9 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ParsedCvData } from './parsedCvData';
 
 
-export interface UpdateApplicationNoteInputModel { 
-    body: string;
+export interface ApplyCvInputModel { 
+    selectedItems: ParsedCvData;
+    mode: number;
 }
 

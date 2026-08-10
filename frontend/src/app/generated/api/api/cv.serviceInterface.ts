@@ -11,21 +11,31 @@ import { HttpHeaders }                                       from '@angular/comm
 
 import { Observable }                                        from 'rxjs';
 
-import { ReminderViewModel } from '../model/models';
+import { ApplyCvInputModel } from '../model/models';
+import { ParsedCvViewModel } from '../model/models';
+import { ProfileViewModel } from '../model/models';
 
 
 import { Configuration }                                     from '../configuration';
 
 
 
-export interface RemindersServiceInterface {
+export interface CvServiceInterface {
     defaultHeaders: HttpHeaders;
     configuration: Configuration;
 
     /**
      * 
      * 
+     * @param applyCvInputModel 
      */
-    listReminders(extraHttpRequestParams?: any): Observable<Array<ReminderViewModel>>;
+    applyCv(applyCvInputModel: ApplyCvInputModel, extraHttpRequestParams?: any): Observable<ProfileViewModel>;
+
+    /**
+     * 
+     * 
+     * @param file 
+     */
+    parseCv(file?: Blob, extraHttpRequestParams?: any): Observable<ParsedCvViewModel>;
 
 }

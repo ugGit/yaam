@@ -9,7 +9,9 @@
  */
 
 
-export interface UpdateApplicationNoteInputModel { 
-    body: string;
+export interface ParsedCertificationData { 
+    name: string;
+    issuer: string | null;
+    date: string | null;
 }
 
