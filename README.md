@@ -45,16 +45,7 @@ This activates the pre-push hook that runs CI checks (build, format, lint, unit 
 docker compose up -d
 ```
 
-This starts PostgreSQL 16 on `localhost:5432` and Ollama on `localhost:11434`.
-
-> **Port conflict?** If port 5432 is already in use, create `docker-compose.override.yml` at the repo root:
-> ```yaml
-> services:
->   postgres:
->     ports:
->       - "5433:5432"
-> ```
-> Then update `Port=5432` to `Port=5433` in `backend/Yaam.API/appsettings.Development.json`.
+This starts PostgreSQL on `localhost:5432`, Ollama on `localhost:11434`, and Mailpit on `localhost:1025` (SMTP) / `http://localhost:8025` (web UI — inspect outbound emails locally).
 
 ### 2 — Run the backend
 

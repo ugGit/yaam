@@ -1,0 +1,153 @@
+<div>
+  <div class="flex items-center justify-between mb-3">
+    <h2 class="text-lg font-semibold">Reminders</h2>
+    @if (!showAddForm()) {
+      <button class="btn btn-sm btn-outline" (click)="showAddForm.set(true)">Add reminder</button>
+    }
+  </div>
+
+  @if (reminders().length === 0 && !showAddForm()) {
+    <p class="text-sm text-base-content/50">No reminders set.</p>
+  }
+
+  @for (r of reminders(); track r.id) {
+    @let display = dueDateDisplay(r);
+    @let isRescheduling = reschedulingReminderId() === r.id;
+    @let isDeleting = deletingReminderId() === r.id;
+
+    <div class="card bg-base-200 p-4 space-y-3 mb-3">
+      <div class="flex items-center justify-between flex-wrap gap-2">
+        <div class="flex items-center gap-2">
+          <span class="badge {{ display.cls }}">{{ display.label }}</span>
+          <span class="text-sm text-base-content/70">{{ r.dueDate }}</span>
+        </div>
+        @if (r.notifiedAt) {
+          <span class="text-xs text-base-content/50">
+            Follow-up sent {{ r.notifiedAt | date: 'mediumDate' }}
+          </span>
+        }
+      </div>
+
+      @if (r.note) {
+        <p class="text-sm">{{ r.note }}</p>
+      }
+
+      @if (!isRescheduling) {
+        <div class="flex gap-2 flex-wrap">
+          <button
+            class="btn btn-sm btn-outline"
+            [disabled]="saving()"
+            (click)="startReschedule(r.id)"
+          >
+            Reschedule
+          </button>
+          <button
+            class="btn btn-sm btn-success btn-outline"
+            [disabled]="saving()"
+            (click)="completeReminder(r.id)"
+          >
+            Mark as done
+          </button>
+          @if (isDeleting) {
+            <button
+              class="btn btn-sm btn-error"
+              [disabled]="saving()"
+              (click)="deleteReminder(r.id)"
+            >
+              Confirm delete
+            </button>
+            <button class="btn btn-sm btn-ghost" (click)="deletingReminderId.set(null)">
+              Cancel
+            </button>
+          } @else {
+            <button class="btn btn-sm btn-ghost text-error" (click)="deletingReminderId.set(r.id)">
+              Delete
+            </button>
+          }
+        </div>
+      } @else {
+        <form [formRoot]="rescheduleFields" class="flex items-end gap-2 flex-wrap">
+          <div class="form-control">
+            <label for="reschedule-due-date" class="label label-text text-xs">New due date</label>
+            <input
+              id="reschedule-due-date"
+              type="date"
+              class="input input-bordered input-sm"
+              [min]="tomorrow()"
+              [formField]="rescheduleFields.newDueDate"
+            />
+            @if (
+              rescheduleFields.newDueDate().touched() &&
+              rescheduleFields.newDueDate().errors().length
+            ) {
+              <div class="label">
+                <span class="label-text-alt text-error">{{
+                  rescheduleFields.newDueDate().errors()[0].message
+                }}</span>
+              </div>
+            }
+          </div>
+          <button
+            type="button"
+            class="btn btn-sm btn-primary"
+            [disabled]="saving() || !!rescheduleFields.newDueDate().errors().length"
+            (click)="rescheduleReminder(r.id)"
+          >
+            Save
+          </button>
+          <button type="button" class="btn btn-sm btn-ghost" (click)="cancelReschedule()">
+            Cancel
+          </button>
+        </form>
+      }
+    </div>
+  }
+
+  @if (showAddForm()) {
+    <div class="card bg-base-200 p-4 space-y-3">
+      <div class="flex gap-2 flex-wrap">
+        @for (days of presetDays; track days) {
+          <button
+            class="btn btn-sm"
+            [class.btn-primary]="addModel().delayDays === days && !addModel().customDays"
+            [class.btn-outline]="addModel().delayDays !== days || !!addModel().customDays"
+            (click)="selectPreset(days)"
+          >
+            {{ days }} days
+          </button>
+        }
+        <input
+          type="number"
+          class="input input-bordered input-sm w-24"
+          placeholder="Custom"
+          min="1"
+          [value]="addModel().customDays"
+          (input)="onCustomDaysInput($event)"
+        />
+      </div>
+
+      @if (previewDate()) {
+        <p class="text-xs text-base-content/60">Reminder due: {{ previewDate() }}</p>
+      }
+
+      <textarea
+        class="textarea textarea-bordered w-full text-sm"
+        rows="2"
+        placeholder="Optional note (e.g. 'Call recruiter by EOD')"
+        [value]="addModel().note"
+        (input)="addModel.update((m) => ({ ...m, note: $any($event.target).value }))"
+      ></textarea>
+
+      <div class="flex gap-2 justify-end">
+        <button class="btn btn-sm btn-ghost" (click)="showAddForm.set(false)">Cancel</button>
+        <button
+          class="btn btn-sm btn-primary"
+          [disabled]="saving() || addModel().delayDays < 1"
+          (click)="setReminder()"
+        >
+          Save reminder
+        </button>
+      </div>
+    </div>
+  }
+</div>

@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Yaam.Infrastructure.Persistence;
+using Yaam.UseCases.Common.Email;
 
 namespace Yaam.Tests.Integration;
 
@@ -31,6 +33,9 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
                     context.Configuration.GetConnectionString("DefaultConnection")
                     ?? throw new InvalidOperationException(
                         "Test connection string 'DefaultConnection' not found in appsettings.Test.json.")));
+
+            services.RemoveAll<IEmailSender>();
+            services.AddSingleton<IEmailSender, NoOpEmailSender>();
         });
     }
 
@@ -43,4 +48,10 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
     }
 
     public new Task DisposeAsync() => Task.CompletedTask;
+}
+
+public class NoOpEmailSender : IEmailSender
+{
+    public Task SendAsync(string to, string subject, string textBody, CancellationToken cancellationToken)
+        => Task.CompletedTask;
 }

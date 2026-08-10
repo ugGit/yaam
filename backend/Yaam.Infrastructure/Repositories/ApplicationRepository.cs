@@ -33,6 +33,7 @@ public class ApplicationRepository(AppDbContext db) : IApplicationRepository
     public async Task<Application?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         => await db.Applications
             .Include(a => a.Notes.OrderByDescending(n => n.CreatedAt))
+            .Include(a => a.Reminders)
             .FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
 
     public async Task<Application> AddAsync(Application application, CancellationToken cancellationToken)

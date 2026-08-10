@@ -21,4 +21,8 @@
     <ProjectReference Include="..\Yaam.Infrastructure\Yaam.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Yaam.Tests.Unit" />
+  </ItemGroup>
+
 </Project>

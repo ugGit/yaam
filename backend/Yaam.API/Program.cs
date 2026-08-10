@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using Scalar.AspNetCore;
 using Yaam.API;
+using Yaam.API.Reminders;
 using Yaam.Infrastructure;
 using Yaam.UseCases;
 
@@ -9,7 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(
     builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' is required."));
+        ?? throw new InvalidOperationException("Connection string 'DefaultConnection' is required."),
+    builder.Configuration);
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -19,6 +21,8 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddHostedService<ReminderNotificationService>();
 
 builder.Services.AddCors(options =>
 {

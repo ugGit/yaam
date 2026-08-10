@@ -1,12 +1,11 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Yaam.API.Applications;
 using Yaam.Domain.Common;
 using Yaam.Domain.Enums;
 using Yaam.UseCases.Applications.Commands;
 using Yaam.UseCases.Applications.Queries;
 
-namespace Yaam.API.Controllers;
+namespace Yaam.API.Applications;
 
 [ApiController]
 [Route("api/applications")]

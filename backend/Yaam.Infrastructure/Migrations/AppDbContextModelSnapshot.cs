@@ -312,6 +312,44 @@ namespace Yaam.Infrastructure.Migrations
                     b.ToTable("ProfileLinks");
                 });
 
+            modelBuilder.Entity("Yaam.Domain.Entities.Reminder", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ApplicationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DelayDays")
+                        .HasColumnType("integer");
+
+                    b.Property<DateOnly>("DueDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<DateTime?>("NotifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationId");
+
+                    b.ToTable("Reminders");
+                });
+
             modelBuilder.Entity("Yaam.Domain.Entities.WorkExperience", b =>
                 {
                     b.Property<Guid>("Id")
@@ -408,6 +446,17 @@ namespace Yaam.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Yaam.Domain.Entities.Reminder", b =>
+                {
+                    b.HasOne("Yaam.Domain.Entities.Application", "Application")
+                        .WithMany("Reminders")
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Application");
+                });
+
             modelBuilder.Entity("Yaam.Domain.Entities.WorkExperience", b =>
                 {
                     b.HasOne("Yaam.Domain.Entities.Profile", null)
@@ -420,6 +469,8 @@ namespace Yaam.Infrastructure.Migrations
             modelBuilder.Entity("Yaam.Domain.Entities.Application", b =>
                 {
                     b.Navigation("Notes");
+
+                    b.Navigation("Reminders");
                 });
 
             modelBuilder.Entity("Yaam.Domain.Entities.Profile", b =>

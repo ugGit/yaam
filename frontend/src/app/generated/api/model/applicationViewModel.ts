@@ -8,6 +8,7 @@
  * Do not edit the class manually.
  */
 import { ApplicationNoteViewModel } from './applicationNoteViewModel';
+import { ApplicationReminderViewModel } from './applicationReminderViewModel';
 import { ApplicationStatus } from './applicationStatus';
 
 export interface ApplicationViewModel {
@@ -23,5 +24,6 @@ export interface ApplicationViewModel {
   createdAt: string;
   updatedAt: string;
   notes: Array<ApplicationNoteViewModel>;
+  reminders: Array<ApplicationReminderViewModel>;
 }
 export namespace ApplicationViewModel {}

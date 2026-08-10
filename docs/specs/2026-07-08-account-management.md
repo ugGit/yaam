@@ -82,6 +82,7 @@ so that I can exercise my right to be forgotten.
 - **Notification email** defaults to the registration email. It can be changed independently — useful if the user wants reminders on a different address.
 - **Session management** in MVP is stateless JWT — no server-side session store. Token expiry handles session termination.
 - **GDPR:** Account deletion (Story 5) is a hard requirement, not optional. All data must be deleted, not anonymised, unless retention is legally required.
+- **Reminder email dependency (Story 4):** Until this story ships, the Reminders feature sends notification emails to the user's registration email. When Story 4 (notification email setting) is implemented, the `IEmailSender` call site in the reminder background job must be updated to read the configurable notification email from the user account instead.
 
 ---
 

@@ -1,9 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Yaam.API.Applications;
 using Yaam.UseCases.Applications.Commands.Notes;
 
-namespace Yaam.API.Controllers;
+namespace Yaam.API.Applications;
 
 [ApiController]
 [Route("api/applications/{applicationId:guid}/notes")]
