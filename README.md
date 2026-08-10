@@ -47,15 +47,6 @@ docker compose up -d
 
 This starts PostgreSQL on `localhost:5432`, Ollama on `localhost:11434`, and Mailpit on `localhost:1025` (SMTP) / `http://localhost:8025` (web UI — inspect outbound emails locally).
 
-> **Port conflict?** If port 5432 is already in use, create a local `docker-compose.override.yml` at the repo root (it is gitignored):
-> ```yaml
-> services:
->   postgres:
->     ports:
->       - "5433:5432"
-> ```
-> Then update `Port=5432` to `Port=5433` in `backend/Yaam.API/appsettings.Development.json`.
-
 ### 2 — Run the backend
 
 ```bash

@@ -27,9 +27,6 @@ appsettings.*.json
 .env
 .env.local
 
-# Local Docker Compose overrides
-docker-compose.override.yml
-
 # Playwright CLI artifacts
 .playwright-cli/
 *.png
