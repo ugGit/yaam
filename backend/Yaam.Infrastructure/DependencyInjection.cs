@@ -1,10 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Http;
 using Yaam.Domain.Repositories;
+using Yaam.Infrastructure.Cv;
 using Yaam.Infrastructure.Email;
 using Yaam.Infrastructure.Persistence;
 using Yaam.Infrastructure.Repositories;
+using Yaam.UseCases.Common.Cv;
 using Yaam.UseCases.Common.Email;
 
 namespace Yaam.Infrastructure;
@@ -25,6 +28,9 @@ public static class DependencyInjection
 
         services.Configure<EmailSettings>(configuration.GetSection("Email"));
         services.AddScoped<IEmailSender, SmtpEmailSender>();
+
+        services.Configure<CvSettings>(configuration.GetSection("Cv"));
+        services.AddHttpClient<ICvParser, OllamaCvParser>();
 
         return services;
     }
