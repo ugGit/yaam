@@ -1,5 +1,33 @@
 <div class="container mx-auto max-w-4xl px-4 py-8">
-  <h1 class="text-2xl font-bold mb-6">My Profile</h1>
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold">My Profile</h1>
+    <button class="btn btn-outline btn-sm" (click)="onOpenCvModal()">Upload CV</button>
+  </div>
+
+  @if (showCvModal()) {
+    <div class="modal modal-open">
+      <div class="modal-box w-11/12 max-w-3xl">
+        @if (isApplying()) {
+          <div class="flex justify-center py-8">
+            <span class="loading loading-spinner loading-lg"></span>
+          </div>
+        } @else if (!parsedCv()) {
+          <app-cv-upload (parsed)="onCvParsed($event)" (error)="onCvParseError($event)" />
+          @if (cvError()) {
+            <div role="alert" class="alert alert-error mt-4">{{ cvError() }}</div>
+          }
+        } @else {
+          <app-cv-review
+            [parsedData]="parsedCv()!.data"
+            [hasExistingData]="hasExistingProfileData"
+            (confirmed)="onCvReviewConfirmed($event)"
+            (cancelled)="onCvReviewCancelled()"
+          />
+        }
+      </div>
+      <div class="modal-backdrop" (click)="onCvReviewCancelled()"></div>
+    </div>
+  }
 
   @if (profileResource.isLoading()) {
     <div class="flex justify-center py-16">
