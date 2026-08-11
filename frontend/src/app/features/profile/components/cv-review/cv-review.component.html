@@ -1,0 +1,201 @@
+<div class="flex flex-col gap-6">
+
+  <!-- Merge mode selector -->
+  @if (hasExistingData()) {
+    <section class="flex flex-col gap-2">
+      <h3 class="font-semibold text-base">How should this CV be applied?</h3>
+      <label class="flex items-center gap-3 cursor-pointer">
+        <input
+          type="radio"
+          name="cv-merge-mode"
+          class="radio"
+          [checked]="mode() === 'Add'"
+          (change)="mode.set('Add')"
+        />
+        <span>Add to profile</span>
+      </label>
+      <label class="flex items-center gap-3 cursor-pointer">
+        <input
+          type="radio"
+          name="cv-merge-mode"
+          class="radio"
+          [checked]="mode() === 'Replace'"
+          (change)="mode.set('Replace')"
+        />
+        <span>Replace entire profile</span>
+      </label>
+    </section>
+  }
+
+  <!-- Personal info section -->
+  <section class="flex flex-col gap-2">
+    <h3 class="font-semibold text-base">Personal Info</h3>
+    @if (parsedData().info) {
+      <label class="flex items-center gap-3 cursor-pointer">
+        <input
+          type="checkbox"
+          class="checkbox"
+          [checked]="infoChecked()"
+          (change)="infoChecked.set(!infoChecked())"
+        />
+        <span>
+          {{ parsedData().info!.firstName }} {{ parsedData().info!.lastName }}
+          @if (parsedData().info!.email) {
+            <span class="text-sm opacity-60">— {{ parsedData().info!.email }}</span>
+          }
+        </span>
+      </label>
+    } @else {
+      <p class="text-sm opacity-60">No personal info found in your CV.</p>
+    }
+  </section>
+
+  <!-- Work Experience section -->
+  <section class="flex flex-col gap-2">
+    <h3 class="font-semibold text-base">Work Experience</h3>
+    @if (workExperiences.length > 0) {
+      @for (item of workExperiences; track $index) {
+        <label class="flex items-center gap-3 cursor-pointer">
+          <input
+            type="checkbox"
+            class="checkbox"
+            [checked]="item.checked"
+            (change)="toggleWorkExperience($index)"
+          />
+          <span>
+            <span class="font-medium">{{ item.data.title }}</span>
+            <span class="text-sm opacity-60"> at {{ item.data.company }}</span>
+            @if (item.data.startDate) {
+              <span class="text-sm opacity-60">
+                — {{ item.data.startDate }}{{ item.data.endDate ? ' – ' + item.data.endDate : '' }}
+              </span>
+            }
+          </span>
+        </label>
+      }
+    } @else {
+      <p class="text-sm opacity-60">No work experience found in your CV.</p>
+    }
+  </section>
+
+  <!-- Education section -->
+  <section class="flex flex-col gap-2">
+    <h3 class="font-semibold text-base">Education</h3>
+    @if (educations.length > 0) {
+      @for (item of educations; track $index) {
+        <label class="flex items-center gap-3 cursor-pointer">
+          <input
+            type="checkbox"
+            class="checkbox"
+            [checked]="item.checked"
+            (change)="toggleEducation($index)"
+          />
+          <span>
+            <span class="font-medium">{{ item.data.institution }}</span>
+            @if (item.data.degree) {
+              <span class="text-sm opacity-60"> — {{ item.data.degree }}</span>
+            }
+            @if (item.data.fieldOfStudy) {
+              <span class="text-sm opacity-60">, {{ item.data.fieldOfStudy }}</span>
+            }
+          </span>
+        </label>
+      }
+    } @else {
+      <p class="text-sm opacity-60">No education found in your CV.</p>
+    }
+  </section>
+
+  <!-- Skills section -->
+  <section class="flex flex-col gap-2">
+    <h3 class="font-semibold text-base">Skills</h3>
+    @if (skills.length > 0) {
+      @for (item of skills; track $index) {
+        <label class="flex items-center gap-3 cursor-pointer">
+          <input
+            type="checkbox"
+            class="checkbox"
+            [checked]="item.checked"
+            (change)="toggleSkill($index)"
+          />
+          <span>{{ item.data }}</span>
+        </label>
+      }
+    } @else {
+      <p class="text-sm opacity-60">No skills found in your CV.</p>
+    }
+  </section>
+
+  <!-- Languages section -->
+  <section class="flex flex-col gap-2">
+    <h3 class="font-semibold text-base">Languages</h3>
+    @if (languages.length > 0) {
+      @for (item of languages; track $index) {
+        <label class="flex items-center gap-3 cursor-pointer">
+          <input
+            type="checkbox"
+            class="checkbox"
+            [checked]="item.checked"
+            (change)="toggleLanguage($index)"
+          />
+          <span>
+            <span class="font-medium">{{ item.data.name }}</span>
+            <span class="text-sm opacity-60"> — {{ item.data.proficiency }}</span>
+          </span>
+        </label>
+      }
+    } @else {
+      <p class="text-sm opacity-60">No languages found in your CV.</p>
+    }
+  </section>
+
+  <!-- Certifications section -->
+  <section class="flex flex-col gap-2">
+    <h3 class="font-semibold text-base">Certifications</h3>
+    @if (certifications.length > 0) {
+      @for (item of certifications; track $index) {
+        <label class="flex items-center gap-3 cursor-pointer">
+          <input
+            type="checkbox"
+            class="checkbox"
+            [checked]="item.checked"
+            (change)="toggleCertification($index)"
+          />
+          <span>
+            <span class="font-medium">{{ item.data.name }}</span>
+            @if (item.data.issuer) {
+              <span class="text-sm opacity-60"> — {{ item.data.issuer }}</span>
+            }
+            @if (item.data.date) {
+              <span class="text-sm opacity-60">, {{ item.data.date }}</span>
+            }
+          </span>
+        </label>
+      }
+    } @else {
+      <p class="text-sm opacity-60">No certifications found in your CV.</p>
+    }
+  </section>
+
+  <!-- Footer -->
+  <div class="flex justify-end gap-2 pt-2">
+    <button class="btn btn-ghost" type="button" (click)="cancelled.emit()">Cancel</button>
+    <button class="btn btn-primary" type="button" (click)="onConfirm()">Save to profile</button>
+  </div>
+
+</div>
+
+<!-- Replace confirm dialog -->
+<dialog #replaceConfirmDialog class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Replace entire profile?</h3>
+    <p class="py-4">
+      This will overwrite all existing profile data with the selections from your CV.
+      This action cannot be undone.
+    </p>
+    <div class="modal-action">
+      <button class="btn" type="button" (click)="onReplaceCancelled()">Cancel</button>
+      <button class="btn btn-error" type="button" (click)="onReplaceConfirmed()">Confirm replace</button>
+    </div>
+  </div>
+</dialog>
