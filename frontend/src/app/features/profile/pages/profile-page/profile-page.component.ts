@@ -87,6 +87,9 @@ export class ProfilePageComponent {
       ) as ProfileViewModel;
       this.profileResource.set(profile);
       this.showCvModal.set(false);
+    } catch {
+      this.cvError.set('Failed to apply CV. Please try again.');
+      this.parsedCv.set(null);
     } finally {
       this.isApplying.set(false);
     }

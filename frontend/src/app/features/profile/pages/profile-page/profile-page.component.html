@@ -25,7 +25,7 @@
           />
         }
       </div>
-      <div class="modal-backdrop" (click)="onCvReviewCancelled()"></div>
+      <div class="modal-backdrop" (click)="isApplying() ? null : onCvReviewCancelled()"></div>
     </div>
   }
 
