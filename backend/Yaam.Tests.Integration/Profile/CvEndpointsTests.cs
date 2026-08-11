@@ -2,7 +2,6 @@ using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
 using Yaam.API.Profile;
-using Yaam.UseCases.Profile.Commands;
 
 namespace Yaam.Tests.Integration.Profile;
 

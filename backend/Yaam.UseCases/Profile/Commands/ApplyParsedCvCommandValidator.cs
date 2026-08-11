@@ -1,5 +1,4 @@
 using FluentValidation;
-using Yaam.UseCases.Common.Cv;
 
 namespace Yaam.UseCases.Profile.Commands;
 

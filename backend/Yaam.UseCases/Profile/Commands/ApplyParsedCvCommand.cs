@@ -1,5 +1,4 @@
 using MediatR;
-using Yaam.Domain.Entities;
 using Yaam.Domain.Repositories;
 using Yaam.UseCases.Common.Cv;
 using Yaam.UseCases.Profile.Dtos;

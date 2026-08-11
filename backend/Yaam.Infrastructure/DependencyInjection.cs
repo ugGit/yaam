@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Http;
 using Yaam.Domain.Repositories;
 using Yaam.Infrastructure.Cv;
 using Yaam.Infrastructure.Email;
