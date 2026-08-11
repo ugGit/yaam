@@ -12,7 +12,7 @@
             <span class="loading loading-spinner loading-lg"></span>
           </div>
         } @else if (!parsedCv()) {
-          <app-cv-upload (parsed)="onCvParsed($event)" (error)="onCvParseError($event)" />
+          <app-cv-upload (parsed)="onCvParsed($event)" (parseError)="onCvParseError($event)" />
           @if (cvError()) {
             <div role="alert" class="alert alert-error mt-4">{{ cvError() }}</div>
           }
@@ -25,7 +25,10 @@
           />
         }
       </div>
-      <div class="modal-backdrop" (click)="isApplying() ? null : onCvReviewCancelled()"></div>
+      <div class="modal-backdrop" role="button" tabindex="0" aria-label="Close"
+        (click)="isApplying() ? null : onCvReviewCancelled()"
+        (keydown.enter)="isApplying() ? null : onCvReviewCancelled()"
+        (keydown.escape)="isApplying() ? null : onCvReviewCancelled()"></div>
     </div>
   }
 

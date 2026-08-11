@@ -11,7 +11,7 @@ import { CvService, ParsedCvViewModel } from '../../../../generated/api';
 })
 export class CvUploadComponent {
   readonly parsed = output<ParsedCvViewModel>();
-  readonly error = output<string>();
+  readonly parseError = output<string>();
 
   private readonly cvService = inject(CvService);
 
@@ -46,7 +46,7 @@ export class CvUploadComponent {
       const result = await firstValueFrom(this.cvService.parseCv(file));
       this.parsed.emit(result);
     } catch {
-      this.error.emit('Parsing failed. Please check that the PDF contains text and try again.');
+      this.parseError.emit('Parsing failed. Please check that the PDF contains text and try again.');
     } finally {
       this.isParsing.set(false);
     }
