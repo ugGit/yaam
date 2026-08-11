@@ -22,7 +22,6 @@ so that I can seed my profile without typing everything manually.
 - Given I select a valid PDF (≤ 2 MB), when I confirm, then a loading state is shown while parsing runs.
 - Given parsing completes, when I see the review screen, then each extracted section (Info, Work Experience, Education, Skills, Languages, Certifications) is shown with all items checked by default.
 - Given I uncheck an item, when I save, then that item is not added to my profile.
-- Given I edit a field inline before saving, when I save, then the edited value is what is stored.
 - Given parsing completes, when a section (e.g. Certifications) has no extracted items, then that section is still shown with a notice "No certifications found in your CV" so the user knows the AI looked and found nothing.
 - Given the PDF contains no extractable text (scanned), when parsing completes, then a clear error is shown and the user is prompted to try a text-based PDF.
 - Given parsing fails for any other reason, when the error is shown, then the user can retry without re-selecting the file.
@@ -131,7 +130,7 @@ Profile page
   → "Upload CV" button
   → [Upload step] file picker + upload button
   → loading spinner (parse in progress)
-  → [Review step] section checklist + inline editing
+  → [Review step] section checklist (inline editing deferred — see future-features.md)
       → (if profile has existing data) merge mode selector: "Add to profile" / "Replace profile"
       → confirm dialog if "Replace profile" chosen
   → POST /profile/cv/apply
@@ -141,7 +140,7 @@ Profile page
 #### Components
 
 - **`cv-upload`** — file input (PDF, 2 MB max), triggers parse on submit, shows loading/error states
-- **`cv-review`** — receives `ParsedCvDto` as input, renders sections; each item has a checkbox and inline-editable fields; emits the selected/edited `ParsedCvDto` on save; sections with no extracted items show an inline notice ("No [section] found in your CV") rather than being hidden — the user should know the AI looked and found nothing
+- **`cv-review`** — receives `ParsedCvDto` as input, renders sections; each item has a checkbox; emits the selected `ParsedCvDto` on save; sections with no extracted items show an inline notice ("No [section] found in your CV") rather than being hidden — the user should know the AI looked and found nothing. Inline field editing is deferred (see future-features.md)
 - **`cv-merge-mode-selector`** — radio group shown only when the profile already has data; controls whether apply uses `add` or `replace` mode
 
 The review component does not call any API itself — it emits upward and the parent page handles the `applyParsedCv` call.

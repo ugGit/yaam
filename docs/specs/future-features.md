@@ -2,6 +2,12 @@
 
 Rough sketches only — not committed, not scoped. Revisit after MVP.
 
+## CV Parsing — Inline Editing in Review Screen
+- The review screen currently shows checkboxes only; users cannot edit extracted values before applying
+- Add editable inputs (text inputs for name/title/company/dates, textareas for descriptions) to each row in the cv-review component
+- When the user saves, the edited values — not the AI's originals — are what get stored
+- Applies to all 6 section types: Info, Work Experience, Education, Skills, Languages, Certifications
+
 ## CV Parsing — Scanned PDF Support (Docling)
 - PdfPig (used in MVP) only extracts text from text-based PDFs; scanned/image PDFs yield nothing
 - Replace or wrap the extraction step with [Docling](https://github.com/DS4SD/docling) (IBM, MIT), which handles OCR, scanned documents, and complex layouts
