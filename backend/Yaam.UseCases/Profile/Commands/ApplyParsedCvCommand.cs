@@ -37,15 +37,19 @@ public class ApplyParsedCvCommandHandler(IProfileRepository repository)
         }
 
         foreach (var we in items.WorkExperiences)
+        {
+            var startDate = ParseDate(we.StartDate);
+            if (startDate is null) continue;
             profile.WorkExperiences.Add(new Yaam.Domain.Entities.WorkExperience
             {
                 ProfileId = profile.Id,
                 Company = we.Company,
                 Title = we.Title,
-                StartDate = ParseDate(we.StartDate) ?? DateOnly.MinValue,
+                StartDate = startDate.Value,
                 EndDate = ParseDate(we.EndDate),
                 Description = we.Description,
             });
+        }
 
         foreach (var edu in items.Educations)
             profile.Educations.Add(new Yaam.Domain.Entities.Education
@@ -73,13 +77,17 @@ public class ApplyParsedCvCommandHandler(IProfileRepository repository)
             });
 
         foreach (var cert in items.Certifications)
+        {
+            var certDate = ParseDate(cert.Date);
+            if (certDate is null) continue;
             profile.Certifications.Add(new Yaam.Domain.Entities.Certification
             {
                 ProfileId = profile.Id,
                 Name = cert.Name,
                 Issuer = cert.Issuer,
-                Date = ParseDate(cert.Date) ?? DateOnly.MinValue,
+                Date = certDate.Value,
             });
+        }
 
         await repository.UpdateAsync(cancellationToken);
         return ProfileMapper.ToDto(profile);

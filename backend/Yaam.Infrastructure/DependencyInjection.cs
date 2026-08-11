@@ -29,8 +29,10 @@ public static class DependencyInjection
         services.Configure<EmailSettings>(configuration.GetSection("Email"));
         services.AddScoped<IEmailSender, SmtpEmailSender>();
 
+        var cvSettings = configuration.GetSection("Cv").Get<CvSettings>() ?? new CvSettings();
+        services.AddHttpClient<ICvParser, OllamaCvParser>(client =>
+            client.Timeout = TimeSpan.FromSeconds(cvSettings.TimeoutSeconds));
         services.Configure<CvSettings>(configuration.GetSection("Cv"));
-        services.AddHttpClient<ICvParser, OllamaCvParser>();
 
         return services;
     }

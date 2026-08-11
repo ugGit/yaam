@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Yaam.UseCases.Common.Cv;
 
@@ -8,7 +9,8 @@ namespace Yaam.Infrastructure.Cv;
 
 public class OllamaCvParser(
     HttpClient httpClient,
-    IOptions<CvSettings> cvOptions) : ICvParser
+    IOptions<CvSettings> cvOptions,
+    ILogger<OllamaCvParser> logger) : ICvParser
 {
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -29,22 +31,37 @@ public class OllamaCvParser(
             stream = false,
         };
 
-        var response = await httpClient.PostAsync(
-            new Uri(new Uri(settings.OllamaBaseUrl), "/api/chat"),
-            new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json"),
-            cancellationToken);
+        try
+        {
+            var response = await httpClient.PostAsync(
+                new Uri(new Uri(settings.OllamaBaseUrl), "/api/chat"),
+                new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json"),
+                cancellationToken);
 
-        response.EnsureSuccessStatusCode();
+            response.EnsureSuccessStatusCode();
 
-        var responseJson = await response.Content.ReadAsStringAsync(cancellationToken);
-        using var document = JsonDocument.Parse(responseJson);
-        var content = document.RootElement
-            .GetProperty("message")
-            .GetProperty("content")
-            .GetString() ?? "{}";
+            var responseJson = await response.Content.ReadAsStringAsync(cancellationToken);
+            using var document = JsonDocument.Parse(responseJson);
+            var content = document.RootElement
+                .GetProperty("message")
+                .GetProperty("content")
+                .GetString() ?? "{}";
 
-        return JsonSerializer.Deserialize<ParsedCvDto>(content, JsonOptions)
-               ?? new ParsedCvDto(null, [], [], [], [], []);
+            return JsonSerializer.Deserialize<ParsedCvDto>(content, JsonOptions)
+                   ?? new ParsedCvDto(null, [], [], [], [], []);
+        }
+        catch (HttpRequestException exception)
+        {
+            var message = exception.Message;
+            logger.LogWarning("CV parsing HTTP error: {Message}", message.Length > 500 ? message[..500] : message);
+            throw new Exception($"CV parsing failed: {exception.Message}", exception);
+        }
+        catch (JsonException exception)
+        {
+            var message = exception.Message;
+            logger.LogWarning("CV parsing JSON error: {Message}", message.Length > 500 ? message[..500] : message);
+            throw new Exception($"CV parsing failed: {exception.Message}", exception);
+        }
     }
 
     private static string BuildPrompt(string text) => $$"""
