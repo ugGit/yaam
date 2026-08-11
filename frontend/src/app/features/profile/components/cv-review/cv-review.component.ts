@@ -34,7 +34,6 @@ export class CvReviewComponent implements OnInit {
     viewChild.required<ElementRef<HTMLDialogElement>>('replaceConfirmDialog');
 
   protected readonly mode = signal<'Add' | 'Replace'>('Add');
-  protected readonly showReplaceConfirm = signal(false);
   protected readonly infoChecked = signal(true);
   private readonly _workExperiences = signal<CheckedItem<ParsedWorkExperienceData>[]>([]);
   private readonly _educations = signal<CheckedItem<ParsedEducationData>[]>([]);
@@ -98,8 +97,7 @@ export class CvReviewComponent implements OnInit {
   }
 
   protected onConfirm(): void {
-    if (this.mode() === 'Replace' && !this.showReplaceConfirm()) {
-      this.showReplaceConfirm.set(true);
+    if (this.mode() === 'Replace') {
       this.replaceConfirmDialog().nativeElement.showModal();
       return;
     }
@@ -113,7 +111,6 @@ export class CvReviewComponent implements OnInit {
 
   protected onReplaceCancelled(): void {
     this.replaceConfirmDialog().nativeElement.close();
-    this.showReplaceConfirm.set(false);
   }
 
   private emitConfirmed(): void {
