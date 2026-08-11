@@ -25,10 +25,15 @@
           />
         }
       </div>
-      <div class="modal-backdrop" role="button" tabindex="0" aria-label="Close"
+      <div
+        class="modal-backdrop"
+        role="button"
+        tabindex="0"
+        aria-label="Close"
         (click)="isApplying() ? null : onCvReviewCancelled()"
         (keydown.enter)="isApplying() ? null : onCvReviewCancelled()"
-        (keydown.escape)="isApplying() ? null : onCvReviewCancelled()"></div>
+        (keydown.escape)="isApplying() ? null : onCvReviewCancelled()"
+      ></div>
     </div>
   }
 

@@ -117,11 +117,21 @@ export class CvReviewComponent implements OnInit {
     const data = this.parsedData();
     const selectedItems: ParsedCvData = {
       info: this.infoChecked() ? data.info : null,
-      workExperiences: this._workExperiences().filter((item) => item.checked).map((item) => item.data),
-      educations: this._educations().filter((item) => item.checked).map((item) => item.data),
-      skills: this._skills().filter((item) => item.checked).map((item) => item.data),
-      languages: this._languages().filter((item) => item.checked).map((item) => item.data),
-      certifications: this._certifications().filter((item) => item.checked).map((item) => item.data),
+      workExperiences: this._workExperiences()
+        .filter((item) => item.checked)
+        .map((item) => item.data),
+      educations: this._educations()
+        .filter((item) => item.checked)
+        .map((item) => item.data),
+      skills: this._skills()
+        .filter((item) => item.checked)
+        .map((item) => item.data),
+      languages: this._languages()
+        .filter((item) => item.checked)
+        .map((item) => item.data),
+      certifications: this._certifications()
+        .filter((item) => item.checked)
+        .map((item) => item.data),
     };
     this.confirmed.emit({ selectedItems, mode: this.mode() });
   }

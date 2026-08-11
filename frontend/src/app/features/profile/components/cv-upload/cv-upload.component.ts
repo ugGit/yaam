@@ -46,7 +46,9 @@ export class CvUploadComponent {
       const result = await firstValueFrom(this.cvService.parseCv(file));
       this.parsed.emit(result);
     } catch {
-      this.parseError.emit('Parsing failed. Please check that the PDF contains text and try again.');
+      this.parseError.emit(
+        'Parsing failed. Please check that the PDF contains text and try again.',
+      );
     } finally {
       this.isParsing.set(false);
     }

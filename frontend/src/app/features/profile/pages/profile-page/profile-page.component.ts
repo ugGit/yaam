@@ -2,7 +2,12 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { resource } from '@angular/core';
-import { ParsedCvViewModel, ProfileViewModel, CvService, ProfileService } from '../../../../generated/api';
+import {
+  ParsedCvViewModel,
+  ProfileViewModel,
+  CvService,
+  ProfileService,
+} from '../../../../generated/api';
 import { ProfileInfoSectionComponent } from '../../components/profile-info-section/profile-info-section.component';
 import { ProfileSkillsSectionComponent } from '../../components/profile-skills-section/profile-skills-section.component';
 import { WorkExperienceSectionComponent } from '../../components/work-experience-section/work-experience-section.component';
@@ -12,7 +17,10 @@ import { CertificationSectionComponent } from '../../components/certification-se
 import { ProfileLinkSectionComponent } from '../../components/profile-link-section/profile-link-section.component';
 import { CustomFieldsSectionComponent } from '../../components/custom-fields-section/custom-fields-section.component';
 import { CvUploadComponent } from '../../components/cv-upload/cv-upload.component';
-import { CvReviewComponent, CvReviewConfirmation } from '../../components/cv-review/cv-review.component';
+import {
+  CvReviewComponent,
+  CvReviewConfirmation,
+} from '../../components/cv-review/cv-review.component';
 
 @Component({
   selector: 'app-profile-page',
@@ -47,11 +55,12 @@ export class ProfilePageComponent {
 
   protected get hasExistingProfileData(): boolean {
     const profile = this.profileResource.value();
-    return !!(profile && (
-      (profile.workExperiences?.length ?? 0) > 0 ||
-      (profile.educations?.length ?? 0) > 0 ||
-      (profile.skills?.length ?? 0) > 0
-    ));
+    return !!(
+      profile &&
+      ((profile.workExperiences?.length ?? 0) > 0 ||
+        (profile.educations?.length ?? 0) > 0 ||
+        (profile.skills?.length ?? 0) > 0)
+    );
   }
 
   protected onProfileChanged(profile: ProfileViewModel): void {
@@ -79,12 +88,12 @@ export class ProfilePageComponent {
   protected async onCvReviewConfirmed(confirmation: CvReviewConfirmation): Promise<void> {
     this.isApplying.set(true);
     try {
-      const profile = await firstValueFrom(
+      const profile = (await firstValueFrom(
         this.cvService.applyCv({
           selectedItems: confirmation.selectedItems,
           mode: confirmation.mode === 'Replace' ? 1 : 0,
-        })
-      ) as ProfileViewModel;
+        }),
+      )) as ProfileViewModel;
       this.profileResource.set(profile);
       this.showCvModal.set(false);
     } catch {

@@ -1,5 +1,4 @@
 <div class="flex flex-col gap-6">
-
   <!-- Merge mode selector -->
   @if (hasExistingData()) {
     <section class="flex flex-col gap-2">
@@ -182,7 +181,6 @@
     <button class="btn btn-ghost" type="button" (click)="cancelled.emit()">Cancel</button>
     <button class="btn btn-primary" type="button" (click)="onConfirm()">Save to profile</button>
   </div>
-
 </div>
 
 <!-- Replace confirm dialog -->
@@ -190,12 +188,14 @@
   <div class="modal-box">
     <h3 class="font-bold text-lg">Replace entire profile?</h3>
     <p class="py-4">
-      This will overwrite all existing profile data with the selections from your CV.
-      This action cannot be undone.
+      This will overwrite all existing profile data with the selections from your CV. This action
+      cannot be undone.
     </p>
     <div class="modal-action">
       <button class="btn btn-ghost" type="button" (click)="onReplaceCancelled()">Cancel</button>
-      <button class="btn btn-error" type="button" (click)="onReplaceConfirmed()">Confirm replace</button>
+      <button class="btn btn-error" type="button" (click)="onReplaceConfirmed()">
+        Confirm replace
+      </button>
     </div>
   </div>
 </dialog>
