@@ -17,7 +17,12 @@ public class ParseCvCommandHandler(ICvParser cvParser)
         string text;
         using (var document = PdfDocument.Open(command.PdfBytes))
         {
-            text = string.Join("\n", document.GetPages().Select(page => page.Text));
+            text = string.Join("\n", document.GetPages()
+                .Select(page =>
+                    string.Join(" ", page.GetWords()
+                        .OrderByDescending(word => word.BoundingBox.Bottom)
+                        .ThenBy(word => word.BoundingBox.Left)
+                        .Select(word => word.Text))));
         }
 
         if (text.Trim().Length < MinimumTextLength)
