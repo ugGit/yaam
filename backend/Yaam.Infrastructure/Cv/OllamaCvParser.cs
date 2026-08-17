@@ -18,6 +18,9 @@ public class OllamaCvParser(
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
     };
 
+    private record OllamaChatResponse(OllamaChatMessage Message);
+    private record OllamaChatMessage(string Role, string Content);
+
     public async Task<ParsedCvDto> ParseAsync(string text, CancellationToken cancellationToken)
     {
         var settings = cvOptions.Value;
@@ -40,12 +43,11 @@ public class OllamaCvParser(
 
             response.EnsureSuccessStatusCode();
 
-            var responseJson = await response.Content.ReadAsStringAsync(cancellationToken);
-            using var document = JsonDocument.Parse(responseJson);
-            var content = document.RootElement
-                .GetProperty("message")
-                .GetProperty("content")
-                .GetString() ?? "{}";
+            var ollamaResponse = await JsonSerializer.DeserializeAsync<OllamaChatResponse>(
+                await response.Content.ReadAsStreamAsync(cancellationToken),
+                JsonOptions,
+                cancellationToken);
+            var content = ollamaResponse?.Message?.Content ?? "{}";
 
             return JsonSerializer.Deserialize<ParsedCvDto>(content, JsonOptions)
                    ?? new ParsedCvDto(null, [], [], [], [], []);
