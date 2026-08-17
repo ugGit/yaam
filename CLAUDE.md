@@ -61,6 +61,10 @@ Examples:
 
 Never use Git's default merge message format (`Merge branch 'x' into 'y'`).
 
+## Backend settings classes
+
+Settings classes bound from configuration use `{ get; init; }` properties (never `{ get; set; }`). The `set` accessor is never used — callers configure settings through the options framework, not direct assignment.
+
 ## Backend controllers — input models
 
 Controllers never bind HTTP request bodies directly to Application layer commands. Every endpoint that accepts a body uses a dedicated input model named `<Verb><Resource>InputModel` (e.g., `CreateApplicationInputModel`), defined in the same file as the controller. The controller maps the input model to the command explicitly.
