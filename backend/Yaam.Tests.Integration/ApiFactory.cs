@@ -69,5 +69,6 @@ public class NoOpCvParser : ICvParser
             [],
             ["C#", "Angular"],
             [new ParsedLanguageDto("English", "Native")],
+            [],
             []));
 }

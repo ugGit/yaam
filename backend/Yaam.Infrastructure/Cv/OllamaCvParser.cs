@@ -50,7 +50,7 @@ public class OllamaCvParser(
             var content = ollamaResponse?.Message?.Content ?? "{}";
 
             return JsonSerializer.Deserialize<ParsedCvDto>(content, JsonOptions)
-                   ?? new ParsedCvDto(null, [], [], [], [], []);
+                   ?? new ParsedCvDto(null, [], [], [], [], [], []);
         }
         catch (HttpRequestException exception)
         {
@@ -77,11 +77,18 @@ public class OllamaCvParser(
           "Educations": [{ "Institution": string, "Degree": string|null, "FieldOfStudy": string|null, "StartDate": "YYYY-MM"|null, "EndDate": "YYYY-MM"|null }],
           "Skills": [string],
           "Languages": [{ "Name": string, "Proficiency": "Basic"|"BusinessProficiency"|"Fluent"|"Native" }],
-          "Certifications": [{ "Name": string, "Issuer": string|null, "Date": "YYYY-MM"|null }]
+          "Certifications": [{ "Name": string, "Issuer": string|null, "Date": "YYYY-MM"|null }],
+          "CustomFields": [{ "Label": string, "Value": string }]
         }
 
         Use null for missing fields. For Proficiency, pick the closest match:
         Basic=elementary, BusinessProficiency=working/professional, Fluent=full professional, Native=mother tongue.
+
+        CustomFields should capture data that does not fit any of the fields above — for example:
+        portfolio URL, GitHub profile, LinkedIn URL, visa status, driving licence, publications, awards,
+        volunteer work, hobbies, or any other notable information present in the CV.
+        Only add a custom field when you are confident the data belongs there and cannot be placed elsewhere.
+        Leave CustomFields empty when all CV data is covered by the structured fields above.
 
         CV text:
         {{text}}

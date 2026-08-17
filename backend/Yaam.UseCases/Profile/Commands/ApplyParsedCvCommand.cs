@@ -26,6 +26,7 @@ public class ApplyParsedCvCommandHandler(IProfileRepository repository)
             profile.Languages.Clear();
             profile.Certifications.Clear();
             profile.Skills.Clear();
+            profile.CustomFields.Clear();
 
             if (items.Info is not null)
                 ApplyInfo(profile, items.Info);
@@ -87,6 +88,14 @@ public class ApplyParsedCvCommandHandler(IProfileRepository repository)
                 Date = certDate.Value,
             });
         }
+
+        foreach (var field in items.CustomFields ?? [])
+            profile.CustomFields.Add(new Yaam.Domain.Entities.CustomField
+            {
+                ProfileId = profile.Id,
+                Label = field.Label,
+                Value = field.Value,
+            });
 
         await repository.UpdateAsync(cancellationToken);
         return ProfileMapper.ToDto(profile);

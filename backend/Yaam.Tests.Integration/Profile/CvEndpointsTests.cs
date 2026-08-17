@@ -56,6 +56,7 @@ public class CvEndpointsTests(ApiFactory factory)
                 skills = new[] { "C#" },
                 languages = Array.Empty<object>(),
                 certifications = Array.Empty<object>(),
+                customFields = Array.Empty<object>(),
             },
             mode = "Add",
         };
@@ -83,6 +84,7 @@ public class CvEndpointsTests(ApiFactory factory)
                 skills = new[] { "Pascal" },
                 languages = Array.Empty<object>(),
                 certifications = Array.Empty<object>(),
+                customFields = Array.Empty<object>(),
             },
             mode = "Add",
         });
@@ -98,6 +100,7 @@ public class CvEndpointsTests(ApiFactory factory)
                 skills = new[] { "C#" },
                 languages = Array.Empty<object>(),
                 certifications = Array.Empty<object>(),
+                customFields = Array.Empty<object>(),
             },
             mode = "Replace",
         });

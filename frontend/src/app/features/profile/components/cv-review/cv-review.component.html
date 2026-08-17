@@ -176,6 +176,27 @@
     }
   </section>
 
+  <!-- Custom Fields section -->
+  @if (customFields.length > 0) {
+    <section class="flex flex-col gap-2">
+      <h3 class="font-semibold text-base">Other Information</h3>
+      @for (item of customFields; track $index) {
+        <label class="flex items-center gap-3 cursor-pointer">
+          <input
+            type="checkbox"
+            class="checkbox"
+            [checked]="item.checked"
+            (change)="toggleCustomField($index)"
+          />
+          <span>
+            <span class="font-medium">{{ item.data.label }}</span>
+            <span class="text-sm opacity-60">: {{ item.data.value }}</span>
+          </span>
+        </label>
+      }
+    </section>
+  }
+
   <!-- Footer -->
   <div class="flex justify-end gap-2 pt-2">
     <button class="btn btn-ghost" type="button" (click)="cancelled.emit()">Cancel</button>

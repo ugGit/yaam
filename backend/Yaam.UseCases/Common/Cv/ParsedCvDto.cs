@@ -6,7 +6,8 @@ public record ParsedCvDto(
     List<ParsedEducationDto> Educations,
     List<string> Skills,
     List<ParsedLanguageDto> Languages,
-    List<ParsedCertificationDto> Certifications);
+    List<ParsedCertificationDto> Certifications,
+    List<ParsedCustomFieldDto> CustomFields);
 
 public record ParsedInfoDto(
     string? FirstName,
@@ -40,3 +41,7 @@ public record ParsedCertificationDto(
     string Name,
     string? Issuer,
     string? Date);
+
+public record ParsedCustomFieldDto(
+    string Label,
+    string Value);

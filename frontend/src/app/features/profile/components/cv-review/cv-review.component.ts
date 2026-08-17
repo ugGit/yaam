@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {
   ParsedCvData,
   ParsedCertificationData,
+  ParsedCustomFieldData,
   ParsedEducationData,
   ParsedLanguageData,
   ParsedWorkExperienceData,
@@ -40,6 +41,7 @@ export class CvReviewComponent implements OnInit {
   private readonly _languages = signal<CheckedItem<ParsedLanguageData>[]>([]);
   private readonly _certifications = signal<CheckedItem<ParsedCertificationData>[]>([]);
   private readonly _skills = signal<CheckedItem<string>[]>([]);
+  private readonly _customFields = signal<CheckedItem<ParsedCustomFieldData>[]>([]);
 
   protected get workExperiences(): CheckedItem<ParsedWorkExperienceData>[] {
     return this._workExperiences();
@@ -56,6 +58,9 @@ export class CvReviewComponent implements OnInit {
   protected get skills(): CheckedItem<string>[] {
     return this._skills();
   }
+  protected get customFields(): CheckedItem<ParsedCustomFieldData>[] {
+    return this._customFields();
+  }
 
   ngOnInit(): void {
     const data = this.parsedData();
@@ -64,6 +69,7 @@ export class CvReviewComponent implements OnInit {
     this._languages.set(data.languages.map((item) => ({ checked: true, data: item })));
     this._certifications.set(data.certifications.map((item) => ({ checked: true, data: item })));
     this._skills.set(data.skills.map((item) => ({ checked: true, data: item })));
+    this._customFields.set(data.customFields.map((item) => ({ checked: true, data: item })));
   }
 
   protected toggleWorkExperience(index: number): void {
@@ -94,6 +100,12 @@ export class CvReviewComponent implements OnInit {
     const items = [...this._skills()];
     items[index] = { ...items[index], checked: !items[index].checked };
     this._skills.set(items);
+  }
+
+  protected toggleCustomField(index: number): void {
+    const items = [...this._customFields()];
+    items[index] = { ...items[index], checked: !items[index].checked };
+    this._customFields.set(items);
   }
 
   protected onConfirm(): void {
@@ -130,6 +142,9 @@ export class CvReviewComponent implements OnInit {
         .filter((item) => item.checked)
         .map((item) => item.data),
       certifications: this._certifications()
+        .filter((item) => item.checked)
+        .map((item) => item.data),
+      customFields: this._customFields()
         .filter((item) => item.checked)
         .map((item) => item.data),
     };

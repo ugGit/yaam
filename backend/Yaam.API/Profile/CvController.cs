@@ -55,7 +55,8 @@ public record ParsedCvData(
     List<ParsedEducationData> Educations,
     List<string> Skills,
     List<ParsedLanguageData> Languages,
-    List<ParsedCertificationData> Certifications);
+    List<ParsedCertificationData> Certifications,
+    List<ParsedCustomFieldData> CustomFields);
 
 public record ParsedInfoData(
     string? FirstName,
@@ -82,3 +83,5 @@ public record ParsedEducationData(
 public record ParsedLanguageData(string Name, string Proficiency);
 
 public record ParsedCertificationData(string Name, string? Issuer, string? Date);
+
+public record ParsedCustomFieldData(string Label, string Value);

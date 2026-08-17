@@ -17,6 +17,7 @@ export * from './languageInputModel';
 export * from './languageProficiency';
 export * from './languageViewModel';
 export * from './parsedCertificationData';
+export * from './parsedCustomFieldData';
 export * from './parsedCvData';
 export * from './parsedCvViewModel';
 export * from './parsedEducationData';

@@ -14,7 +14,8 @@ internal static class CvDataMapper
             e.Institution, e.Degree, e.FieldOfStudy, e.StartDate, e.EndDate)).ToList(),
         dto.Skills,
         dto.Languages.Select(l => new ParsedLanguageData(l.Name, l.Proficiency)).ToList(),
-        dto.Certifications.Select(c => new ParsedCertificationData(c.Name, c.Issuer, c.Date)).ToList());
+        dto.Certifications.Select(c => new ParsedCertificationData(c.Name, c.Issuer, c.Date)).ToList(),
+        dto.CustomFields.Select(f => new ParsedCustomFieldData(f.Label, f.Value)).ToList());
 
     internal static ParsedCvDto ToDto(ParsedCvData data) => new(
         data.Info is null ? null : new ParsedInfoDto(
@@ -26,5 +27,6 @@ internal static class CvDataMapper
             e.Institution, e.Degree, e.FieldOfStudy, e.StartDate, e.EndDate)).ToList(),
         data.Skills,
         data.Languages.Select(l => new ParsedLanguageDto(l.Name, l.Proficiency)).ToList(),
-        data.Certifications.Select(c => new ParsedCertificationDto(c.Name, c.Issuer, c.Date)).ToList());
+        data.Certifications.Select(c => new ParsedCertificationDto(c.Name, c.Issuer, c.Date)).ToList(),
+        data.CustomFields.Select(f => new ParsedCustomFieldDto(f.Label, f.Value)).ToList());
 }

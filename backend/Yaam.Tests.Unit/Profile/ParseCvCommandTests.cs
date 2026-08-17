@@ -28,7 +28,7 @@ public class ParseCvCommandTests
         var samplePdf = CreateMinimalTextPdf();
         var expected = new ParsedCvDto(
             new ParsedInfoDto("Ada", "Lovelace", null, null, null, null),
-            [], [], ["C#"], [], []);
+            [], [], ["C#"], [], [], []);
         _parser.ParseAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(expected);
 

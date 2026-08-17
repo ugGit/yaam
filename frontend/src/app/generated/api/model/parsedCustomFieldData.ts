@@ -9,7 +9,8 @@
  */
 
 
-export interface UpdateApplicationNoteInputModel { 
-    body: string;
+export interface ParsedCustomFieldData { 
+    label: string;
+    value: string;
 }
 
