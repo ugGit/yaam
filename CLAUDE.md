@@ -77,3 +77,5 @@ Controller responses use a two-layer type model:
 - **API layer** (`Yaam.API/<Feature>/`): `*ViewModel` records are what controllers return. An API-layer mapper (e.g. `ApplicationViewModelMapper`, `ProfileViewModelMapper`) converts `*Dto` → `*ViewModel` inside the controller method.
 
 This separation means the API shape can evolve independently of the use-case internals.
+
+Each mapper lives in its own file (e.g. `ProfileViewModelMapper.cs`, `CvDataMapper.cs`) — never inline a mapper class inside a controller file.
