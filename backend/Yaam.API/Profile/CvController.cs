@@ -1,6 +1,5 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Yaam.UseCases.Common.Cv;
 using Yaam.UseCases.Profile.Commands;
 
 namespace Yaam.API.Profile;
