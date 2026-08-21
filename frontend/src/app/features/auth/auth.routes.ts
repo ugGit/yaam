@@ -18,4 +18,11 @@ export const AUTH_ROUTES: Routes = [
         (m) => m.ForgotPasswordComponent,
       ),
   },
+  {
+    path: 'update-password',
+    loadComponent: () =>
+      import('./pages/update-password/update-password.component').then(
+        (m) => m.UpdatePasswordComponent,
+      ),
+  },
 ];
