@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Yaam.Domain.Enums;
 using Yaam.UseCases.Profile.Commands;
@@ -12,6 +13,7 @@ using Yaam.UseCases.Profile.Queries;
 
 namespace Yaam.API.Profile;
 
+[Authorize]
 [ApiController]
 [Route("api/profile")]
 public class ProfileController(IMediator mediator) : ControllerBase

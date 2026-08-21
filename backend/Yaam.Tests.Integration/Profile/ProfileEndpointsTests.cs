@@ -9,7 +9,7 @@ namespace Yaam.Tests.Integration.Profile;
 [Collection("Integration")]
 public class ProfileEndpointsTests(ApiFactory factory)
 {
-    private readonly HttpClient _client = factory.CreateClient();
+    private readonly HttpClient _client = factory.CreateAuthenticatedClient();
 
     [Fact]
     public async Task GET_Profile_ReturnsProfile()

@@ -8,7 +8,7 @@ namespace Yaam.Tests.Integration.Profile;
 [Collection("Integration")]
 public class CvEndpointsTests(ApiFactory factory)
 {
-    private readonly HttpClient _client = factory.CreateClient();
+    private readonly HttpClient _client = factory.CreateAuthenticatedClient();
 
     [Fact]
     public async Task POST_CvParse_ValidPdf_ReturnsParsedData()

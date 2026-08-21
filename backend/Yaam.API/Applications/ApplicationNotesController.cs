@@ -1,9 +1,11 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Yaam.UseCases.Applications.Commands.Notes;
 
 namespace Yaam.API.Applications;
 
+[Authorize]
 [ApiController]
 [Route("api/applications/{applicationId:guid}/notes")]
 public class ApplicationNotesController(IMediator mediator) : ControllerBase
