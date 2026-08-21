@@ -6,7 +6,9 @@
       <h2 class="card-title text-lg mb-4">Change password</h2>
 
       @if (success()) {
-        <div class="alert alert-success mb-4">Password updated. Other sessions have been signed out.</div>
+        <div class="alert alert-success mb-4">
+          Password updated. Other sessions have been signed out.
+        </div>
       }
 
       @if (error()) {
@@ -32,7 +34,9 @@
           </div>
           @if (fields.password().touched() && fields.password().errors().length) {
             <div class="label">
-              <span class="label-text-alt text-error">{{ fields.password().errors()[0].message }}</span>
+              <span class="label-text-alt text-error">{{
+                fields.password().errors()[0].message
+              }}</span>
             </div>
           }
         </div>
@@ -50,7 +54,9 @@
           />
           @if (fields.confirmPassword().touched() && fields.confirmPassword().errors().length) {
             <div class="label">
-              <span class="label-text-alt text-error">{{ fields.confirmPassword().errors()[0].message }}</span>
+              <span class="label-text-alt text-error">{{
+                fields.confirmPassword().errors()[0].message
+              }}</span>
             </div>
           }
         </div>

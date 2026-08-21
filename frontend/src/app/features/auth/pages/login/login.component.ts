@@ -35,8 +35,7 @@ export class LoginComponent {
           this.error.set('Invalid email or password.');
           return;
         }
-        const returnUrl =
-          this.route.snapshot.queryParamMap.get('returnUrl') ?? '/applications';
+        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? '/applications';
         this.router.navigateByUrl(returnUrl);
       } finally {
         this.submitting.set(false);

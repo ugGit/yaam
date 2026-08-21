@@ -21,7 +21,9 @@
           />
           @if (fields.email().touched() && fields.email().errors().length) {
             <div class="label">
-              <span class="label-text-alt text-error">{{ fields.email().errors()[0].message }}</span>
+              <span class="label-text-alt text-error">{{
+                fields.email().errors()[0].message
+              }}</span>
             </div>
           }
         </div>
@@ -44,7 +46,9 @@
           </div>
           @if (fields.password().touched() && fields.password().errors().length) {
             <div class="label">
-              <span class="label-text-alt text-error">{{ fields.password().errors()[0].message }}</span>
+              <span class="label-text-alt text-error">{{
+                fields.password().errors()[0].message
+              }}</span>
             </div>
           }
         </div>
@@ -62,7 +66,9 @@
           />
           @if (fields.confirmPassword().touched() && fields.confirmPassword().errors().length) {
             <div class="label">
-              <span class="label-text-alt text-error">{{ fields.confirmPassword().errors()[0].message }}</span>
+              <span class="label-text-alt text-error">{{
+                fields.confirmPassword().errors()[0].message
+              }}</span>
             </div>
           }
         </div>
