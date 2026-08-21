@@ -108,6 +108,7 @@ public class NoOpCvParser : ICvParser
 
 public static class TestTokenHelper
 {
+    // PostConfigure<JwtBearerOptions> in ApiFactory uses these constants as the source of truth; appsettings.Test.json Supabase section is kept for documentation only.
     internal const string Secret = "test-jwt-secret-minimum-32-chars-long!!";
     internal const string Issuer = "https://test.supabase.co/auth/v1";
     internal const string Audience = "authenticated";
