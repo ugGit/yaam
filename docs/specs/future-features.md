@@ -2,6 +2,17 @@
 
 Rough sketches only — not committed, not scoped. Revisit after MVP.
 
+## CV Parsing — Inline Editing in Review Screen
+- The review screen currently shows checkboxes only; users cannot edit extracted values before applying
+- Add editable inputs (text inputs for name/title/company/dates, textareas for descriptions) to each row in the cv-review component
+- When the user saves, the edited values — not the AI's originals — are what get stored
+- Applies to all 6 section types: Info, Work Experience, Education, Skills, Languages, Certifications
+
+## CV Parsing — Scanned PDF Support (Docling)
+- PdfPig (used in MVP) only extracts text from text-based PDFs; scanned/image PDFs yield nothing
+- Replace or wrap the extraction step with [Docling](https://github.com/DS4SD/docling) (IBM, MIT), which handles OCR, scanned documents, and complex layouts
+- Docling runs as a sidecar service or can be called via its Python SDK; the `ICvParser` abstraction in the use-case layer means the swap is localised to the infrastructure implementation
+
 ## Browser Plugin (Auto-fill)
 - Auto-fill job application forms using profile data
 - One-click job saving from job board pages (LinkedIn, Indeed, jobs.ch, etc.) — saves title, company, URL, and raw job description into a new application draft; standard feature in Teal, Prentus, Simplify, and JobOps
