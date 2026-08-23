@@ -9,7 +9,7 @@ export class AuthService {
   readonly isAuthenticated = computed(() => this.session() !== null);
 
   constructor() {
-    this.supabase = createClient(environment.supabaseUrl, environment.supabaseAnonKey);
+    this.supabase = createClient(environment.supabaseUrl, environment.supabasePublishableKey);
     this.supabase.auth.getSession().then(({ data }) => {
       this.session.set(data.session);
     });
