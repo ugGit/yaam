@@ -1,7 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Text;
+using System.Security.Cryptography;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -59,13 +59,12 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
             services.PostConfigure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
             {
+                options.Authority = null;
                 options.MapInboundClaims = false;
-                var key = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(TestTokenHelper.Secret));
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = key,
+                    IssuerSigningKey = TestTokenHelper.PublicKey,
                     ValidateIssuer = true,
                     ValidIssuer = TestTokenHelper.Issuer,
                     ValidateAudience = true,
@@ -108,15 +107,16 @@ public class NoOpCvParser : ICvParser
 
 public static class TestTokenHelper
 {
-    // PostConfigure<JwtBearerOptions> in ApiFactory uses these constants as the source of truth; appsettings.Test.json Supabase section is kept for documentation only.
-    internal const string Secret = "test-jwt-secret-minimum-32-chars-long!!";
     internal const string Issuer = "https://test.supabase.co/auth/v1";
     internal const string Audience = "authenticated";
 
+    private static readonly RSA Rsa = RSA.Create(2048);
+    private static readonly RsaSecurityKey SigningKey = new(Rsa);
+    internal static readonly RsaSecurityKey PublicKey = new(Rsa.ExportParameters(includePrivateParameters: false));
+
     public static string GenerateToken(Guid userId)
     {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Secret));
-        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var credentials = new SigningCredentials(SigningKey, SecurityAlgorithms.RsaSha256);
         var token = new JwtSecurityToken(
             issuer: Issuer,
             audience: Audience,
