@@ -7,7 +7,7 @@
         <div class="alert alert-error mb-2">{{ error() }}</div>
       }
 
-      <form [formRoot]="fields" (ngSubmit)="onSubmit()">
+      <form [formRoot]="fields" (submit)="onSubmit()">
         <div class="form-control mb-3">
           <label class="label" for="email">
             <span class="label-text">Email</span>
