@@ -15,6 +15,7 @@ export class RegisterComponent {
 
   protected readonly submitting = signal(false);
   protected readonly error = signal<string | null>(null);
+  protected readonly registeredEmail = signal<string | null>(null);
 
   protected readonly formModel = signal({ email: '', password: '', confirmPassword: '' });
 
@@ -47,12 +48,16 @@ export class RegisterComponent {
       this.error.set(null);
       try {
         const model = this.formModel();
-        const { error } = await this.auth.signUp(model.email, model.password);
+        const { data, error } = await this.auth.signUp(model.email, model.password);
         if (error) {
           this.error.set(error.message);
           return;
         }
-        this.router.navigateByUrl('/profile');
+        if (data.session) {
+          this.router.navigateByUrl('/profile');
+        } else {
+          this.registeredEmail.set(model.email);
+        }
       } finally {
         this.submitting.set(false);
       }
