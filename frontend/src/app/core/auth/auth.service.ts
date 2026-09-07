@@ -10,12 +10,14 @@ export class AuthService {
 
   constructor() {
     this.supabase = createClient(environment.supabaseUrl, environment.supabasePublishableKey);
-    this.supabase.auth.getSession().then(({ data }) => {
-      this.session.set(data.session);
-    });
     this.supabase.auth.onAuthStateChange((_, session) => {
       this.session.set(session);
     });
+  }
+
+  async initialize(): Promise<void> {
+    const { data } = await this.supabase.auth.getSession();
+    this.session.set(data.session);
   }
 
   signIn(email: string, password: string) {

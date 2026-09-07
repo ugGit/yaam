@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormField, FormRoot, form, required, validate, submit } from '@angular/forms/signals';
 import { AuthService } from '../../../../core/auth/auth.service';
 
@@ -10,6 +11,7 @@ import { AuthService } from '../../../../core/auth/auth.service';
 })
 export class AccountSettingsComponent {
   private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
 
   protected readonly submitting = signal(false);
   protected readonly success = signal(false);
@@ -38,6 +40,11 @@ export class AccountSettingsComponent {
       return confirm !== password ? { kind: 'mismatch', message: 'Passwords do not match.' } : null;
     });
   });
+
+  protected async signOut(): Promise<void> {
+    await this.auth.signOut();
+    this.router.navigateByUrl('/auth/login');
+  }
 
   protected async onSubmit(): Promise<void> {
     await submit(this.fields, async () => {
