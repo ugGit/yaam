@@ -1,0 +1,105 @@
+<div class="min-h-screen flex items-center justify-center bg-base-200">
+  <div class="card w-full max-w-sm bg-base-100 shadow-xl">
+    <div class="card-body">
+      @if (registeredEmail()) {
+        <h1 class="card-title text-2xl justify-center mb-2">Check your email</h1>
+        <p class="text-center text-sm text-base-content/70 mt-2">
+          We sent a confirmation link to<br />
+          <strong>{{ registeredEmail() }}</strong>
+        </p>
+        <p class="text-center text-sm text-base-content/70 mt-2">
+          Click the link in the email to activate your account.
+        </p>
+        <div class="mt-6 text-center">
+          <a routerLink="/auth/login" class="link link-primary text-sm">Back to sign in</a>
+        </div>
+      } @else {
+        <h1 class="card-title text-2xl justify-center mb-2">Create account</h1>
+
+        @if (error()) {
+          <div class="alert alert-error mb-2">{{ error() }}</div>
+        }
+
+        <form [formRoot]="fields" (submit)="onSubmit()">
+          <div class="form-control mb-3">
+            <label class="label" for="email">
+              <span class="label-text">Email</span>
+            </label>
+            <input
+              id="email"
+              [formField]="fields.email"
+              type="email"
+              autocomplete="email"
+              class="input input-bordered w-full"
+            />
+            @if (fields.email().touched() && fields.email().errors().length) {
+              <div class="label">
+                <span class="label-text-alt text-error">{{
+                  fields.email().errors()[0].message
+                }}</span>
+              </div>
+            }
+          </div>
+
+          <div class="form-control mb-3">
+            <label class="label" for="password">
+              <span class="label-text">Password</span>
+            </label>
+            <input
+              id="password"
+              [formField]="fields.password"
+              type="password"
+              autocomplete="new-password"
+              class="input input-bordered w-full"
+            />
+            <div class="label">
+              <span class="label-text-alt text-base-content/60">
+                Min 12 characters, at least one number or special character
+              </span>
+            </div>
+            @if (fields.password().touched() && fields.password().errors().length) {
+              <div class="label">
+                <span class="label-text-alt text-error">{{
+                  fields.password().errors()[0].message
+                }}</span>
+              </div>
+            }
+          </div>
+
+          <div class="form-control mb-4">
+            <label class="label" for="confirmPassword">
+              <span class="label-text">Confirm password</span>
+            </label>
+            <input
+              id="confirmPassword"
+              [formField]="fields.confirmPassword"
+              type="password"
+              autocomplete="new-password"
+              class="input input-bordered w-full"
+            />
+            @if (fields.confirmPassword().touched() && fields.confirmPassword().errors().length) {
+              <div class="label">
+                <span class="label-text-alt text-error">{{
+                  fields.confirmPassword().errors()[0].message
+                }}</span>
+              </div>
+            }
+          </div>
+
+          <button type="submit" class="btn btn-primary w-full" [disabled]="submitting()">
+            @if (submitting()) {
+              <span class="loading loading-spinner loading-sm"></span>
+            }
+            Create account
+          </button>
+        </form>
+
+        <div class="divider"></div>
+        <p class="text-center text-sm">
+          Already have an account?
+          <a routerLink="/auth/login" class="link link-primary">Sign in</a>
+        </p>
+      }
+    </div>
+  </div>
+</div>

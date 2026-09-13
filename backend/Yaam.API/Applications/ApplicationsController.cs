@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Yaam.Domain.Common;
 using Yaam.Domain.Enums;
@@ -7,6 +8,7 @@ using Yaam.UseCases.Applications.Queries;
 
 namespace Yaam.API.Applications;
 
+[Authorize]
 [ApiController]
 [Route("api/applications")]
 public class ApplicationsController(IMediator mediator) : ControllerBase

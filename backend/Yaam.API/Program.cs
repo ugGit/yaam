@@ -12,6 +12,7 @@ builder.Services.AddInfrastructure(
     builder.Configuration.GetConnectionString("DefaultConnection")
         ?? throw new InvalidOperationException("Connection string 'DefaultConnection' is required."),
     builder.Configuration);
+builder.Services.AddYaamAuthentication(builder.Configuration);
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -44,6 +45,7 @@ app.UseExceptionHandler();
 app.UseStatusCodePages();
 app.UseHttpsRedirection();
 app.UseCors("Angular");
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 

@@ -14,7 +14,7 @@ Every MVP feature serves this loop. Nothing outside it ships in v1.
 - Registration with email + password (12 char min, complexity required)
 - Login with JWT auth (1h access token, 7d refresh token)
 - Password reset via email
-- Account settings: notification email, change password
+- Account settings: change password
 - Account deletion (full data wipe — GDPR)
 - Detailed spec: `2026-07-08-account-management.md`
 

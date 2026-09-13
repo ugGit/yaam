@@ -9,7 +9,7 @@ namespace Yaam.Tests.Integration.Reminders;
 [Collection("Integration")]
 public class RemindersEndpointsTests(ApiFactory factory)
 {
-    private readonly HttpClient _client = factory.CreateClient();
+    private readonly HttpClient _client = factory.CreateAuthenticatedClient();
 
     [Fact]
     public async Task GET_Reminders_ReturnsEmptyList_WhenNoRemindersExist()

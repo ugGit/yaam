@@ -9,7 +9,15 @@ namespace Yaam.Tests.Integration.Applications;
 [Collection("Integration")]
 public class ApplicationsEndpointsTests(ApiFactory factory)
 {
-    private readonly HttpClient _client = factory.CreateClient();
+    private readonly HttpClient _client = factory.CreateAuthenticatedClient();
+
+    [Fact]
+    public async Task GET_Applications_Returns401_WhenNoTokenProvided()
+    {
+        var unauthenticated = factory.CreateClient();
+        var response = await unauthenticated.GetAsync("/api/applications");
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
 
     [Fact]
     public async Task GET_Applications_ReturnsEmptyList_WhenNoApplicationsExist()

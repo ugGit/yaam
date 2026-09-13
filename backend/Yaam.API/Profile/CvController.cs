@@ -1,9 +1,11 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Yaam.UseCases.Profile.Commands;
 
 namespace Yaam.API.Profile;
 
+[Authorize]
 [ApiController]
 [Route("api/profile/cv")]
 public class CvController(IMediator mediator) : ControllerBase

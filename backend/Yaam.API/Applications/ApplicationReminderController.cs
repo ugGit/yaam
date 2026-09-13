@@ -1,10 +1,12 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Yaam.API.Reminders;
 using Yaam.UseCases.Reminders.Commands;
 
 namespace Yaam.API.Applications;
 
+[Authorize]
 [ApiController]
 [Route("api/applications/{applicationId:guid}/reminder")]
 public class ApplicationReminderController(IMediator mediator) : ControllerBase

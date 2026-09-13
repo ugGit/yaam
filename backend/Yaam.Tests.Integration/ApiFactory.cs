@@ -1,9 +1,15 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.IdentityModel.Tokens;
 using Yaam.Infrastructure.Persistence;
 using Yaam.UseCases.Common.Cv;
 using Yaam.UseCases.Common.Email;
@@ -12,6 +18,16 @@ namespace Yaam.Tests.Integration;
 
 public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
+    public static readonly Guid TestUserId = Guid.Parse("00000000-0000-0000-0000-000000000001");
+
+    public HttpClient CreateAuthenticatedClient()
+    {
+        var client = CreateClient();
+        var token = TestTokenHelper.GenerateToken(TestUserId);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        return client;
+    }
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureAppConfiguration((_, config) =>
@@ -40,6 +56,22 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
             services.RemoveAll<ICvParser>();
             services.AddSingleton<ICvParser, NoOpCvParser>();
+
+            services.PostConfigure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
+            {
+                options.Authority = null;
+                options.MapInboundClaims = false;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = TestTokenHelper.PublicKey,
+                    ValidateIssuer = true,
+                    ValidIssuer = TestTokenHelper.Issuer,
+                    ValidateAudience = true,
+                    ValidAudience = TestTokenHelper.Audience,
+                    ValidateLifetime = true,
+                };
+            });
         });
     }
 
@@ -71,4 +103,26 @@ public class NoOpCvParser : ICvParser
             [new ParsedLanguageDto("English", "Native")],
             [],
             []));
+}
+
+public static class TestTokenHelper
+{
+    internal const string Issuer = "https://test.supabase.co/auth/v1";
+    internal const string Audience = "authenticated";
+
+    private static readonly RSA Rsa = RSA.Create(2048);
+    private static readonly RsaSecurityKey SigningKey = new(Rsa);
+    internal static readonly RsaSecurityKey PublicKey = new(Rsa.ExportParameters(includePrivateParameters: false));
+
+    public static string GenerateToken(Guid userId)
+    {
+        var credentials = new SigningCredentials(SigningKey, SecurityAlgorithms.RsaSha256);
+        var token = new JwtSecurityToken(
+            issuer: Issuer,
+            audience: Audience,
+            claims: [new Claim("sub", userId.ToString())],
+            expires: DateTime.UtcNow.AddHours(1),
+            signingCredentials: credentials);
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
 }

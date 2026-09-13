@@ -1,7 +1,11 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Yaam.Domain.Repositories;
+using Yaam.Domain.Services;
+using Yaam.Infrastructure.Auth;
 using Yaam.Infrastructure.Cv;
 using Yaam.Infrastructure.Email;
 using Yaam.Infrastructure.Persistence;
@@ -32,6 +36,34 @@ public static class DependencyInjection
         services.AddHttpClient<ICvParser, OllamaCvParser>(client =>
             client.Timeout = TimeSpan.FromSeconds(cvSettings.TimeoutSeconds));
         services.Configure<CvSettings>(configuration.GetSection("Cv"));
+
+        return services;
+    }
+
+    public static IServiceCollection AddYaamAuthentication(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        var settings = configuration.GetSection("Supabase").Get<SupabaseSettings>()
+            ?? throw new InvalidOperationException("Supabase configuration section is required.");
+
+        services.AddHttpContextAccessor();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.Authority = $"{settings.Url}/auth/v1";
+                options.MapInboundClaims = false;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = $"{settings.Url}/auth/v1",
+                    ValidateAudience = true,
+                    ValidAudience = "authenticated",
+                    ValidateLifetime = true,
+                };
+            });
 
         return services;
     }
