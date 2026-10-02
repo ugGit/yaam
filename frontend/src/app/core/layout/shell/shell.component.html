@@ -1,0 +1,41 @@
+<div class="drawer lg:drawer-open">
+  <input
+    #drawerToggle
+    id="app-drawer"
+    type="checkbox"
+    class="drawer-toggle"
+    aria-label="Toggle navigation"
+  />
+
+  <div class="drawer-content">
+    <div class="navbar bg-base-200 lg:hidden">
+      <label
+        for="app-drawer"
+        class="btn btn-square btn-ghost drawer-button"
+        aria-label="Open navigation"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          class="size-6"
+          aria-hidden="true"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </label>
+      <span class="text-lg font-bold">YAAM</span>
+    </div>
+
+    <main>
+      <router-outlet />
+    </main>
+  </div>
+
+  <div class="drawer-side">
+    <label for="app-drawer" aria-label="Close navigation" class="drawer-overlay"></label>
+    <app-sidebar (navigated)="drawerToggle.checked = false" />
+  </div>
+</div>
