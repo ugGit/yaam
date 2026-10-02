@@ -1,0 +1,40 @@
+<a routerLink="/applications" class="px-6 py-4 text-xl font-bold" (click)="navigated.emit()"
+  >YAAM</a
+>
+
+<nav class="flex flex-col grow" aria-label="Main navigation">
+  <ul class="menu w-full grow">
+    @for (item of mainItems; track item.route) {
+      <li [class.menu-disabled]="item.disabled">
+        @if (item.disabled) {
+          <span aria-disabled="true">
+            {{ item.label }}
+            <span class="badge badge-sm">Soon</span>
+          </span>
+        } @else {
+          <a
+            [routerLink]="item.route"
+            routerLinkActive="menu-active"
+            ariaCurrentWhenActive="page"
+            (click)="navigated.emit()"
+            >{{ item.label }}</a
+          >
+        }
+      </li>
+    }
+  </ul>
+
+  <ul class="menu w-full">
+    @for (item of secondaryItems; track item.route) {
+      <li>
+        <a
+          [routerLink]="item.route"
+          routerLinkActive="menu-active"
+          ariaCurrentWhenActive="page"
+          (click)="navigated.emit()"
+          >{{ item.label }}</a
+        >
+      </li>
+    }
+  </ul>
+</nav>
