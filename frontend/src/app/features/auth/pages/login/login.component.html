@@ -8,45 +8,33 @@
       }
 
       <form [formRoot]="fields" (submit)="onSubmit()">
-        <div class="form-control mb-3">
-          <label class="label" for="email">
-            <span class="label-text">Email</span>
-          </label>
+        <fieldset class="fieldset mb-3">
+          <label class="fieldset-legend" for="email">Email</label>
           <input
             id="email"
             [formField]="fields.email"
             type="email"
             autocomplete="email"
-            class="input input-bordered w-full"
+            class="input w-full"
           />
           @if (fields.email().touched() && fields.email().errors().length) {
-            <div class="label">
-              <span class="label-text-alt text-error">{{
-                fields.email().errors()[0].message
-              }}</span>
-            </div>
+            <p class="label text-error">{{ fields.email().errors()[0].message }}</p>
           }
-        </div>
+        </fieldset>
 
-        <div class="form-control mb-1">
-          <label class="label" for="password">
-            <span class="label-text">Password</span>
-          </label>
+        <fieldset class="fieldset mb-1">
+          <label class="fieldset-legend" for="password">Password</label>
           <input
             id="password"
             [formField]="fields.password"
             type="password"
             autocomplete="current-password"
-            class="input input-bordered w-full"
+            class="input w-full"
           />
           @if (fields.password().touched() && fields.password().errors().length) {
-            <div class="label">
-              <span class="label-text-alt text-error">{{
-                fields.password().errors()[0].message
-              }}</span>
-            </div>
+            <p class="label text-error">{{ fields.password().errors()[0].message }}</p>
           }
-        </div>
+        </fieldset>
 
         <div class="text-right mb-4">
           <a routerLink="/auth/forgot-password" class="link link-primary text-sm"

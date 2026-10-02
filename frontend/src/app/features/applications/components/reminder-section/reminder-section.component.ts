@@ -1,6 +1,6 @@
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormField, FormRoot, form, required, validate } from '@angular/forms/signals';
+import { FormField, FormRoot, form, min, required, validate } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
 import {
   ApplicationReminderService,
@@ -27,7 +27,23 @@ export class ReminderSectionComponent {
   protected readonly deletingReminderId = signal<string | null>(null);
   protected readonly saving = signal(false);
 
-  protected readonly addModel = signal({ delayDays: 7, customDays: '', note: '' });
+  protected readonly addModel = signal<{
+    presetDays: number;
+    customDays: number | null;
+    note: string;
+  }>({ presetDays: 7, customDays: null, note: '' });
+  protected readonly addFields = form(this.addModel, (fields) => {
+    min(fields.customDays, 1, { message: 'Custom delay must be at least 1 day.' });
+    validate(fields.customDays, (ctx) => {
+      const value = ctx.value();
+      return value !== null && !Number.isInteger(value)
+        ? { kind: 'integer', message: 'Custom delay must be a whole number of days.' }
+        : null;
+    });
+  });
+  protected readonly delayDays = computed(
+    () => this.addModel().customDays ?? this.addModel().presetDays,
+  );
 
   protected readonly rescheduleModel = signal({ newDueDate: '' });
   protected readonly rescheduleFields = form(this.rescheduleModel, (fields) => {
@@ -69,37 +85,28 @@ export class ReminderSectionComponent {
   }
 
   protected selectPreset(days: number): void {
-    this.addModel.update((m) => ({ ...m, delayDays: days, customDays: '' }));
-  }
-
-  protected onCustomDaysInput(event: Event): void {
-    const value = (event.target as HTMLInputElement).value;
-    const parsed = parseInt(value, 10);
-    if (!isNaN(parsed) && parsed > 0) {
-      this.addModel.update((m) => ({ ...m, delayDays: parsed, customDays: value }));
-    } else {
-      this.addModel.update((m) => ({ ...m, customDays: value }));
-    }
+    this.addModel.update((m) => ({ ...m, presetDays: days, customDays: null }));
   }
 
   protected previewDate(): string {
-    const days = this.addModel().delayDays;
-    if (!days || days < 1) return '';
+    if (this.addFields.customDays().errors().length) return '';
+    const days = this.delayDays();
     const d = new Date();
     d.setDate(d.getDate() + days);
     return d.toLocaleDateString('en-CH', { day: 'numeric', month: 'long', year: 'numeric' });
   }
 
   protected async setReminder(): Promise<void> {
-    const { delayDays, note } = this.addModel();
-    if (!delayDays || delayDays < 1) return;
+    if (this.addFields.customDays().errors().length) return;
+    const delayDays = this.delayDays();
+    const { note } = this.addModel();
     this.saving.set(true);
     try {
       await firstValueFrom(
         this.api.setReminder(this.applicationId(), { delayDays, note: note || null }),
       );
       this.showAddForm.set(false);
-      this.addModel.set({ delayDays: 7, customDays: '', note: '' });
+      this.addModel.set({ presetDays: 7, customDays: null, note: '' });
       this.reminderChanged.emit();
     } finally {
       this.saving.set(false);

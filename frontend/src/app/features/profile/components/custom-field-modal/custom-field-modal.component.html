@@ -3,35 +3,26 @@
     <h3 class="font-bold text-lg mb-4">{{ isEditMode ? 'Edit' : 'Add' }} Custom Field</h3>
 
     <div class="flex flex-col gap-3">
-      <div class="form-control">
-        <label class="label" for="cf-label"><span class="label-text">Label *</span></label>
-        <input
-          id="cf-label"
-          [formField]="fields.label"
-          type="text"
-          class="input input-bordered w-full"
-        />
+      <fieldset class="fieldset">
+        <label class="fieldset-legend" for="cf-label">Label *</label>
+        <input id="cf-label" [formField]="fields.label" type="text" class="input w-full" />
         @if (fields.label().touched() && fields.label().errors().length) {
-          <div class="label">
-            <span class="label-text-alt text-error">{{ fields.label().errors()[0].message }}</span>
-          </div>
+          <p class="label text-error">{{ fields.label().errors()[0].message }}</p>
         }
-      </div>
+      </fieldset>
 
-      <div class="form-control">
-        <label class="label" for="cf-value"><span class="label-text">Value *</span></label>
+      <fieldset class="fieldset">
+        <label class="fieldset-legend" for="cf-value">Value *</label>
         <textarea
           id="cf-value"
           [formField]="fields.value"
-          class="textarea textarea-bordered w-full"
+          class="textarea w-full"
           rows="3"
         ></textarea>
         @if (fields.value().touched() && fields.value().errors().length) {
-          <div class="label">
-            <span class="label-text-alt text-error">{{ fields.value().errors()[0].message }}</span>
-          </div>
+          <p class="label text-error">{{ fields.value().errors()[0].message }}</p>
         }
-      </div>
+      </fieldset>
     </div>
 
     <div class="modal-action">

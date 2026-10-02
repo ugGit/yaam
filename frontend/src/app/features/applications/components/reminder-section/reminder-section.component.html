@@ -67,12 +67,12 @@
         </div>
       } @else {
         <form [formRoot]="rescheduleFields" class="flex items-end gap-2 flex-wrap">
-          <div class="form-control">
-            <label for="reschedule-due-date" class="label label-text text-xs">New due date</label>
+          <fieldset class="fieldset">
+            <label for="reschedule-due-date" class="fieldset-legend text-xs">New due date</label>
             <input
               id="reschedule-due-date"
               type="date"
-              class="input input-bordered input-sm"
+              class="input input-sm"
               [min]="tomorrow()"
               [formField]="rescheduleFields.newDueDate"
             />
@@ -80,13 +80,11 @@
               rescheduleFields.newDueDate().touched() &&
               rescheduleFields.newDueDate().errors().length
             ) {
-              <div class="label">
-                <span class="label-text-alt text-error">{{
-                  rescheduleFields.newDueDate().errors()[0].message
-                }}</span>
-              </div>
+              <p class="label text-error">
+                {{ rescheduleFields.newDueDate().errors()[0].message }}
+              </p>
             }
-          </div>
+          </fieldset>
           <button
             type="button"
             class="btn btn-sm btn-primary"
@@ -104,13 +102,14 @@
   }
 
   @if (showAddForm()) {
-    <div class="card bg-base-200 p-4 space-y-3">
+    <form [formRoot]="addFields" class="card bg-base-200 p-4 space-y-3">
       <div class="flex gap-2 flex-wrap">
         @for (days of presetDays; track days) {
           <button
+            type="button"
             class="btn btn-sm"
-            [class.btn-primary]="addModel().delayDays === days && !addModel().customDays"
-            [class.btn-outline]="addModel().delayDays !== days || !!addModel().customDays"
+            [class.btn-primary]="addModel().presetDays === days && addModel().customDays === null"
+            [class.btn-outline]="addModel().presetDays !== days || addModel().customDays !== null"
             (click)="selectPreset(days)"
           >
             {{ days }} days
@@ -118,36 +117,42 @@
         }
         <input
           type="number"
-          class="input input-bordered input-sm w-24"
+          class="input input-sm w-24"
           placeholder="Custom"
-          min="1"
-          [value]="addModel().customDays"
-          (input)="onCustomDaysInput($event)"
+          aria-label="Custom delay in days"
+          [formField]="addFields.customDays"
         />
       </div>
+
+      @if (addFields.customDays().errors().length) {
+        <p class="text-xs text-error">{{ addFields.customDays().errors()[0].message }}</p>
+      }
 
       @if (previewDate()) {
         <p class="text-xs text-base-content/60">Reminder due: {{ previewDate() }}</p>
       }
 
       <textarea
-        class="textarea textarea-bordered w-full text-sm"
+        class="textarea w-full text-sm"
         rows="2"
         placeholder="Optional note (e.g. 'Call recruiter by EOD')"
-        [value]="addModel().note"
-        (input)="addModel.update((m) => ({ ...m, note: $any($event.target).value }))"
+        aria-label="Reminder note"
+        [formField]="addFields.note"
       ></textarea>
 
       <div class="flex gap-2 justify-end">
-        <button class="btn btn-sm btn-ghost" (click)="showAddForm.set(false)">Cancel</button>
+        <button type="button" class="btn btn-sm btn-ghost" (click)="showAddForm.set(false)">
+          Cancel
+        </button>
         <button
+          type="button"
           class="btn btn-sm btn-primary"
-          [disabled]="saving() || addModel().delayDays < 1"
+          [disabled]="saving() || !!addFields.customDays().errors().length"
           (click)="setReminder()"
         >
           Save reminder
         </button>
       </div>
-    </div>
+    </form>
   }
 </div>

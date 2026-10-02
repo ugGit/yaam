@@ -21,18 +21,18 @@
       }
     </div>
 
-    <div class="form-control">
-      <label class="label" for="newSkill"><span class="label-text">Add a skill</span></label>
+    <fieldset class="fieldset">
+      <label class="fieldset-legend" for="newSkill">Add a skill</label>
       <input
         id="newSkill"
         [formField]="newSkillFields.newSkill"
         type="text"
-        class="input input-bordered w-full"
+        class="input w-full"
         placeholder="Type a skill and press Enter"
         (keydown.enter)="onAddSkill($event)"
         (keydown.comma)="onAddSkill($event)"
       />
-    </div>
+    </fieldset>
 
     <div class="modal-action">
       <form method="dialog">
