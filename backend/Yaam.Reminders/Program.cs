@@ -3,6 +3,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Yaam.Reminders.Common;
+using Yaam.Reminders.Notifications;
 using Yaam.Reminders.Persistence;
 using Yaam.ServiceDefaults.Authentication;
 
@@ -27,6 +28,10 @@ builder.Services.AddOpenApi();
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddSingleton(TimeProvider.System);
+
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Email"));
+builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
+builder.Services.AddHostedService<ReminderNotificationService>();
 
 var app = builder.Build();
 

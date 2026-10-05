@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using Yaam.Reminders.Domain;
+using Yaam.Reminders.Notifications;
 using Yaam.Reminders.Persistence;
 
 namespace Yaam.Reminders.Tests;
@@ -17,6 +19,8 @@ namespace Yaam.Reminders.Tests;
 public class RemindersApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     public static readonly Guid TestUserId = Guid.Parse("00000000-0000-0000-0000-000000000001");
+
+    public CapturingEmailSender EmailSender { get; } = new();
 
     public HttpClient CreateAuthenticatedClient()
     {
@@ -67,6 +71,12 @@ public class RemindersApiFactory : WebApplicationFactory<Program>, IAsyncLifetim
                     ?? throw new InvalidOperationException(
                         "Test connection string 'DefaultConnection' not found in appsettings.Test.json.")));
 
+            services.RemoveAll<IEmailSender>();
+            services.AddSingleton<IEmailSender>(EmailSender);
+
+            var notificationJob = services.Single(d => d.ImplementationType == typeof(ReminderNotificationService));
+            services.Remove(notificationJob);
+
             services.PostConfigure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
             {
                 options.Authority = null;
@@ -94,6 +104,29 @@ public class RemindersApiFactory : WebApplicationFactory<Program>, IAsyncLifetim
     }
 
     public new Task DisposeAsync() => Task.CompletedTask;
+}
+
+public record SentEmail(string To, string Subject, string Body);
+
+public class CapturingEmailSender : IEmailSender
+{
+    private readonly List<SentEmail> _sent = [];
+
+    public IReadOnlyList<SentEmail> Sent
+    {
+        get { lock (_sent) return _sent.ToList(); }
+    }
+
+    public void Clear()
+    {
+        lock (_sent) _sent.Clear();
+    }
+
+    public Task SendAsync(string to, string subject, string textBody, CancellationToken cancellationToken)
+    {
+        lock (_sent) _sent.Add(new SentEmail(to, subject, textBody));
+        return Task.CompletedTask;
+    }
 }
 
 public static class TestTokenHelper
