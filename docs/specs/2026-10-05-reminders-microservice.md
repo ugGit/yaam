@@ -80,8 +80,9 @@ One Postgres server hosts two databases. Each service has its own connection str
 Shared integration-event contracts, referenced by the monolith and Reminders.
 
 ```csharp
+// Trace context travels in the AMQP "traceparent" header, not in the envelope.
 public sealed record MessageEnvelope(Guid MessageId, string Type, DateTimeOffset OccurredAt,
-                                     string? TraceParent, JsonElement Payload);
+                                     JsonElement Payload);
 
 public sealed record ApplicationUpserted(Guid ApplicationId, long Version, string CompanyName,
                                          string Role, DateOnly? DateApplied, string? ContactName);
@@ -150,7 +151,7 @@ The handler logic is a plain class callable without RabbitMQ (for tests).
 
 ### `Yaam.Gateway` (new, YARP)
 
-- Port 5000. Routes live in config only:
+- Port 5100 (macOS AirPlay Receiver occupies 5000). Routes live in config only:
   - `/api/reminders/{**rest}` → Reminders
   - `/api/{**rest}` → monolith
 - Forwards the `Authorization` header unchanged.
@@ -158,7 +159,7 @@ The handler logic is a plain class callable without RabbitMQ (for tests).
 
 ### Frontend
 
-- Provide `BASE_PATH = ''` so the generated clients use relative URLs. The ng dev proxy sends `/api` to the gateway (`http://localhost:5000`).
+- Provide `BASE_PATH = ''` so the generated clients use relative URLs. The ng dev proxy sends `/api` to the gateway (`http://localhost:5100`).
 - The generator runs twice:
   - monolith → `src/app/generated/api/` (as today)
   - Reminders → `src/app/generated/reminders-api/` (new npm script)
@@ -170,7 +171,7 @@ The handler logic is a plain class callable without RabbitMQ (for tests).
 
 - Add `rabbitmq:management` (5672, UI on 15672).
 - Add `grafana/otel-lgtm` (Grafana 3000, OTLP 4317/4318). Verify the image details before use.
-- Create the `yaam_reminders` database through a Postgres init script.
+- `yaam_reminders` is created by `dotnet ef database update` (Npgsql creates a missing database); no init script. Locally both services use the Postgres user `yaam` with separate databases and connection strings; in production each service gets its own role.
 - The .NET services run with `dotnet run`. A second Reminders replica is a second process on another port.
 
 ---
@@ -187,15 +188,15 @@ The handler logic is a plain class callable without RabbitMQ (for tests).
   - the consumer extracts it and continues the trace.
   - Expected result: one trace, with the outbox and queue delay visible as a gap.
 - **Metrics:**
-  - `outbox.pending` (gauge) and `outbox.oldest_pending_age_seconds` (gauge), the primary health signal of the pattern;
-  - consumer counters: `processed`, `duplicates_skipped`, `stale_ignored`, `dead_lettered`.
+  - `yaam.outbox.pending` (gauge) and `yaam.outbox.oldest_pending_age` (gauge, seconds), the primary health signal of the pattern;
+  - consumer counter `yaam.consumer.messages` with an `outcome` tag (`processed|duplicate|stale|ignored|failed`). Dead-lettering is observed in the RabbitMQ UI, not counted by the consumer.
 - Logs are structured and include trace and span IDs.
 
 ---
 
 ## Testing
 
-- **Reminders integration tests** (new `Yaam.Reminders.Tests.Integration`, WebApplicationFactory, real Postgres): the existing reminder endpoint tests, ported to the new routes.
+- **Reminders integration tests** (new `Yaam.Reminders.Tests` with `Unit/` and `Integration/` folders, WebApplicationFactory, real Postgres): the existing reminder endpoint tests, ported to the new routes.
 - **Consumer tests**, calling the handler directly with a real DB:
   - duplicate message → one effect;
   - v3 after v4 → ignored;
@@ -237,6 +238,19 @@ The handler logic is a plain class callable without RabbitMQ (for tests).
 **Interim state after Milestone 2:** reminders work, but snapshots are empty until Milestone 3. Creating a reminder returns 404 until the events flow. This is acceptable on a feature branch.
 
 ---
+
+## Refinements from Planning (2026-10-05)
+
+These came out of planning against the real code and take precedence over earlier sections:
+
+- **`Yaam.ServiceDefaults` class library.** Cross-cutting plumbing shared by all services: JWT auth, the RabbitMQ connection, OpenTelemetry. Never business code. Small pieces such as `ValidationBehavior` and `GlobalExceptionHandler` are copied into Reminders instead ("prefer duplication over coupling").
+- **No repository layer in Reminders.** Handlers use `RemindersDbContext` directly; the service boundary is the abstraction.
+- **`Application.Version` is an EF concurrency token.** A conflicting save surfaces as `ConflictException` → 409, so two concurrent edits can't emit the same version with different content.
+- **Routing keys** are `application.upserted` / `application.deleted`.
+- **The relay publishes with `mandatory: true`.** An unroutable message (no queue bound yet) fails the publish, and the outbox row stays pending instead of being silently dropped.
+- **Unknown event types** are acknowledged and recorded (tolerant reader). **Malformed payloads** throw and are dead-lettered.
+- **The Reminders API returns a single `ReminderViewModel`** (reminder + snapshot fields) from list, create and reschedule.
+- **The monolith drops `UseHttpsRedirection`.** TLS terminates at the edge.
 
 ## Decision Log (become ADRs in Milestone 0)
 
