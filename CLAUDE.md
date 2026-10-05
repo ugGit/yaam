@@ -6,13 +6,17 @@ For architectural decisions, patterns, and layer structure consult `docs/archite
 
 ## Generated files — never edit manually
 
-`frontend/src/app/generated/` is owned by the OpenAPI generator. Never edit any file under this path by hand.
+`frontend/src/app/generated/` is owned by the OpenAPI generator. Never edit any file under this path by hand. It holds one client per backend service:
+
+- `src/app/generated/api/` — monolith (`Yaam.API`, port 5231)
+- `src/app/generated/reminders-api/` — Reminders service (`Yaam.Reminders`, port 5240)
 
 To regenerate after adding or changing backend endpoints:
-1. Start the backend: `dotnet run --project backend/Yaam.API`
-2. From `frontend/`: `npm run generate:api`
+1. Start **both** services: `dotnet run --project backend/Yaam.API --launch-profile http` and `dotnet run --project backend/Yaam.Reminders`
+2. From `frontend/`: `rm -rf src/app/generated/api src/app/generated/reminders-api && npm run generate:api` (the generator never deletes stale files, so delete the output first)
+3. Format the output: `npx prettier --write "src/app/generated/**/*.{ts,json}"`
 
-The generator pulls the OpenAPI spec from the backend's live `/openapi/v1.json` endpoint and writes the Angular service + model files to `src/app/generated/api/`. All component imports referencing the generated path must be updated after regeneration if the output structure changes.
+The generator pulls each service's live `/openapi/v1.json` and writes the Angular service + model files. All component imports referencing the generated paths must be updated after regeneration if the output structure changes.
 
 ## Frontend — verify changes in the browser
 

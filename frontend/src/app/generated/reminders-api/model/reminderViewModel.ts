@@ -1,5 +1,5 @@
 /**
- * Yaam.API | v1
+ * Yaam.Reminders | v1
  *
  *
  *
@@ -7,7 +7,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ApplicationReminderViewModelDelayDays } from './applicationReminderViewModelDelayDays';
+import { CreateReminderInputModelDelayDays } from './createReminderInputModelDelayDays';
 
 export interface ReminderViewModel {
   id: string;
@@ -16,7 +16,7 @@ export interface ReminderViewModel {
   role: string;
   dateApplied: string | null;
   contactName: string | null;
-  delayDays: ApplicationReminderViewModelDelayDays;
+  delayDays: CreateReminderInputModelDelayDays;
   dueDate: string;
   note: string | null;
   notifiedAt: string | null;

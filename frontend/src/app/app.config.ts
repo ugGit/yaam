@@ -10,6 +10,7 @@ import { problemDetailsInterceptor } from './core/interceptors/problem-details.i
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { AuthService } from './core/auth/auth.service';
 import { BASE_PATH } from './generated/api';
+import { BASE_PATH as REMINDERS_BASE_PATH } from './generated/reminders-api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,6 +18,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor, problemDetailsInterceptor])),
     { provide: BASE_PATH, useValue: '' },
+    { provide: REMINDERS_BASE_PATH, useValue: '' },
     {
       provide: APP_INITIALIZER,
       useFactory: (auth: AuthService) => () => auth.initialize(),

@@ -85,11 +85,7 @@
 
       <div class="divider"></div>
 
-      <app-reminder-section
-        [applicationId]="app.id"
-        [reminders]="app.reminders"
-        (reminderChanged)="applicationResource.reload()"
-      />
+      <app-reminder-section [applicationId]="app.id" />
     </div>
 
     @if (deleteModalOpen()) {

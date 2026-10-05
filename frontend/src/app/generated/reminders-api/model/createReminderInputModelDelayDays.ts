@@ -1,5 +1,5 @@
 /**
- * Yaam.API | v1
+ * Yaam.Reminders | v1
  *
  *
  *
@@ -8,4 +8,4 @@
  * Do not edit the class manually.
  */
 
-export interface ApplicationReminderViewModelDelayDays {}
+export interface CreateReminderInputModelDelayDays {}

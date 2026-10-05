@@ -1,5 +1,5 @@
 /**
- * Yaam.API | v1
+ * Yaam.Reminders | v1
  *
  *
  *

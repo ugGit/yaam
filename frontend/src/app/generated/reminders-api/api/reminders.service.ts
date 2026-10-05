@@ -1,5 +1,5 @@
 /**
- * Yaam.API | v1
+ * Yaam.Reminders | v1
  *
  *
  *
@@ -23,25 +23,22 @@ import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
 // @ts-ignore
-import { ApplicationReminderViewModel } from '../model/applicationReminderViewModel';
+import { CreateReminderInputModel } from '../model/createReminderInputModel';
+// @ts-ignore
+import { ReminderViewModel } from '../model/reminderViewModel';
 // @ts-ignore
 import { RescheduleReminderInputModel } from '../model/rescheduleReminderInputModel';
-// @ts-ignore
-import { SetReminderInputModel } from '../model/setReminderInputModel';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
 import { BaseService } from '../api.base.service';
-import { ApplicationReminderServiceInterface } from './applicationReminder.serviceInterface';
+import { RemindersServiceInterface } from './reminders.serviceInterface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ApplicationReminderService
-  extends BaseService
-  implements ApplicationReminderServiceInterface
-{
+export class RemindersService extends BaseService implements RemindersServiceInterface {
   constructor(
     protected httpClient: HttpClient,
     @Optional() @Inject(BASE_PATH) basePath: string | string[],
@@ -51,44 +48,34 @@ export class ApplicationReminderService
   }
 
   /**
-   * @param applicationId
    * @param reminderId
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public completeReminder(
-    applicationId: string,
     reminderId: string,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
   ): Observable<any>;
   public completeReminder(
-    applicationId: string,
     reminderId: string,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
   ): Observable<HttpResponse<any>>;
   public completeReminder(
-    applicationId: string,
     reminderId: string,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
   ): Observable<HttpEvent<any>>;
   public completeReminder(
-    applicationId: string,
     reminderId: string,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
   ): Observable<any> {
-    if (applicationId === null || applicationId === undefined) {
-      throw new Error(
-        'Required parameter applicationId was null or undefined when calling completeReminder.',
-      );
-    }
     if (reminderId === null || reminderId === undefined) {
       throw new Error(
         'Required parameter reminderId was null or undefined when calling completeReminder.',
@@ -118,7 +105,7 @@ export class ApplicationReminderService
       }
     }
 
-    let localVarPath = `/api/applications/${this.configuration.encodeParam({ name: 'applicationId', value: applicationId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}/reminder/${this.configuration.encodeParam({ name: 'reminderId', value: reminderId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}/complete`;
+    let localVarPath = `/api/reminders/${this.configuration.encodeParam({ name: 'reminderId', value: reminderId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}/complete`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('patch', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -132,44 +119,131 @@ export class ApplicationReminderService
   }
 
   /**
-   * @param applicationId
+   * @param createReminderInputModel
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public createReminder(
+    createReminderInputModel: CreateReminderInputModel,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: {
+      httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json';
+      context?: HttpContext;
+      transferCache?: boolean;
+    },
+  ): Observable<ReminderViewModel>;
+  public createReminder(
+    createReminderInputModel: CreateReminderInputModel,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: {
+      httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json';
+      context?: HttpContext;
+      transferCache?: boolean;
+    },
+  ): Observable<HttpResponse<ReminderViewModel>>;
+  public createReminder(
+    createReminderInputModel: CreateReminderInputModel,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: {
+      httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json';
+      context?: HttpContext;
+      transferCache?: boolean;
+    },
+  ): Observable<HttpEvent<ReminderViewModel>>;
+  public createReminder(
+    createReminderInputModel: CreateReminderInputModel,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: {
+      httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json';
+      context?: HttpContext;
+      transferCache?: boolean;
+    },
+  ): Observable<any> {
+    if (createReminderInputModel === null || createReminderInputModel === undefined) {
+      throw new Error(
+        'Required parameter createReminderInputModel was null or undefined when calling createReminder.',
+      );
+    }
+
+    let localVarHeaders = this.defaultHeaders;
+
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ??
+      this.configuration.selectHeaderAccept(['text/plain', 'application/json', 'text/json']);
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+    }
+
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+    // to determine the Content-Type header
+    const consumes: string[] = ['application/json', 'text/json', 'application/*+json'];
+    const httpContentTypeSelected: string | undefined =
+      this.configuration.selectHeaderContentType(consumes);
+    if (httpContentTypeSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+    }
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/api/reminders`;
+    const { basePath, withCredentials } = this.configuration;
+    return this.httpClient.request<ReminderViewModel>('post', `${basePath}${localVarPath}`, {
+      context: localVarHttpContext,
+      body: createReminderInputModel,
+      responseType: <any>responseType_,
+      ...(withCredentials ? { withCredentials } : {}),
+      headers: localVarHeaders,
+      observe: observe,
+      transferCache: localVarTransferCache,
+      reportProgress: reportProgress,
+    });
+  }
+
+  /**
    * @param reminderId
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public deleteReminder(
-    applicationId: string,
     reminderId: string,
     observe?: 'body',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
   ): Observable<any>;
   public deleteReminder(
-    applicationId: string,
     reminderId: string,
     observe?: 'response',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
   ): Observable<HttpResponse<any>>;
   public deleteReminder(
-    applicationId: string,
     reminderId: string,
     observe?: 'events',
     reportProgress?: boolean,
     options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
   ): Observable<HttpEvent<any>>;
   public deleteReminder(
-    applicationId: string,
     reminderId: string,
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: { httpHeaderAccept?: undefined; context?: HttpContext; transferCache?: boolean },
   ): Observable<any> {
-    if (applicationId === null || applicationId === undefined) {
-      throw new Error(
-        'Required parameter applicationId was null or undefined when calling deleteReminder.',
-      );
-    }
     if (reminderId === null || reminderId === undefined) {
       throw new Error(
         'Required parameter reminderId was null or undefined when calling deleteReminder.',
@@ -199,7 +273,7 @@ export class ApplicationReminderService
       }
     }
 
-    let localVarPath = `/api/applications/${this.configuration.encodeParam({ name: 'applicationId', value: applicationId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}/reminder/${this.configuration.encodeParam({ name: 'reminderId', value: reminderId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}`;
+    let localVarPath = `/api/reminders/${this.configuration.encodeParam({ name: 'reminderId', value: reminderId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}`;
     const { basePath, withCredentials } = this.configuration;
     return this.httpClient.request<any>('delete', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
@@ -214,13 +288,101 @@ export class ApplicationReminderService
 
   /**
    * @param applicationId
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   */
+  public listReminders(
+    applicationId?: string,
+    observe?: 'body',
+    reportProgress?: boolean,
+    options?: {
+      httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json';
+      context?: HttpContext;
+      transferCache?: boolean;
+    },
+  ): Observable<Array<ReminderViewModel>>;
+  public listReminders(
+    applicationId?: string,
+    observe?: 'response',
+    reportProgress?: boolean,
+    options?: {
+      httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json';
+      context?: HttpContext;
+      transferCache?: boolean;
+    },
+  ): Observable<HttpResponse<Array<ReminderViewModel>>>;
+  public listReminders(
+    applicationId?: string,
+    observe?: 'events',
+    reportProgress?: boolean,
+    options?: {
+      httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json';
+      context?: HttpContext;
+      transferCache?: boolean;
+    },
+  ): Observable<HttpEvent<Array<ReminderViewModel>>>;
+  public listReminders(
+    applicationId?: string,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    options?: {
+      httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json';
+      context?: HttpContext;
+      transferCache?: boolean;
+    },
+  ): Observable<any> {
+    let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+    localVarQueryParameters = this.addToHttpParams(
+      localVarQueryParameters,
+      <any>applicationId,
+      'applicationId',
+    );
+
+    let localVarHeaders = this.defaultHeaders;
+
+    const localVarHttpHeaderAcceptSelected: string | undefined =
+      options?.httpHeaderAccept ??
+      this.configuration.selectHeaderAccept(['text/plain', 'application/json', 'text/json']);
+    if (localVarHttpHeaderAcceptSelected !== undefined) {
+      localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+    }
+
+    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+    const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+    let responseType_: 'text' | 'json' | 'blob' = 'json';
+    if (localVarHttpHeaderAcceptSelected) {
+      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+        responseType_ = 'text';
+      } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+        responseType_ = 'json';
+      } else {
+        responseType_ = 'blob';
+      }
+    }
+
+    let localVarPath = `/api/reminders`;
+    const { basePath, withCredentials } = this.configuration;
+    return this.httpClient.request<Array<ReminderViewModel>>('get', `${basePath}${localVarPath}`, {
+      context: localVarHttpContext,
+      params: localVarQueryParameters,
+      responseType: <any>responseType_,
+      ...(withCredentials ? { withCredentials } : {}),
+      headers: localVarHeaders,
+      observe: observe,
+      transferCache: localVarTransferCache,
+      reportProgress: reportProgress,
+    });
+  }
+
+  /**
    * @param reminderId
    * @param rescheduleReminderInputModel
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
   public rescheduleReminder(
-    applicationId: string,
     reminderId: string,
     rescheduleReminderInputModel: RescheduleReminderInputModel,
     observe?: 'body',
@@ -230,9 +392,8 @@ export class ApplicationReminderService
       context?: HttpContext;
       transferCache?: boolean;
     },
-  ): Observable<ApplicationReminderViewModel>;
+  ): Observable<ReminderViewModel>;
   public rescheduleReminder(
-    applicationId: string,
     reminderId: string,
     rescheduleReminderInputModel: RescheduleReminderInputModel,
     observe?: 'response',
@@ -242,9 +403,8 @@ export class ApplicationReminderService
       context?: HttpContext;
       transferCache?: boolean;
     },
-  ): Observable<HttpResponse<ApplicationReminderViewModel>>;
+  ): Observable<HttpResponse<ReminderViewModel>>;
   public rescheduleReminder(
-    applicationId: string,
     reminderId: string,
     rescheduleReminderInputModel: RescheduleReminderInputModel,
     observe?: 'events',
@@ -254,9 +414,8 @@ export class ApplicationReminderService
       context?: HttpContext;
       transferCache?: boolean;
     },
-  ): Observable<HttpEvent<ApplicationReminderViewModel>>;
+  ): Observable<HttpEvent<ReminderViewModel>>;
   public rescheduleReminder(
-    applicationId: string,
     reminderId: string,
     rescheduleReminderInputModel: RescheduleReminderInputModel,
     observe: any = 'body',
@@ -267,11 +426,6 @@ export class ApplicationReminderService
       transferCache?: boolean;
     },
   ): Observable<any> {
-    if (applicationId === null || applicationId === undefined) {
-      throw new Error(
-        'Required parameter applicationId was null or undefined when calling rescheduleReminder.',
-      );
-    }
     if (reminderId === null || reminderId === undefined) {
       throw new Error(
         'Required parameter reminderId was null or undefined when calling rescheduleReminder.',
@@ -315,132 +469,17 @@ export class ApplicationReminderService
       }
     }
 
-    let localVarPath = `/api/applications/${this.configuration.encodeParam({ name: 'applicationId', value: applicationId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}/reminder/${this.configuration.encodeParam({ name: 'reminderId', value: reminderId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}/reschedule`;
+    let localVarPath = `/api/reminders/${this.configuration.encodeParam({ name: 'reminderId', value: reminderId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}/reschedule`;
     const { basePath, withCredentials } = this.configuration;
-    return this.httpClient.request<ApplicationReminderViewModel>(
-      'patch',
-      `${basePath}${localVarPath}`,
-      {
-        context: localVarHttpContext,
-        body: rescheduleReminderInputModel,
-        responseType: <any>responseType_,
-        ...(withCredentials ? { withCredentials } : {}),
-        headers: localVarHeaders,
-        observe: observe,
-        transferCache: localVarTransferCache,
-        reportProgress: reportProgress,
-      },
-    );
-  }
-
-  /**
-   * @param applicationId
-   * @param setReminderInputModel
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public setReminder(
-    applicationId: string,
-    setReminderInputModel: SetReminderInputModel,
-    observe?: 'body',
-    reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json';
-      context?: HttpContext;
-      transferCache?: boolean;
-    },
-  ): Observable<ApplicationReminderViewModel>;
-  public setReminder(
-    applicationId: string,
-    setReminderInputModel: SetReminderInputModel,
-    observe?: 'response',
-    reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json';
-      context?: HttpContext;
-      transferCache?: boolean;
-    },
-  ): Observable<HttpResponse<ApplicationReminderViewModel>>;
-  public setReminder(
-    applicationId: string,
-    setReminderInputModel: SetReminderInputModel,
-    observe?: 'events',
-    reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json';
-      context?: HttpContext;
-      transferCache?: boolean;
-    },
-  ): Observable<HttpEvent<ApplicationReminderViewModel>>;
-  public setReminder(
-    applicationId: string,
-    setReminderInputModel: SetReminderInputModel,
-    observe: any = 'body',
-    reportProgress: boolean = false,
-    options?: {
-      httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json';
-      context?: HttpContext;
-      transferCache?: boolean;
-    },
-  ): Observable<any> {
-    if (applicationId === null || applicationId === undefined) {
-      throw new Error(
-        'Required parameter applicationId was null or undefined when calling setReminder.',
-      );
-    }
-    if (setReminderInputModel === null || setReminderInputModel === undefined) {
-      throw new Error(
-        'Required parameter setReminderInputModel was null or undefined when calling setReminder.',
-      );
-    }
-
-    let localVarHeaders = this.defaultHeaders;
-
-    const localVarHttpHeaderAcceptSelected: string | undefined =
-      options?.httpHeaderAccept ??
-      this.configuration.selectHeaderAccept(['text/plain', 'application/json', 'text/json']);
-    if (localVarHttpHeaderAcceptSelected !== undefined) {
-      localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-    }
-
-    const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
-
-    const localVarTransferCache: boolean = options?.transferCache ?? true;
-
-    // to determine the Content-Type header
-    const consumes: string[] = ['application/json', 'text/json', 'application/*+json'];
-    const httpContentTypeSelected: string | undefined =
-      this.configuration.selectHeaderContentType(consumes);
-    if (httpContentTypeSelected !== undefined) {
-      localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
-    }
-
-    let responseType_: 'text' | 'json' | 'blob' = 'json';
-    if (localVarHttpHeaderAcceptSelected) {
-      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-        responseType_ = 'text';
-      } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-        responseType_ = 'json';
-      } else {
-        responseType_ = 'blob';
-      }
-    }
-
-    let localVarPath = `/api/applications/${this.configuration.encodeParam({ name: 'applicationId', value: applicationId, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: 'uuid' })}/reminder`;
-    const { basePath, withCredentials } = this.configuration;
-    return this.httpClient.request<ApplicationReminderViewModel>(
-      'post',
-      `${basePath}${localVarPath}`,
-      {
-        context: localVarHttpContext,
-        body: setReminderInputModel,
-        responseType: <any>responseType_,
-        ...(withCredentials ? { withCredentials } : {}),
-        headers: localVarHeaders,
-        observe: observe,
-        transferCache: localVarTransferCache,
-        reportProgress: reportProgress,
-      },
-    );
+    return this.httpClient.request<ReminderViewModel>('patch', `${basePath}${localVarPath}`, {
+      context: localVarHttpContext,
+      body: rescheduleReminderInputModel,
+      responseType: <any>responseType_,
+      ...(withCredentials ? { withCredentials } : {}),
+      headers: localVarHeaders,
+      observe: observe,
+      transferCache: localVarTransferCache,
+      reportProgress: reportProgress,
+    });
   }
 }
