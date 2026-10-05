@@ -5,12 +5,10 @@ using Yaam.Domain.Repositories;
 using Yaam.Domain.Services;
 using Yaam.Infrastructure.Auth;
 using Yaam.Infrastructure.Cv;
-using Yaam.Infrastructure.Email;
 using Yaam.Infrastructure.Persistence;
 using Yaam.Infrastructure.Repositories;
 using Yaam.ServiceDefaults.Authentication;
 using Yaam.UseCases.Common.Cv;
-using Yaam.UseCases.Common.Email;
 
 namespace Yaam.Infrastructure;
 
@@ -26,10 +24,6 @@ public static class DependencyInjection
 
         services.AddScoped<IApplicationRepository, ApplicationRepository>();
         services.AddScoped<IProfileRepository, ProfileRepository>();
-        services.AddScoped<IReminderRepository, ReminderRepository>();
-
-        services.Configure<EmailSettings>(configuration.GetSection("Email"));
-        services.AddScoped<IEmailSender, SmtpEmailSender>();
 
         var cvSettings = configuration.GetSection("Cv").Get<CvSettings>() ?? new CvSettings();
         services.AddHttpClient<ICvParser, OllamaCvParser>(client =>

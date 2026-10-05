@@ -1,7 +1,6 @@
 using System.Text.Json.Serialization;
 using Scalar.AspNetCore;
 using Yaam.API;
-using Yaam.API.Reminders;
 using Yaam.Infrastructure;
 using Yaam.UseCases;
 
@@ -23,7 +22,6 @@ builder.Services.AddOpenApi();
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddSingleton(TimeProvider.System);
-builder.Services.AddHostedService<ReminderNotificationService>();
 
 builder.Services.AddCors(options =>
 {

@@ -12,7 +12,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using Yaam.Infrastructure.Persistence;
 using Yaam.UseCases.Common.Cv;
-using Yaam.UseCases.Common.Email;
 
 namespace Yaam.Tests.Integration;
 
@@ -51,9 +50,6 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
                     ?? throw new InvalidOperationException(
                         "Test connection string 'DefaultConnection' not found in appsettings.Test.json.")));
 
-            services.RemoveAll<IEmailSender>();
-            services.AddSingleton<IEmailSender, NoOpEmailSender>();
-
             services.RemoveAll<ICvParser>();
             services.AddSingleton<ICvParser, NoOpCvParser>();
 
@@ -84,12 +80,6 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
     }
 
     public new Task DisposeAsync() => Task.CompletedTask;
-}
-
-public class NoOpEmailSender : IEmailSender
-{
-    public Task SendAsync(string to, string subject, string textBody, CancellationToken cancellationToken)
-        => Task.CompletedTask;
 }
 
 public class NoOpCvParser : ICvParser
