@@ -1,4 +1,4 @@
-namespace Yaam.Infrastructure.Auth;
+namespace Yaam.ServiceDefaults.Authentication;
 
 public record SupabaseSettings
 {
