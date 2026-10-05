@@ -29,6 +29,10 @@ This is a learning project for a technical assessment (target stack: C#/.NET, Ku
 - Profile/CV extraction
 - `UserId` / multi-tenancy (still deferred, see account management Phase 2)
 - Migrating existing reminder data (local data is dev-only; Reminders starts empty)
+- **Rich domain models.** `Reminder` is ported as-is from the monolith: an anemic entity with public setters, and business rules in the handlers. Converting it to a rich model (factory method, `Reschedule`/`Complete`/`MarkNotified` methods with guard clauses, private setters) is deliberately deferred, so the extraction changes *where* code lives without also changing *how* it is modelled.
+  - Known gaps this leaves: a completed reminder can be rescheduled; completing twice overwrites `CompletedAt`; the rule "rescheduling clears `NotifiedAt`" lives only in `RescheduleReminderCommandHandler`.
+  - `ApplicationSnapshot` and `ProcessedMessage` are intentionally anemic: one is a read model, the other an infrastructure record.
+  - Rich entities are the prerequisite for the domain-event direction (see Future Direction).
 
 ---
 
@@ -267,6 +271,7 @@ These came out of planning against the real code and take precedence over earlie
 
 ## Future Direction
 
+- Convert `Reminder` into a rich domain model first. It is the prerequisite for raising domain events, because an entity with only setters has nowhere to raise them from. Expect tension with the Milestone 5 atomic claim (`UPDATE … WHERE NotifiedAt IS NULL`), which deliberately bypasses the entity for cross-replica atomicity. One resolution is optimistic concurrency on the entity.
 - Extracted services publish via **domain events**:
   - entities raise domain events;
   - `SaveChanges` collects them;

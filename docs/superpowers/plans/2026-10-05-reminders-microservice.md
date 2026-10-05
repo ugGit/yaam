@@ -65,6 +65,7 @@
   - Handlers return `*Dto`; controllers return `*ViewModel`, mapped by a mapper in its own file.
   - Settings classes use `{ get; init; }`.
 - **Inside `Yaam.Reminders`:** handlers use `RemindersDbContext` directly (no repository layer). The service boundary is the abstraction. This decision is recorded in ADR 007.
+- **Out of scope: rich domain models** (spec, Non-goals). `Reminder` stays anemic as ported from the monolith. Do not add entity methods or guard clauses, and do not move business rules out of handlers in this plan. Task 14's notes list it under "What I'd do next".
 - **Comments:** sparse; only where the *why* is non-obvious.
 - **Frontend:**
   - Never edit `frontend/src/app/generated/**` by hand. Regenerate with `npm run generate:api` (deleting the output folder first is allowed).
@@ -3300,7 +3301,7 @@ git commit -m "fix(reminders): claim due reminders atomically so replicas never 
   3. One message's life and every crash point
   4. Exactly-once is a lie: at-least-once + idempotency + versions
   5. The race I reproduced and fixed
-  6. What I'd do next (library outbox, Kubernetes probes, `UserId` through contracts, inbox retention, contract tests)
+  6. What I'd do next (rich `Reminder` domain model as the prerequisite for domain events, library outbox, Kubernetes probes, `UserId` through contracts, inbox retention, contract tests)
   7. Questions I'd ask the team
 
 - [ ] **Step 2: The user writes the answers.** Then review them for technical accuracy only, and point out gaps as questions rather than rewrites.
