@@ -9,12 +9,14 @@ import { routes } from './app.routes';
 import { problemDetailsInterceptor } from './core/interceptors/problem-details.interceptor';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { AuthService } from './core/auth/auth.service';
+import { BASE_PATH } from './generated/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(withInterceptors([authInterceptor, problemDetailsInterceptor])),
+    { provide: BASE_PATH, useValue: '' },
     {
       provide: APP_INITIALIZER,
       useFactory: (auth: AuthService) => () => auth.initialize(),
