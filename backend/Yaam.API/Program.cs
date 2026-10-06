@@ -2,6 +2,8 @@ using System.Text.Json.Serialization;
 using Scalar.AspNetCore;
 using Yaam.API;
 using Yaam.Infrastructure;
+using Yaam.Infrastructure.Messaging;
+using Yaam.ServiceDefaults.Messaging;
 using Yaam.UseCases;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,9 @@ builder.Services.AddInfrastructure(
         ?? throw new InvalidOperationException("Connection string 'DefaultConnection' is required."),
     builder.Configuration);
 builder.Services.AddYaamAuthentication(builder.Configuration);
+builder.Services.AddYaamRabbitMq(builder.Configuration);
+builder.Services.Configure<OutboxSettings>(builder.Configuration.GetSection("Outbox"));
+builder.Services.AddHostedService<OutboxRelay>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
+using Yaam.Infrastructure.Messaging;
 using Yaam.Infrastructure.Persistence;
 using Yaam.UseCases.Common.Cv;
 
@@ -49,6 +50,8 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
                     context.Configuration.GetConnectionString("DefaultConnection")
                     ?? throw new InvalidOperationException(
                         "Test connection string 'DefaultConnection' not found in appsettings.Test.json.")));
+
+            services.Remove(services.Single(d => d.ImplementationType == typeof(OutboxRelay)));
 
             services.RemoveAll<ICvParser>();
             services.AddSingleton<ICvParser, NoOpCvParser>();
