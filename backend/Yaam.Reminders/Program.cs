@@ -2,10 +2,12 @@ using System.Text.Json.Serialization;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Yaam.Reminders.ApplicationEvents;
 using Yaam.Reminders.Common;
 using Yaam.Reminders.Notifications;
 using Yaam.Reminders.Persistence;
 using Yaam.ServiceDefaults.Authentication;
+using Yaam.ServiceDefaults.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +34,10 @@ builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Email"));
 builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
 builder.Services.AddHostedService<ReminderNotificationService>();
+
+builder.Services.AddYaamRabbitMq(builder.Configuration);
+builder.Services.AddScoped<ApplicationEventHandler>();
+builder.Services.AddHostedService<ApplicationEventsConsumer>();
 
 var app = builder.Build();
 

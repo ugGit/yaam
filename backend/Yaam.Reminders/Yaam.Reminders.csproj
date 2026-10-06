@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Yaam.ServiceDefaults\Yaam.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\Yaam.Contracts\Yaam.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>

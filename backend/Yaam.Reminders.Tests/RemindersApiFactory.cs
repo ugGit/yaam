@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
+using Yaam.Reminders.ApplicationEvents;
 using Yaam.Reminders.Domain;
 using Yaam.Reminders.Notifications;
 using Yaam.Reminders.Persistence;
@@ -76,6 +77,7 @@ public class RemindersApiFactory : WebApplicationFactory<Program>, IAsyncLifetim
 
             var notificationJob = services.Single(d => d.ImplementationType == typeof(ReminderNotificationService));
             services.Remove(notificationJob);
+            services.Remove(services.Single(d => d.ImplementationType == typeof(ApplicationEventsConsumer)));
 
             services.PostConfigure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
             {
