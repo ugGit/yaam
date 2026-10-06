@@ -20,36 +20,35 @@ public class SendDueRemindersCommandHandler(
     public async Task Handle(SendDueRemindersCommand command, CancellationToken cancellationToken)
     {
         var today = DateOnly.FromDateTime(timeProvider.GetUtcNow().UtcDateTime);
-        var due = await (
-                from reminder in db.Reminders
-                join snapshot in db.ApplicationSnapshots on reminder.ApplicationId equals snapshot.ApplicationId
-                where reminder.CompletedAt == null && reminder.NotifiedAt == null
-                      && reminder.DueDate <= today && !snapshot.IsDeleted
-                select new { reminder, snapshot })
+        var dueReminders = await db.Reminders
+            .Include(r => r.Application)
+            .Where(r => r.CompletedAt == null && r.NotifiedAt == null
+                        && r.DueDate <= today && !r.Application.IsDeleted)
             .ToListAsync(cancellationToken);
 
-        foreach (var row in due)
+        foreach (var reminder in dueReminders)
         {
             try
             {
                 await emailSender.SendAsync(
                     emailOptions.Value.NotificationEmail,
-                    $"Follow-up reminder: {row.snapshot.CompanyName} — {row.snapshot.Role}",
-                    BuildEmailBody(row.reminder, row.snapshot),
+                    $"Follow-up reminder: {reminder.Application.CompanyName} — {reminder.Application.Role}",
+                    BuildEmailBody(reminder),
                     cancellationToken);
 
-                row.reminder.NotifiedAt = timeProvider.GetUtcNow().UtcDateTime;
+                reminder.NotifiedAt = timeProvider.GetUtcNow().UtcDateTime;
                 await db.SaveChangesAsync(cancellationToken);
             }
             catch (Exception exception) when (exception is not OperationCanceledException)
             {
-                logger.LogError(exception, "Failed to send reminder {ReminderId}", row.reminder.Id);
+                logger.LogError(exception, "Failed to send reminder {ReminderId}", reminder.Id);
             }
         }
     }
 
-    private static string BuildEmailBody(Reminder reminder, ApplicationSnapshot application)
+    private static string BuildEmailBody(Reminder reminder)
     {
+        var application = reminder.Application;
         var salutation = string.IsNullOrEmpty(application.ContactName)
             ? "Dear Hiring Team,"
             : $"Dear {application.ContactName},";

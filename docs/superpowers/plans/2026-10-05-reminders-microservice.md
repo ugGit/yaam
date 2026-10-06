@@ -3238,12 +3238,12 @@ if (app.Environment.IsDevelopment())
 
 - [ ] **Step 3: Fix with an atomic claim.** In `SendDueRemindersCommandHandler.Handle`, replace the `foreach` body:
 ```csharp
-        foreach (var row in due)
+        foreach (var reminder in dueReminders)
         {
             var now = timeProvider.GetUtcNow().UtcDateTime;
             // Conditional UPDATE is the lock: exactly one replica sees "1 row affected" and owns this reminder.
             var claimed = await db.Reminders
-                .Where(r => r.Id == row.reminder.Id && r.NotifiedAt == null)
+                .Where(r => r.Id == reminder.Id && r.NotifiedAt == null)
                 .ExecuteUpdateAsync(setters => setters.SetProperty(r => r.NotifiedAt, now), cancellationToken);
             if (claimed == 0)
                 continue;
@@ -3252,8 +3252,8 @@ if (app.Environment.IsDevelopment())
             {
                 await emailSender.SendAsync(
                     emailOptions.Value.NotificationEmail,
-                    $"Follow-up reminder: {row.snapshot.CompanyName} — {row.snapshot.Role}",
-                    BuildEmailBody(row.reminder, row.snapshot),
+                    $"Follow-up reminder: {reminder.Application.CompanyName} — {reminder.Application.Role}",
+                    BuildEmailBody(reminder),
                     cancellationToken);
             }
             catch (Exception exception) when (exception is not OperationCanceledException)
@@ -3261,9 +3261,9 @@ if (app.Environment.IsDevelopment())
                 // Release the claim so the next run retries: at-least-once for failures we observe.
                 // A crash between claim and send still loses this email (at-most-once for crashes).
                 await db.Reminders
-                    .Where(r => r.Id == row.reminder.Id)
+                    .Where(r => r.Id == reminder.Id)
                     .ExecuteUpdateAsync(setters => setters.SetProperty(r => r.NotifiedAt, (DateTime?)null), cancellationToken);
-                logger.LogError(exception, "Failed to send reminder {ReminderId}", row.reminder.Id);
+                logger.LogError(exception, "Failed to send reminder {ReminderId}", reminder.Id);
             }
         }
 ```

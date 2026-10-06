@@ -105,6 +105,17 @@ namespace Yaam.Reminders.Persistence.Migrations
 
                     b.ToTable("Reminders");
                 });
+
+            modelBuilder.Entity("Yaam.Reminders.Domain.Reminder", b =>
+                {
+                    b.HasOne("Yaam.Reminders.Domain.ApplicationSnapshot", "Application")
+                        .WithMany()
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Application");
+                });
 #pragma warning restore 612, 618
         }
     }

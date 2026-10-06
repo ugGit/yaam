@@ -16,6 +16,11 @@ public class RemindersDbContext(DbContextOptions<RemindersDbContext> options) : 
             builder.HasKey(r => r.Id);
             builder.Property(r => r.Note).HasMaxLength(500);
             builder.HasIndex(r => r.ApplicationId);
+            // FK within this service's own database; snapshots are tombstoned, never deleted.
+            builder.HasOne(r => r.Application)
+                .WithMany()
+                .HasForeignKey(r => r.ApplicationId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<ApplicationSnapshot>(builder =>

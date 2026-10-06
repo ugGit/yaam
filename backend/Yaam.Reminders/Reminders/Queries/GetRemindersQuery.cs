@@ -12,18 +12,16 @@ public class GetRemindersQueryHandler(RemindersDbContext db)
 {
     public async Task<List<ReminderDto>> Handle(GetRemindersQuery query, CancellationToken cancellationToken)
     {
-        var active =
-            from reminder in db.Reminders
-            join snapshot in db.ApplicationSnapshots on reminder.ApplicationId equals snapshot.ApplicationId
-            where reminder.CompletedAt == null && !snapshot.IsDeleted
-            select new { reminder, snapshot };
+        var active = db.Reminders
+            .Include(r => r.Application)
+            .Where(r => r.CompletedAt == null && !r.Application.IsDeleted);
 
         if (query.ApplicationId is { } applicationId)
-            active = active.Where(row => row.reminder.ApplicationId == applicationId);
+            active = active.Where(r => r.ApplicationId == applicationId);
 
-        var rows = await active
-            .OrderBy(row => row.reminder.DueDate)
+        var reminders = await active
+            .OrderBy(r => r.DueDate)
             .ToListAsync(cancellationToken);
-        return rows.Select(row => ReminderMapper.ToDto(row.reminder, row.snapshot)).ToList();
+        return reminders.Select(ReminderMapper.ToDto).ToList();
     }
 }

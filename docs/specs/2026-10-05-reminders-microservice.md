@@ -136,7 +136,7 @@ Follows the existing repo conventions:
 | PATCH | `/api/reminders/{id}/reschedule` | reschedule |
 | DELETE | `/api/reminders/{id}` | delete |
 **Data (`yaam_reminders`):**
-- `Reminders`: same columns as today, no foreign key.
+- `Reminders`: same columns as today. No foreign key to the monolith; a foreign key + navigation (`Reminder.Application`) to the local `ApplicationSnapshots` table, with `Restrict` on delete. The no-FK rule applies *between* services; inside its own database a service uses referential integrity freely.
 - `ApplicationSnapshots`: `ApplicationId` (PK), `Version`, `CompanyName`, `Role`, `DateApplied`, `ContactName`, `IsDeleted`.
 - `ProcessedMessages`: `MessageId` (PK), `ProcessedAt`.
 

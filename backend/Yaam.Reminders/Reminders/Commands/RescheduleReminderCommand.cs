@@ -27,14 +27,14 @@ public class RescheduleReminderCommandHandler(RemindersDbContext db)
 {
     public async Task<ReminderDto> Handle(RescheduleReminderCommand command, CancellationToken cancellationToken)
     {
-        var reminder = await db.Reminders.FindAsync([command.ReminderId], cancellationToken)
+        var reminder = await db.Reminders
+            .Include(r => r.Application)
+            .FirstOrDefaultAsync(r => r.Id == command.ReminderId, cancellationToken)
             ?? throw new NotFoundException(nameof(Reminder), command.ReminderId);
-        var snapshot = await db.ApplicationSnapshots
-            .FirstAsync(s => s.ApplicationId == reminder.ApplicationId, cancellationToken);
 
         reminder.DueDate = command.NewDueDate;
         reminder.NotifiedAt = null;
         await db.SaveChangesAsync(cancellationToken);
-        return ReminderMapper.ToDto(reminder, snapshot);
+        return ReminderMapper.ToDto(reminder);
     }
 }

@@ -36,6 +36,7 @@ public class CreateReminderCommandHandler(RemindersDbContext db, TimeProvider ti
         var reminder = new Reminder
         {
             ApplicationId = command.ApplicationId,
+            Application = snapshot,
             DelayDays = command.DelayDays,
             DueDate = today.AddDays(command.DelayDays),
             Note = command.Note,
@@ -43,6 +44,6 @@ public class CreateReminderCommandHandler(RemindersDbContext db, TimeProvider ti
 
         db.Reminders.Add(reminder);
         await db.SaveChangesAsync(cancellationToken);
-        return ReminderMapper.ToDto(reminder, snapshot);
+        return ReminderMapper.ToDto(reminder);
     }
 }

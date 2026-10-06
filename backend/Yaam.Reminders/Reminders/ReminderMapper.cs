@@ -5,9 +5,10 @@ namespace Yaam.Reminders.Reminders;
 
 internal static class ReminderMapper
 {
-    internal static ReminderDto ToDto(Reminder reminder, ApplicationSnapshot snapshot) => new(
+    internal static ReminderDto ToDto(Reminder reminder) => new(
         reminder.Id, reminder.ApplicationId,
-        snapshot.CompanyName, snapshot.Role, snapshot.DateApplied, snapshot.ContactName,
+        reminder.Application.CompanyName, reminder.Application.Role,
+        reminder.Application.DateApplied, reminder.Application.ContactName,
         reminder.DelayDays, reminder.DueDate, reminder.Note,
         reminder.NotifiedAt, reminder.CompletedAt, reminder.CreatedAt);
 }
