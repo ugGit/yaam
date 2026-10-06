@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Yaam.Domain.Entities;
+using Yaam.Domain.Errors;
+using Yaam.Infrastructure.Persistence.Outbox;
 
 namespace Yaam.Infrastructure.Persistence;
 
@@ -14,6 +16,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Certification> Certifications => Set<Certification>();
     public DbSet<ProfileLink> ProfileLinks => Set<ProfileLink>();
     public DbSet<CustomField> CustomFields => Set<CustomField>();
+    public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -21,13 +24,24 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         base.OnModelCreating(modelBuilder);
     }
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         foreach (var entry in ChangeTracker.Entries<Entity>())
         {
             if (entry.State == EntityState.Modified)
                 entry.Entity.UpdatedAt = DateTime.UtcNow;
         }
-        return base.SaveChangesAsync(cancellationToken);
+
+        // Same SaveChanges = same transaction: the state change and its event commit or fail together.
+        ApplicationOutboxStager.Stage(this);
+
+        try
+        {
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            throw new ConflictException("The application was changed by someone else. Reload and try again.");
+        }
     }
 }

@@ -4,6 +4,7 @@
     <ProjectReference Include="..\Yaam.Domain\Yaam.Domain.csproj" />
     <ProjectReference Include="..\Yaam.UseCases\Yaam.UseCases.csproj" />
     <ProjectReference Include="..\Yaam.ServiceDefaults\Yaam.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\Yaam.Contracts\Yaam.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>

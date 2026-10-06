@@ -15,6 +15,7 @@ public class ApplicationConfiguration : IEntityTypeConfiguration<Application>
         builder.Property(a => a.ContactName).HasMaxLength(200);
         builder.Property(a => a.ContactEmail).HasMaxLength(200);
         builder.Property(a => a.ContactPhone).HasMaxLength(20);
+        builder.Property(a => a.Version).IsConcurrencyToken();
 
         builder.HasMany(a => a.Notes)
             .WithOne()
