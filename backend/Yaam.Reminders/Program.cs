@@ -8,8 +8,11 @@ using Yaam.Reminders.Notifications;
 using Yaam.Reminders.Persistence;
 using Yaam.ServiceDefaults.Authentication;
 using Yaam.ServiceDefaults.Messaging;
+using Yaam.ServiceDefaults.Telemetry;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddYaamTelemetry("yaam-reminders");
 
 builder.Services.AddDbContext<RemindersDbContext>(options =>
     options.UseNpgsql(
@@ -37,6 +40,7 @@ builder.Services.AddHostedService<ReminderNotificationService>();
 
 builder.Services.AddYaamRabbitMq(builder.Configuration);
 builder.Services.AddScoped<ApplicationEventHandler>();
+builder.Services.AddSingleton<ConsumerMetrics>();
 builder.Services.AddHostedService<ApplicationEventsConsumer>();
 
 var app = builder.Build();

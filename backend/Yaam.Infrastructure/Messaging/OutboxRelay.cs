@@ -10,6 +10,7 @@ using Yaam.Contracts.Applications;
 using Yaam.Infrastructure.Persistence;
 using Yaam.Infrastructure.Persistence.Outbox;
 using Yaam.ServiceDefaults.Messaging;
+using Yaam.ServiceDefaults.Telemetry;
 
 namespace Yaam.Infrastructure.Messaging;
 
@@ -17,6 +18,7 @@ public sealed class OutboxRelay(
     IServiceScopeFactory scopeFactory,
     RabbitMqConnectionProvider connectionProvider,
     IOptions<OutboxSettings> options,
+    OutboxMetrics metrics,
     ILogger<OutboxRelay> logger) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -27,6 +29,7 @@ public sealed class OutboxRelay(
             try
             {
                 await PublishPendingAsync(stoppingToken);
+                await RecordBacklogAsync(stoppingToken);
             }
             catch (Exception exception) when (exception is not OperationCanceledException)
             {
@@ -84,6 +87,16 @@ public sealed class OutboxRelay(
         await transaction.CommitAsync(cancellationToken);
     }
 
+    private async Task RecordBacklogAsync(CancellationToken cancellationToken)
+    {
+        using var scope = scopeFactory.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        var pending = db.OutboxMessages.Where(m => m.ProcessedAt == null);
+        var count = await pending.LongCountAsync(cancellationToken);
+        var oldest = await pending.MinAsync(m => (DateTime?)m.OccurredAt, cancellationToken);
+        metrics.Update(count, oldest is null ? 0 : (DateTime.UtcNow - oldest.Value).TotalSeconds);
+    }
+
     private static async Task PublishAsync(IChannel channel, OutboxMessage message, CancellationToken cancellationToken)
     {
         using var payload = JsonDocument.Parse(message.Payload);
@@ -98,6 +111,10 @@ public sealed class OutboxRelay(
             DeliveryMode = DeliveryModes.Persistent,
             Headers = new Dictionary<string, object?>(),
         };
+
+        using var activity = MessagingTelemetry.StartPublishActivity(message.TraceParent, message.Type);
+        if (activity is not null)
+            properties.Headers[MessagingTelemetry.TraceParentHeader] = activity.Id;
 
         // mandatory: an unroutable message (no queue bound yet) fails the publish instead of vanishing.
         await channel.BasicPublishAsync(

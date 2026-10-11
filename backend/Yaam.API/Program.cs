@@ -4,9 +4,12 @@ using Yaam.API;
 using Yaam.Infrastructure;
 using Yaam.Infrastructure.Messaging;
 using Yaam.ServiceDefaults.Messaging;
+using Yaam.ServiceDefaults.Telemetry;
 using Yaam.UseCases;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddYaamTelemetry("yaam-api");
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(
@@ -16,6 +19,7 @@ builder.Services.AddInfrastructure(
 builder.Services.AddYaamAuthentication(builder.Configuration);
 builder.Services.AddYaamRabbitMq(builder.Configuration);
 builder.Services.Configure<OutboxSettings>(builder.Configuration.GetSection("Outbox"));
+builder.Services.AddSingleton<OutboxMetrics>();
 builder.Services.AddHostedService<OutboxRelay>();
 
 builder.Services.AddControllers()
