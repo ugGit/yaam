@@ -1,4 +1,3 @@
-using Yaam.API.Reminders;
 using Yaam.UseCases.Applications.Dtos;
 
 namespace Yaam.API.Applications;
@@ -17,8 +16,7 @@ internal static class ApplicationViewModelMapper
         dto.JobPosting,
         dto.CreatedAt,
         dto.UpdatedAt,
-        dto.Notes.Select(ToViewModel).ToList(),
-        dto.Reminders.Select(ReminderViewModelMapper.ToViewModel).ToList());
+        dto.Notes.Select(ToViewModel).ToList());
 
     internal static ApplicationSummaryViewModel ToViewModel(ApplicationSummaryDto dto) =>
         new(dto.Id, dto.CompanyName, dto.Role, dto.DateApplied, dto.Status);

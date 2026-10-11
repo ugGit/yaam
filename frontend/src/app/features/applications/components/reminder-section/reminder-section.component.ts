@@ -1,11 +1,8 @@
-import { Component, computed, inject, input, output, signal } from '@angular/core';
+import { Component, computed, inject, input, resource, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormField, FormRoot, form, min, required, validate } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
-import {
-  ApplicationReminderService,
-  ApplicationReminderViewModel,
-} from '../../../../generated/api/index';
+import { RemindersService, ReminderViewModel } from '../../../../generated/reminders-api/index';
 import { parseDateOnly } from '../../../../shared/date.util';
 
 @Component({
@@ -16,11 +13,14 @@ import { parseDateOnly } from '../../../../shared/date.util';
 })
 export class ReminderSectionComponent {
   readonly applicationId = input.required<string>();
-  readonly reminders = input<ApplicationReminderViewModel[]>([]);
 
-  readonly reminderChanged = output<void>();
+  private readonly api = inject(RemindersService);
 
-  private readonly api = inject(ApplicationReminderService);
+  protected readonly remindersResource = resource({
+    params: () => this.applicationId(),
+    loader: ({ params }) => firstValueFrom(this.api.listReminders(params)),
+  });
+  protected readonly reminders = computed(() => this.remindersResource.value() ?? []);
 
   protected readonly showAddForm = signal(false);
   protected readonly reschedulingReminderId = signal<string | null>(null);
@@ -70,7 +70,7 @@ export class ReminderSectionComponent {
     return d.toISOString().split('T')[0];
   });
 
-  protected dueDateDisplay(reminder: ApplicationReminderViewModel): {
+  protected dueDateDisplay(reminder: ReminderViewModel): {
     label: string;
     cls: string;
   } {
@@ -103,11 +103,15 @@ export class ReminderSectionComponent {
     this.saving.set(true);
     try {
       await firstValueFrom(
-        this.api.setReminder(this.applicationId(), { delayDays, note: note || null }),
+        this.api.createReminder({
+          applicationId: this.applicationId(),
+          delayDays,
+          note: note || null,
+        }),
       );
       this.showAddForm.set(false);
       this.addModel.set({ presetDays: 7, customDays: null, note: '' });
-      this.reminderChanged.emit();
+      this.remindersResource.reload();
     } finally {
       this.saving.set(false);
     }
@@ -116,8 +120,8 @@ export class ReminderSectionComponent {
   protected async completeReminder(reminderId: string): Promise<void> {
     this.saving.set(true);
     try {
-      await firstValueFrom(this.api.completeReminder(this.applicationId(), reminderId));
-      this.reminderChanged.emit();
+      await firstValueFrom(this.api.completeReminder(reminderId));
+      this.remindersResource.reload();
     } finally {
       this.saving.set(false);
     }
@@ -138,12 +142,10 @@ export class ReminderSectionComponent {
     if (!newDueDate) return;
     this.saving.set(true);
     try {
-      await firstValueFrom(
-        this.api.rescheduleReminder(this.applicationId(), reminderId, { newDueDate }),
-      );
+      await firstValueFrom(this.api.rescheduleReminder(reminderId, { newDueDate }));
       this.reschedulingReminderId.set(null);
       this.rescheduleModel.set({ newDueDate: '' });
-      this.reminderChanged.emit();
+      this.remindersResource.reload();
     } finally {
       this.saving.set(false);
     }
@@ -152,9 +154,9 @@ export class ReminderSectionComponent {
   protected async deleteReminder(reminderId: string): Promise<void> {
     this.saving.set(true);
     try {
-      await firstValueFrom(this.api.deleteReminder(this.applicationId(), reminderId));
+      await firstValueFrom(this.api.deleteReminder(reminderId));
       this.deletingReminderId.set(null);
-      this.reminderChanged.emit();
+      this.remindersResource.reload();
     } finally {
       this.saving.set(false);
     }

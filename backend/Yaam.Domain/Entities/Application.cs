@@ -12,6 +12,6 @@ public class Application : Entity
     public string? ContactEmail { get; set; }
     public string? ContactPhone { get; set; }
     public string? JobPosting { get; set; }
+    public long Version { get; set; }
     public ICollection<ApplicationNote> Notes { get; set; } = new List<ApplicationNote>();
-    public ICollection<Reminder> Reminders { get; set; } = new List<Reminder>();
 }

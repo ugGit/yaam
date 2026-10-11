@@ -12,6 +12,17 @@
           "withInterfaces": true,
           "enumPropertyNaming": "original"
         }
+      },
+      "yaam-reminders-api": {
+        "generatorName": "typescript-angular",
+        "output": "src/app/generated/reminders-api",
+        "inputSpec": "http://localhost:5240/openapi/v1.json",
+        "additionalProperties": {
+          "ngVersion": "22",
+          "providedIn": "root",
+          "withInterfaces": true,
+          "enumPropertyNaming": "original"
+        }
       }
     }
   }

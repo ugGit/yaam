@@ -2,11 +2,7 @@ import { Component, computed, inject, resource, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import {
-  ApplicationReminderService,
-  RemindersService,
-  ReminderViewModel,
-} from '../../../../generated/api/index';
+import { RemindersService, ReminderViewModel } from '../../../../generated/reminders-api/index';
 import { parseDateOnly } from '../../../../shared/date.util';
 
 @Component({
@@ -17,7 +13,6 @@ import { parseDateOnly } from '../../../../shared/date.util';
 })
 export class RemindersListComponent {
   private readonly remindersApi = inject(RemindersService);
-  private readonly applicationReminderApi = inject(ApplicationReminderService);
 
   protected readonly saving = signal<string | null>(null);
 
@@ -48,9 +43,7 @@ export class RemindersListComponent {
   protected async complete(reminder: ReminderViewModel): Promise<void> {
     this.saving.set(reminder.id);
     try {
-      await firstValueFrom(
-        this.applicationReminderApi.completeReminder(reminder.applicationId, reminder.id),
-      );
+      await firstValueFrom(this.remindersApi.completeReminder(reminder.id));
       this.remindersResource.reload();
     } finally {
       this.saving.set(null);
@@ -60,9 +53,7 @@ export class RemindersListComponent {
   protected async deleteReminder(reminder: ReminderViewModel): Promise<void> {
     this.saving.set(reminder.id);
     try {
-      await firstValueFrom(
-        this.applicationReminderApi.deleteReminder(reminder.applicationId, reminder.id),
-      );
+      await firstValueFrom(this.remindersApi.deleteReminder(reminder.id));
       this.remindersResource.reload();
     } finally {
       this.saving.set(null);

@@ -3,11 +3,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Yaam.Domain\Yaam.Domain.csproj" />
     <ProjectReference Include="..\Yaam.UseCases\Yaam.UseCases.csproj" />
+    <ProjectReference Include="..\Yaam.ServiceDefaults\Yaam.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\Yaam.Contracts\Yaam.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.9" />
-    <PackageReference Include="MailKit" Version="4.17.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.9">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

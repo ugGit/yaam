@@ -56,3 +56,9 @@ jobs:
         working-directory: backend
         env:
           ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Database=yaam_test;Username=yaam;Password=yaam"
+
+      - name: Reminders service tests
+        run: dotnet test Yaam.Reminders.Tests --no-build --configuration Release
+        working-directory: backend
+        env:
+          ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Database=yaam_reminders_test;Username=yaam;Password=yaam"

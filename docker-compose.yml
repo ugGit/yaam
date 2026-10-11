@@ -22,6 +22,27 @@ services:
     volumes:
       - ollama_data:/root/.ollama
 
+  rabbitmq:
+    image: rabbitmq:4-management
+    environment:
+      RABBITMQ_DEFAULT_USER: yaam
+      RABBITMQ_DEFAULT_PASS: yaam
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  otel-lgtm:
+    image: grafana/otel-lgtm:latest
+    ports:
+      - "3000:3000"
+      - "4317:4317"
+      - "4318:4318"
+
   mailpit:
     image: axllent/mailpit:latest
     ports:

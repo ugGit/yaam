@@ -1,6 +1,4 @@
 export * from './applicationNoteViewModel';
-export * from './applicationReminderViewModel';
-export * from './applicationReminderViewModelDelayDays';
 export * from './applicationStatus';
 export * from './applicationSummaryViewModel';
 export * from './applicationViewModel';
@@ -27,9 +25,6 @@ export * from './parsedWorkExperienceData';
 export * from './profileLinkInputModel';
 export * from './profileLinkViewModel';
 export * from './profileViewModel';
-export * from './reminderViewModel';
-export * from './rescheduleReminderInputModel';
-export * from './setReminderInputModel';
 export * from './updateApplicationInputModel';
 export * from './updateApplicationNoteInputModel';
 export * from './updateApplicationStatusInputModel';
