@@ -29,11 +29,20 @@ public sealed class OutboxRelay(
             try
             {
                 await PublishPendingAsync(stoppingToken);
-                await RecordBacklogAsync(stoppingToken);
             }
             catch (Exception exception) when (exception is not OperationCanceledException)
             {
                 logger.LogWarning(exception, "Outbox relay iteration failed; retrying in {Interval}", interval);
+            }
+
+            // Measured independently of publishing: the backlog matters most exactly when publishing fails.
+            try
+            {
+                await RecordBacklogAsync(stoppingToken);
+            }
+            catch (Exception exception) when (exception is not OperationCanceledException)
+            {
+                logger.LogWarning(exception, "Could not measure outbox backlog");
             }
 
             await Task.Delay(interval, stoppingToken);
