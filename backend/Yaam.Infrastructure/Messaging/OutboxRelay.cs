@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using OpenTelemetry;
 using RabbitMQ.Client;
 using Yaam.Contracts;
 using Yaam.Contracts.Applications;
@@ -56,10 +57,15 @@ public sealed class OutboxRelay(
         await using var transaction = await db.Database.BeginTransactionAsync(cancellationToken);
 
         var batchSize = options.Value.BatchSize;
-        // SKIP LOCKED lets several relay instances share the table without publishing the same row concurrently.
-        var pending = await db.OutboxMessages
-            .FromSql($"""SELECT * FROM "OutboxMessages" WHERE "ProcessedAt" IS NULL ORDER BY "Id" LIMIT {batchSize} FOR UPDATE SKIP LOCKED""")
-            .ToListAsync(cancellationToken);
+        List<OutboxMessage> pending;
+        // Polling every second would otherwise create a root trace per poll and bury real traces.
+        using (SuppressInstrumentationScope.Begin())
+        {
+            // SKIP LOCKED lets several relay instances share the table without publishing the same row concurrently.
+            pending = await db.OutboxMessages
+                .FromSql($"""SELECT * FROM "OutboxMessages" WHERE "ProcessedAt" IS NULL ORDER BY "Id" LIMIT {batchSize} FOR UPDATE SKIP LOCKED""")
+                .ToListAsync(cancellationToken);
+        }
         if (pending.Count == 0)
             return;
 
@@ -98,6 +104,7 @@ public sealed class OutboxRelay(
 
     private async Task RecordBacklogAsync(CancellationToken cancellationToken)
     {
+        using var suppressTracing = SuppressInstrumentationScope.Begin();
         using var scope = scopeFactory.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         var pending = db.OutboxMessages.Where(m => m.ProcessedAt == null);
